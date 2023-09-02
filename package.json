@@ -1,0 +1,33 @@
+{
+  "name": "typo-shield",
+  "version": "0.0.0",
+  "description": "Core for DSL language that constraints endpoints",
+  "main": "dist/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon",
+    "build": "tsc -p .",
+    "start:production": "node ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "node -r tsconfig-paths/register -r ts-node/register ./src/index.ts",
+    "ext": "ts, js"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
