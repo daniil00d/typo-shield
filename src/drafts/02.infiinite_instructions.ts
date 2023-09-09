@@ -1,8 +1,10 @@
 /**
- * Задача: написать дженерик-тип для аккумулятивного калькулятора
+ * Задача: написать дженерик-тип для аккумулятивного калькулятора первых символов операндов
  *
  * Cкилл: бесконечные строки в типе
  */
+
+import { FirstCharacter } from "@core/utils/string";
 
 type Delimiter = ":>";
 type StartFinish = "<:>";
@@ -16,11 +18,11 @@ type Concat<
 > = `${leftString}${rightString}`;
 
 type ParseDSL<DSL> =
-  DSL extends `${infer HeadString extends string} ${Delimiter} ${infer TailString extends string}`
-    ? Concat<HeadString, ParseDSL<TailString>>
-    : "";
+  DSL extends `${infer HeadString extends string} ${infer DelimiterString extends Delimiter} ${infer TailString extends string}`
+    ? Concat<FirstCharacter<HeadString>, ParseDSL<TailString>>
+    : FirstCharacter<DSL>;
 
-type InfiniteConcat<DSL> = TrimStartAndFinish<ParseDSL<DSL>>;
+export type InfiniteConcat<DSL> = ParseDSL<TrimStartAndFinish<DSL>>;
 
-type ConcatStrings = InfiniteConcat<`<:> 11111 :> 22222 :> 33333 <:>`>;
-// ^? '111112222233333'
+type ConcatStrings = InfiniteConcat<`<:> 11111 :> 22222 :> 33333 :> 4444234234234 <:>`>;
+// ^? '1234'
