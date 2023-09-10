@@ -24,3 +24,28 @@ export type Tail<T> = T extends `${string}${infer R extends string}`
     ? never
     : R
   : never;
+
+export type Whitespace = " " | "\t" | "\r" | "\n";
+
+export type TrimLeft<
+  Text extends string,
+  Chars extends string | number = Whitespace
+> = Text extends `${Chars}${infer Rest}` ? TrimLeft<Rest, Chars> : Text;
+
+export type TrimRight<
+  Text extends string,
+  Chars extends string | number = Whitespace
+> = Text extends `${infer Rest}${Chars}` ? TrimRight<Rest, Chars> : Text;
+
+export type Trim<
+  Text extends string,
+  Chars extends string | number = Whitespace
+> = TrimRight<TrimLeft<Text, Chars>, Chars>;
+
+export type ReplaceAll<
+  Text extends string,
+  Pattern extends string | number,
+  Replacement extends string = ""
+> = Text extends `${infer Start extends string}${Pattern}${infer Rest extends string}`
+  ? `${Start}${Replacement}${ReplaceAll<Rest, Pattern, Replacement>}`
+  : Text;
