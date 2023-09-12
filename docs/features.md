@@ -6,6 +6,6 @@ source: https://daniil00t.notion.site/daniil00t/DSL-5c44c62ecf90491993b57d06bf10
 - наследование частей или поддеревьев эндпоинтов (/user, /user/create, /user/list, /user/list/all)← доп задача
 - свободный выбор протокола (http, grpc, ws …)
 - кодогенерации http & grpc схем для contract-first ← доп задача
-- интеграция с популярными фреймворками (Express, nest)
+- интеграция с популярными фреймворками (Express, poor http server)
 - кодогенерация методов по выражениям
 - задать грамматику и реализовать подсветку синтаксиса

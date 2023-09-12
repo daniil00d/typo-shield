@@ -5,6 +5,7 @@
 import { Trim } from "@core/utils/string";
 
 type ExDSL = `
+  <:>
   HTTP ~> POST :>
   #includes $BaseUserDto :>
   @ /user/get/{id: Number} :>
