@@ -4,7 +4,7 @@
 
 import { Trim } from "@core/utils/string";
 
-type ExDSL = `
+const someEndpoint = `
   <:>
   HTTP ~> POST :>
   #includes $BaseUserDto :>
@@ -17,7 +17,9 @@ type ExDSL = `
     Данная ручка предназначена для получения информации о пользователе
     ## Так же здесь можно будет использовать MD
   <:>
-`;
+` as const;
+
+type ExDSL = typeof someEndpoint;
 
 type Split<S extends string, D extends string> = string extends S
   ? string[]
