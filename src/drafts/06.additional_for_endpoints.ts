@@ -27,6 +27,7 @@ const et_UserTree = `
  * наследовали поля описания их родителей
  */
 
+// TODO: добавить Include & Exclude вместо полного наследования и оверрайда
 const et_ParamsUserTree = `
   |> HTTP/2
     <|> POST
@@ -35,15 +36,12 @@ const et_ParamsUserTree = `
         @headers      { token: String }
         @input json   { login?: String, email: String }
         @output json  { id: String }
-
         <|> consumer
-          @input json { location: String }
-
+          @input json #include(login) & { location: String }
         <|> admin
-          @input json { rules: String }
-
+          @input json #include(login) & { rules: String }
         <|> manager
-          @input json { managerRang: Number }
+          @input json #include(email) & { managerRang: Number }
     <|> GET
       :> user
         <|> list
@@ -96,12 +94,17 @@ const getUser_functionExpression: GetUserEndpointFunctionType = () => ({
   email: "",
 });
 
+function getUser() {}
+function getUserList() {}
+function createUser() {}
+function createAdmin() {}
+
 /**
  * TODO: 4. Если мы получили описание эндпоинтов, их сигнатуры и имплементации,
  * мы можем с этими данными
  *  - поднять сервер
  *  - сгенерировать спеку
- *  - засервить сваггер спеку, другими словами получить сваггер
+ *  - засервить сваггер спеку, другими словами получить ui с сваггером, где уже можно потыкаться
  *
  * Для первого варианта можно использовать express
  */

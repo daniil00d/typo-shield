@@ -24,6 +24,6 @@ type ParseDSL<DSL> =
 
 export type InfiniteConcat<DSL> = ParseDSL<TrimStartAndFinish<DSL>>;
 
-type ConcatStrings =
+export type ConcatStrings =
   InfiniteConcat<`<:> 11111 :> 22222 :> 33333 :> 4444234234234 <:>`>;
 // ^? '1234'
