@@ -1,14 +1,16 @@
 import { ParseWarning } from "../core/errors/parseWarning";
 import { ParserError } from "../core/errors/parserError";
 import { parseProtocol } from "./08.protocol_parser";
-import { getDirectiveByName } from "./10.getDirective";
+import { getDirective, getDirectiveByName } from "./10.getDirective";
 
 const et_ParamsUserTree1 = `
   |> HTTP/1.1
     <|> POST
       <|> user
+        @body json {a: Number}
         <|> consumer
           @serve CreateConsumer
+          @body json #include(a)
         <|> admin
           @serve CreateAdmin
         <|> manager
@@ -133,18 +135,17 @@ const parser = (dsl: string): EndpointTree => {
         return;
       }
 
-      console.log(_tree, {
-        sub: _tree.subtree,
-        subRoot: _tree.subtree?.[0].root,
-      });
       if (
         _tree.subtree === undefined ||
-        _tree.subtree?.[0].root.match(/@/)?.length
+        _tree.subtree.every(
+          (__tree) => getDirective(__tree.root).type !== undefined
+        )
       ) {
         mainArray.push({
           pathname: `${parentPrefix}/${getEndpointName(_tree.root)}`,
           serveImp: getDirectiveByName(_tree.subtree?.[0].root, "serve"),
         });
+
         return;
       }
 
