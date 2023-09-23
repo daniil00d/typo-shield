@@ -13,19 +13,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^4.17.17",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      ".git",
-      "node_modules"
-    ],
-    "watch": [
-      "src"
-    ],
-    "exec": "node -r tsconfig-paths/register -r ts-node/register ./src/index.ts",
-    "ext": "ts, js"
   },
   "dependencies": {
     "ts-node": "^10.9.1"
