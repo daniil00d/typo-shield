@@ -2,7 +2,7 @@ import { getServer } from "./ts-parser/app";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
-  |> HTTP/1.1
+  |> HTTP
     <|> POST
       <|> user
         @body json {a: Number}

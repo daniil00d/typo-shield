@@ -1,5 +1,5 @@
 import { ExpressServer } from "../server/express-intagration";
-import { bindImplementation } from "./binds";
+import { bindImplementation } from "./bind";
 import { Lexer } from "./lexer";
 import { Parser } from "./parser";
 import { ImplementationMap, DSL } from "./types";
