@@ -1,7 +1,4 @@
-import { ExpressServer } from "./server/express-intagration";
-import { bindImplementation } from "./ts-parser/binds";
-import { RowSeparator, Tab } from "./ts-parser/constants";
-import { Parser } from "./ts-parser/parser";
+import { getServer } from "./ts-parser/app";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
@@ -24,19 +21,6 @@ const endpoints = `
           :> get
 ` as const;
 
-// парсим дсл:
-
-const lexemes = endpoints
-  .split(RowSeparator)
-  .map((row) => row.replace(Tab, ""))
-  .filter((row) => row);
-
-const parser = new Parser();
-
-const endpointTree = parser.parse(parser.recParser(lexemes));
-
-// пишем свои имплементации
-
 export const imps = {
   CreateAdmin: () => ({ user: "admin" }),
   CreateManager: () => ({ user: "manager" }),
@@ -44,10 +28,6 @@ export const imps = {
   GetList: () => ({ users: [{ id: 1, name: "daniil" }] }),
 };
 
-const bindedEndpoints = bindImplementation(imps, endpointTree);
-
-const server = new ExpressServer(3000);
-
-server.bindEndpoint(bindedEndpoints);
+const server = getServer(endpoints, imps);
 
 server.start();
