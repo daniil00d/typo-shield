@@ -5,7 +5,7 @@ const endpoints = `
   |> HTTP
     <|> POST
       <|> user
-        @body json {a: Number}
+        @body json {a: String like /\w_+/}
         <|> consumer
           @serve CreateConsumer
           @body json #include(a)
@@ -14,9 +14,11 @@ const endpoints = `
         <|> manager
           @serve CreateManager
     <|> GET
+      @params {a: Number}
       :> user
         <|> list
           @serve GetList
+          @mock
         <|> @param 'login' as String
           :> get
 ` as const;

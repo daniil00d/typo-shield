@@ -9,7 +9,9 @@ export const getServer = (dsl: DSL, implementations: ImplementationMap) => {
   const parser = new Parser();
 
   const lexemes = lexer.getLexemes(dsl);
-  const endpointTree = parser.parse(lexer.recParser(lexemes));
+  const tokenTree = lexer.recParser(lexemes);
+  const endpointTree = parser.parse(tokenTree);
+  console.log(endpointTree.endpoints);
 
   const boundEndpoints = bindImplementation(implementations, endpointTree);
 
