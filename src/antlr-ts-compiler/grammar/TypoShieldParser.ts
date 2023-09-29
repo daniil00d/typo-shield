@@ -29,18 +29,20 @@ export class TypoShieldParser extends Parser {
 	public static readonly T__0 = 1;
 	public static readonly DIR_TYPE = 2;
 	public static readonly START_SYM = 3;
-	public static readonly PROTOCOL_START = 4;
+	public static readonly METHOD_START = 4;
 	public static readonly PROTOCOL = 5;
-	public static readonly METHOD = 6;
-	public static readonly LCURLY = 7;
-	public static readonly RCURLY = 8;
-	public static readonly SEMI = 9;
-	public static readonly COMA = 10;
-	public static readonly WS = 11;
-	public static readonly TYPE = 12;
-	public static readonly DIR_NAME = 13;
-	public static readonly DIRECTIVE = 14;
-	public static readonly ENDPOINT_NAME = 15;
+	public static readonly PROTOCOL_VERSION = 6;
+	public static readonly PROTOCOL_VERSION_DEL = 7;
+	public static readonly METHOD = 8;
+	public static readonly LCURLY = 9;
+	public static readonly RCURLY = 10;
+	public static readonly SEMI = 11;
+	public static readonly COMA = 12;
+	public static readonly WS = 13;
+	public static readonly TYPE = 14;
+	public static readonly DIR_NAME = 15;
+	public static readonly DIRECTIVE = 16;
+	public static readonly ENDPOINT_NAME = 17;
 	public static readonly RULE_start = 0;
 	public static readonly RULE_object = 1;
 	public static readonly RULE_objects = 2;
@@ -54,13 +56,13 @@ export class TypoShieldParser extends Parser {
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
-		undefined, "':'", "'JSON'", "'>'", "'$'", "'HTTP'", undefined, "'{'", 
-		"'}'", "';'", "','",
+		undefined, "':'", "'JSON'", "'>'", "'$'", "'HTTP'", undefined, "'/'", 
+		undefined, "'{'", "'}'", "';'", "','",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
-		undefined, undefined, "DIR_TYPE", "START_SYM", "PROTOCOL_START", "PROTOCOL", 
-		"METHOD", "LCURLY", "RCURLY", "SEMI", "COMA", "WS", "TYPE", "DIR_NAME", 
-		"DIRECTIVE", "ENDPOINT_NAME",
+		undefined, undefined, "DIR_TYPE", "START_SYM", "METHOD_START", "PROTOCOL", 
+		"PROTOCOL_VERSION", "PROTOCOL_VERSION_DEL", "METHOD", "LCURLY", "RCURLY", 
+		"SEMI", "COMA", "WS", "TYPE", "DIR_NAME", "DIRECTIVE", "ENDPOINT_NAME",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(TypoShieldParser._LITERAL_NAMES, TypoShieldParser._SYMBOLIC_NAMES, []);
 
@@ -245,27 +247,39 @@ export class TypoShieldParser extends Parser {
 			{
 			this.state = 39;
 			this.match(TypoShieldParser.PROTOCOL);
-			this.state = 40;
-			this.match(TypoShieldParser.T__0);
-			this.state = 41;
-			this.match(TypoShieldParser.LCURLY);
-			this.state = 45;
+			this.state = 42;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while (_la === TypoShieldParser.PROTOCOL_START) {
+			if (_la === TypoShieldParser.PROTOCOL_VERSION_DEL) {
+				{
+				this.state = 40;
+				this.match(TypoShieldParser.PROTOCOL_VERSION_DEL);
+				this.state = 41;
+				this.match(TypoShieldParser.PROTOCOL_VERSION);
+				}
+			}
+
+			this.state = 44;
+			this.match(TypoShieldParser.T__0);
+			this.state = 45;
+			this.match(TypoShieldParser.LCURLY);
+			this.state = 49;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === TypoShieldParser.METHOD_START) {
 				{
 				{
-				this.state = 42;
+				this.state = 46;
 				this.methods();
 				}
 				}
-				this.state = 47;
+				this.state = 51;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 48;
+			this.state = 52;
 			this.match(TypoShieldParser.RCURLY);
-			this.state = 49;
+			this.state = 53;
 			this.match(TypoShieldParser.SEMI);
 			}
 		}
@@ -291,31 +305,31 @@ export class TypoShieldParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 51;
-			this.match(TypoShieldParser.PROTOCOL_START);
-			this.state = 52;
+			this.state = 55;
+			this.match(TypoShieldParser.METHOD_START);
+			this.state = 56;
 			this.match(TypoShieldParser.METHOD);
-			this.state = 53;
+			this.state = 57;
 			this.match(TypoShieldParser.T__0);
-			this.state = 54;
-			this.match(TypoShieldParser.LCURLY);
 			this.state = 58;
+			this.match(TypoShieldParser.LCURLY);
+			this.state = 62;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === TypoShieldParser.START_SYM) {
 				{
 				{
-				this.state = 55;
+				this.state = 59;
 				this.endpoints();
 				}
 				}
-				this.state = 60;
+				this.state = 64;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 61;
+			this.state = 65;
 			this.match(TypoShieldParser.RCURLY);
-			this.state = 62;
+			this.state = 66;
 			this.match(TypoShieldParser.SEMI);
 			}
 		}
@@ -341,31 +355,31 @@ export class TypoShieldParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 64;
+			this.state = 68;
 			this.match(TypoShieldParser.START_SYM);
-			this.state = 65;
+			this.state = 69;
 			this.match(TypoShieldParser.ENDPOINT_NAME);
-			this.state = 66;
+			this.state = 70;
 			this.match(TypoShieldParser.T__0);
-			this.state = 67;
+			this.state = 71;
 			this.match(TypoShieldParser.LCURLY);
-			this.state = 72;
+			this.state = 76;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === TypoShieldParser.START_SYM || _la === TypoShieldParser.DIRECTIVE) {
 				{
-				this.state = 70;
+				this.state = 74;
 				this._errHandler.sync(this);
 				switch (this._input.LA(1)) {
 				case TypoShieldParser.START_SYM:
 					{
-					this.state = 68;
+					this.state = 72;
 					this.endpoints();
 					}
 					break;
 				case TypoShieldParser.DIRECTIVE:
 					{
-					this.state = 69;
+					this.state = 73;
 					this.directives();
 					}
 					break;
@@ -373,13 +387,13 @@ export class TypoShieldParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				this.state = 74;
+				this.state = 78;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 75;
+			this.state = 79;
 			this.match(TypoShieldParser.RCURLY);
-			this.state = 76;
+			this.state = 80;
 			this.match(TypoShieldParser.SEMI);
 			}
 		}
@@ -399,38 +413,39 @@ export class TypoShieldParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x11Q\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x13U\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x03\x02\x03\x02\x03\x03\x03\x03\x03\x03\x03\x03\x03\x04" +
 		"\x03\x04\x03\x04\x03\x04\x07\x04\x1B\n\x04\f\x04\x0E\x04\x1E\v\x04\x03" +
 		"\x04\x03\x04\x03\x05\x03\x05\x03\x05\x03\x05\x05\x05&\n\x05\x03\x05\x03" +
-		"\x05\x03\x06\x03\x06\x03\x06\x03\x06\x07\x06.\n\x06\f\x06\x0E\x061\v\x06" +
-		"\x03\x06\x03\x06\x03\x06\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x07\x07" +
-		";\n\x07\f\x07\x0E\x07>\v\x07\x03\x07\x03\x07\x03\x07\x03\b\x03\b\x03\b" +
-		"\x03\b\x03\b\x03\b\x07\bI\n\b\f\b\x0E\bL\v\b\x03\b\x03\b\x03\b\x03\b\x02" +
-		"\x02\x02\t\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x02\x02\x02" +
-		"O\x02\x10\x03\x02\x02\x02\x04\x12\x03\x02\x02\x02\x06\x16\x03\x02\x02" +
-		"\x02\b!\x03\x02\x02\x02\n)\x03\x02\x02\x02\f5\x03\x02\x02\x02\x0EB\x03" +
-		"\x02\x02\x02\x10\x11\x05\n\x06\x02\x11\x03\x03\x02\x02\x02\x12\x13\x07" +
-		"\x11\x02\x02\x13\x14\x07\x03\x02\x02\x14\x15\x07\x0E\x02\x02\x15\x05\x03" +
-		"\x02\x02\x02\x16\x17\x07\t\x02\x02\x17\x1C\x05\x04\x03\x02\x18\x19\x07" +
-		"\f\x02\x02\x19\x1B\x05\x04\x03\x02\x1A\x18\x03\x02\x02\x02\x1B\x1E\x03" +
-		"\x02\x02\x02\x1C\x1A\x03\x02\x02\x02\x1C\x1D\x03\x02\x02\x02\x1D\x1F\x03" +
-		"\x02\x02\x02\x1E\x1C\x03\x02\x02\x02\x1F \x07\n\x02\x02 \x07\x03\x02\x02" +
-		"\x02!%\x07\x10\x02\x02\"&\x07\x0F\x02\x02#$\x07\x04\x02\x02$&\x05\x06" +
-		"\x04\x02%\"\x03\x02\x02\x02%#\x03\x02\x02\x02&\'\x03\x02\x02\x02\'(\x07" +
-		"\v\x02\x02(\t\x03\x02\x02\x02)*\x07\x07\x02\x02*+\x07\x03\x02\x02+/\x07" +
-		"\t\x02\x02,.\x05\f\x07\x02-,\x03\x02\x02\x02.1\x03\x02\x02\x02/-\x03\x02" +
-		"\x02\x02/0\x03\x02\x02\x0202\x03\x02\x02\x021/\x03\x02\x02\x0223\x07\n" +
-		"\x02\x0234\x07\v\x02\x024\v\x03\x02\x02\x0256\x07\x06\x02\x0267\x07\b" +
-		"\x02\x0278\x07\x03\x02\x028<\x07\t\x02\x029;\x05\x0E\b\x02:9\x03\x02\x02" +
-		"\x02;>\x03\x02\x02\x02<:\x03\x02\x02\x02<=\x03\x02\x02\x02=?\x03\x02\x02" +
-		"\x02><\x03\x02\x02\x02?@\x07\n\x02\x02@A\x07\v\x02\x02A\r\x03\x02\x02" +
-		"\x02BC\x07\x05\x02\x02CD\x07\x11\x02\x02DE\x07\x03\x02\x02EJ\x07\t\x02" +
-		"\x02FI\x05\x0E\b\x02GI\x05\b\x05\x02HF\x03\x02\x02\x02HG\x03\x02\x02\x02" +
-		"IL\x03\x02\x02\x02JH\x03\x02\x02\x02JK\x03\x02\x02\x02KM\x03\x02\x02\x02" +
-		"LJ\x03\x02\x02\x02MN\x07\n\x02\x02NO\x07\v\x02\x02O\x0F\x03\x02\x02\x02" +
-		"\b\x1C%/<HJ";
+		"\x05\x03\x06\x03\x06\x03\x06\x05\x06-\n\x06\x03\x06\x03\x06\x03\x06\x07" +
+		"\x062\n\x06\f\x06\x0E\x065\v\x06\x03\x06\x03\x06\x03\x06\x03\x07\x03\x07" +
+		"\x03\x07\x03\x07\x03\x07\x07\x07?\n\x07\f\x07\x0E\x07B\v\x07\x03\x07\x03" +
+		"\x07\x03\x07\x03\b\x03\b\x03\b\x03\b\x03\b\x03\b\x07\bM\n\b\f\b\x0E\b" +
+		"P\v\b\x03\b\x03\b\x03\b\x03\b\x02\x02\x02\t\x02\x02\x04\x02\x06\x02\b" +
+		"\x02\n\x02\f\x02\x0E\x02\x02\x02\x02T\x02\x10\x03\x02\x02\x02\x04\x12" +
+		"\x03\x02\x02\x02\x06\x16\x03\x02\x02\x02\b!\x03\x02\x02\x02\n)\x03\x02" +
+		"\x02\x02\f9\x03\x02\x02\x02\x0EF\x03\x02\x02\x02\x10\x11\x05\n\x06\x02" +
+		"\x11\x03\x03\x02\x02\x02\x12\x13\x07\x13\x02\x02\x13\x14\x07\x03\x02\x02" +
+		"\x14\x15\x07\x10\x02\x02\x15\x05\x03\x02\x02\x02\x16\x17\x07\v\x02\x02" +
+		"\x17\x1C\x05\x04\x03\x02\x18\x19\x07\x0E\x02\x02\x19\x1B\x05\x04\x03\x02" +
+		"\x1A\x18\x03\x02\x02\x02\x1B\x1E\x03\x02\x02\x02\x1C\x1A\x03\x02\x02\x02" +
+		"\x1C\x1D\x03\x02\x02\x02\x1D\x1F\x03\x02\x02\x02\x1E\x1C\x03\x02\x02\x02" +
+		"\x1F \x07\f\x02\x02 \x07\x03\x02\x02\x02!%\x07\x12\x02\x02\"&\x07\x11" +
+		"\x02\x02#$\x07\x04\x02\x02$&\x05\x06\x04\x02%\"\x03\x02\x02\x02%#\x03" +
+		"\x02\x02\x02&\'\x03\x02\x02\x02\'(\x07\r\x02\x02(\t\x03\x02\x02\x02)," +
+		"\x07\x07\x02\x02*+\x07\t\x02\x02+-\x07\b\x02\x02,*\x03\x02\x02\x02,-\x03" +
+		"\x02\x02\x02-.\x03\x02\x02\x02./\x07\x03\x02\x02/3\x07\v\x02\x0202\x05" +
+		"\f\x07\x0210\x03\x02\x02\x0225\x03\x02\x02\x0231\x03\x02\x02\x0234\x03" +
+		"\x02\x02\x0246\x03\x02\x02\x0253\x03\x02\x02\x0267\x07\f\x02\x0278\x07" +
+		"\r\x02\x028\v\x03\x02\x02\x029:\x07\x06\x02\x02:;\x07\n\x02\x02;<\x07" +
+		"\x03\x02\x02<@\x07\v\x02\x02=?\x05\x0E\b\x02>=\x03\x02\x02\x02?B\x03\x02" +
+		"\x02\x02@>\x03\x02\x02\x02@A\x03\x02\x02\x02AC\x03\x02\x02\x02B@\x03\x02" +
+		"\x02\x02CD\x07\f\x02\x02DE\x07\r\x02\x02E\r\x03\x02\x02\x02FG\x07\x05" +
+		"\x02\x02GH\x07\x13\x02\x02HI\x07\x03\x02\x02IN\x07\v\x02\x02JM\x05\x0E" +
+		"\b\x02KM\x05\b\x05\x02LJ\x03\x02\x02\x02LK\x03\x02\x02\x02MP\x03\x02\x02" +
+		"\x02NL\x03\x02\x02\x02NO\x03\x02\x02\x02OQ\x03\x02\x02\x02PN\x03\x02\x02" +
+		"\x02QR\x07\f\x02\x02RS\x07\r\x02\x02S\x0F\x03\x02\x02\x02\t\x1C%,3@LN";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!TypoShieldParser.__ATN) {
@@ -563,6 +578,8 @@ export class ProtocolContext extends ParserRuleContext {
 	public LCURLY(): TerminalNode { return this.getToken(TypoShieldParser.LCURLY, 0); }
 	public RCURLY(): TerminalNode { return this.getToken(TypoShieldParser.RCURLY, 0); }
 	public SEMI(): TerminalNode { return this.getToken(TypoShieldParser.SEMI, 0); }
+	public PROTOCOL_VERSION_DEL(): TerminalNode | undefined { return this.tryGetToken(TypoShieldParser.PROTOCOL_VERSION_DEL, 0); }
+	public PROTOCOL_VERSION(): TerminalNode | undefined { return this.tryGetToken(TypoShieldParser.PROTOCOL_VERSION, 0); }
 	public methods(): MethodsContext[];
 	public methods(i: number): MethodsContext;
 	public methods(i?: number): MethodsContext | MethodsContext[] {
@@ -593,7 +610,7 @@ export class ProtocolContext extends ParserRuleContext {
 
 
 export class MethodsContext extends ParserRuleContext {
-	public PROTOCOL_START(): TerminalNode { return this.getToken(TypoShieldParser.PROTOCOL_START, 0); }
+	public METHOD_START(): TerminalNode { return this.getToken(TypoShieldParser.METHOD_START, 0); }
 	public METHOD(): TerminalNode { return this.getToken(TypoShieldParser.METHOD, 0); }
 	public LCURLY(): TerminalNode { return this.getToken(TypoShieldParser.LCURLY, 0); }
 	public RCURLY(): TerminalNode { return this.getToken(TypoShieldParser.RCURLY, 0); }

@@ -1,3 +1,4 @@
+import { logger } from "@utils/logger";
 import { TypoShieldListener } from "./grammar/TypoShieldListener";
 import {
   DirectivesContext,
@@ -10,25 +11,39 @@ import {
   Directive,
   DirectiveObject,
   Endpoint,
+  HTTPVersionType,
   Method,
   ParserListenerOptions,
+  Protocol,
 } from "./types";
 
 export class ParseTypoShieldListener implements TypoShieldListener {
   // service
-  private protocol: string;
+  private protocol: Protocol;
+  private protocolVersion: HTTPVersionType;
   private endpoints: Array<Endpoint>;
   private options: ParserListenerOptions;
 
   constructor(options?: ParserListenerOptions) {
     this.endpoints = [];
-    this.protocol = "";
+    this.protocol = "HTTP";
+    this.protocolVersion = "1.1";
     this.options = options || {};
   }
 
   // protocols
-  enterProtocol(ctx: ProtocolContext) {
-    this.protocol = ctx.PROTOCOL().text;
+  public enterProtocol(ctx: ProtocolContext) {
+    this.protocol = ctx.PROTOCOL().text as Protocol;
+
+    const protocolVersion = ctx.PROTOCOL_VERSION()?.text;
+    if (protocolVersion === undefined) {
+      logger.log(
+        "Protocol version is undefined. HTTP/1.1 set as default",
+        "warning"
+      );
+    } else {
+      this.protocolVersion = ctx.PROTOCOL_VERSION()?.text as HTTPVersionType;
+    }
   }
 
   private parseDirectiveObjects(
@@ -138,7 +153,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     });
   }
 
-  enterMethods(ctx: MethodsContext) {
+  public enterMethods(ctx: MethodsContext) {
     const method = ctx.METHOD().text as Method;
     const endpoints = ctx.endpoints();
 
@@ -151,5 +166,9 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
   public getEndpoints() {
     return this.endpoints;
+  }
+
+  public getProtocolVersion() {
+    return this.protocolVersion;
   }
 }

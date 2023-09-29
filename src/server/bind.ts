@@ -12,7 +12,7 @@ export const bindImplementation = (
         (directive) => directive.name === "@serve"
       )?.dirName;
 
-      if (implementationName) {
+      if (implementationName && imps[implementationName]) {
         logger.log(`Endpoint ${endpoint.pathname} is running!`, "success");
       }
 

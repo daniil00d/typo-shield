@@ -2,7 +2,7 @@ import { getServer } from "@server/app";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
-HTTP: {
+HTTP/1.1: {
   $GET: {
     > user: {
     @input JSON {a: Number, b: String};
@@ -19,10 +19,8 @@ HTTP: {
 ` as const;
 
 export const imps = {
-  CreateAdmin: () => ({ user: "admin" }),
-  CreateManager: () => ({ user: "manager" }),
-  CreateConsumer: () => ({ user: "consumer" }),
   GetUserList: () => ({ users: [{ id: 1, name: "daniil" }] }),
+  GetUser: () => ({ id: 123 }),
 };
 
 const server = getServer(endpoints, imps);

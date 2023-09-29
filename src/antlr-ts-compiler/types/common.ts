@@ -52,5 +52,6 @@ export type Endpoint = {
 
 export type EndpointTree = {
   protocol: Protocol;
+  protocolVersion: HTTPVersionType;
   endpoints: Endpoint[];
 };

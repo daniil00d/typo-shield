@@ -3,17 +3,19 @@ grammar TypoShield;
 
 DIR_TYPE: 'JSON';
 START_SYM: '>';
-PROTOCOL_START: '$';
+METHOD_START: '$';
 PROTOCOL: 'HTTP';
+PROTOCOL_VERSION: [0-9].[0-9] | [0-9]; 
+PROTOCOL_VERSION_DEL: '/';
 METHOD: 'GET' | 'POST' | 'DELETE';
 LCURLY : '{' ;
 RCURLY : '}' ;
 SEMI : ';' ;
 COMA: ',';
 WS: [ \t\n\r\f]+ -> skip ;
-TYPE: 'Number' | 'String' | 'Boolean';
+TYPE: 'Number' | 'String';
 DIR_NAME: [A-Z][a-zA-Z]+;
-DIRECTIVE: '@serve' | '@input' | '@output';
+DIRECTIVE: '@serve' | '@input';
 ENDPOINT_NAME: [a-z]+;
 
 
@@ -30,10 +32,10 @@ directives
     
 
 protocol
-    : PROTOCOL ':' LCURLY methods* RCURLY SEMI;
+    : PROTOCOL (PROTOCOL_VERSION_DEL PROTOCOL_VERSION)? ':' LCURLY methods* RCURLY SEMI;
     
 methods
-    : PROTOCOL_START METHOD  ':' LCURLY endpoints* RCURLY SEMI;
+    : METHOD_START METHOD  ':' LCURLY endpoints* RCURLY SEMI;
     
 endpoints
     : START_SYM ENDPOINT_NAME ':' LCURLY (endpoints | directives)* RCURLY SEMI;
