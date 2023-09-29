@@ -11,23 +11,26 @@ RCURLY : '}' ;
 SEMI : ';' ;
 COMA: ',';
 WS: [ \t\n\r\f]+ -> skip ;
-TYPE: 'Number' | 'String';
+TYPE: 'Number' | 'String' | 'Boolean';
 DIR_NAME: [A-Z][a-zA-Z]+;
-DIRECTIVE: '@serve' | '@input';
+DIRECTIVE: '@serve' | '@input' | '@output';
 ENDPOINT_NAME: [a-z]+;
 
 
 start: protocol;
 
+object
+    : ENDPOINT_NAME ':' TYPE ;
+
 objects
-    : LCURLY ENDPOINT_NAME ':' TYPE (COMA ENDPOINT_NAME ':' TYPE)* RCURLY;
+    : LCURLY object (COMA object )* RCURLY;
 
 directives
     : DIRECTIVE (DIR_NAME | DIR_TYPE objects) SEMI;
     
 
 protocol
-    : PROTOCOL ':' LCURLY methods* '}' SEMI;
+    : PROTOCOL ':' LCURLY methods* RCURLY SEMI;
     
 methods
     : PROTOCOL_START METHOD  ':' LCURLY endpoints* RCURLY SEMI;

@@ -4,6 +4,7 @@
 import { ParseTreeListener } from "antlr4ts/tree/ParseTreeListener";
 
 import { StartContext } from "./TypoShieldParser";
+import { ObjectContext } from "./TypoShieldParser";
 import { ObjectsContext } from "./TypoShieldParser";
 import { DirectivesContext } from "./TypoShieldParser";
 import { ProtocolContext } from "./TypoShieldParser";
@@ -26,6 +27,17 @@ export interface TypoShieldListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitStart?: (ctx: StartContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `TypoShieldParser.object`.
+	 * @param ctx the parse tree
+	 */
+	enterObject?: (ctx: ObjectContext) => void;
+	/**
+	 * Exit a parse tree produced by `TypoShieldParser.object`.
+	 * @param ctx the parse tree
+	 */
+	exitObject?: (ctx: ObjectContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `TypoShieldParser.objects`.
