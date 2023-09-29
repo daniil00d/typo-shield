@@ -4,38 +4,30 @@ import { TypoShieldParser } from "./grammar/TypoShieldParser";
 import { ParseTypoShieldListener } from "./listener";
 import { ParseTreeWalker } from "antlr4ts/tree/ParseTreeWalker";
 import { TypoShieldListener } from "./grammar/TypoShieldListener";
+import { Endpoint, ParserListenerOptions, Protocol } from "./types";
 
-// Create the lexer and parser
-let inputStream = CharStreams.fromString(`
-HTTP: {
-  $GET: {
-    > user: {
-    @input JSON {a: Number, b: String};
-    @output JSON {id: String};
-    > list: {
-      @output JSON {login: String};
-      @serve GetUserList;
+export class Compiler {
+  private tree: ParseTypoShieldListener;
+  constructor(dsl: string, options?: ParserListenerOptions | undefined) {
+    const inputStream = CharStreams.fromString(dsl);
+    const lexer = new TypoShieldLexer(inputStream);
+    const tokenStream = new CommonTokenStream(lexer);
+    const parser = new TypoShieldParser(tokenStream);
+
+    // `start` - init expression in grammar
+    const tree = parser.start();
+
+    const customListener = new ParseTypoShieldListener(options);
+
+    ParseTreeWalker.DEFAULT.walk(customListener as TypoShieldListener, tree);
+
+    this.tree = customListener;
+  }
+
+  public getEndpointTree() {
+    return {
+      protocol: this.tree.getProtocol() as Protocol,
+      endpoints: this.tree.getEndpoints(),
     };
-    > get: {
-        @input JSON {c: String};
-        @serve GetUser;
-      };
-    };
-  };
-};
-`);
-let lexer = new TypoShieldLexer(inputStream);
-let tokenStream = new CommonTokenStream(lexer);
-let parser = new TypoShieldParser(tokenStream);
-
-const tree = parser.start();
-
-const customListener = new ParseTypoShieldListener({
-  overrideDirectives: "merge",
-});
-
-ParseTreeWalker.DEFAULT.walk(customListener as TypoShieldListener, tree);
-
-console.log(customListener.getEndpoints()[0].directives);
-
-// Parse the input, where `compilationUnit` is whatever entry point you defined
+  }
+}

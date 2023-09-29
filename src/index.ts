@@ -2,32 +2,27 @@ import { getServer } from "./ts-parser/app";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
-  |> HTTP
-    <|> POST
-      <|> user
-        @body json {a: String like /\w_+/}
-        <|> consumer
-          @serve CreateConsumer
-          @body json #include(a)
-        <|> admin
-          @serve CreateAdmin
-        <|> manager
-          @serve CreateManager
-    <|> GET
-      @params {a: Number}
-      :> user
-        <|> list
-          @serve GetList
-          @mock
-        <|> @param 'login' as String
-          :> get
+HTTP: {
+  $GET: {
+    > user: {
+    @input JSON {a: Number, b: String};
+      > list: {
+        @serve GetUserList;
+        @input JSON {c: Number};
+      };
+      > get: {
+        @serve GetUser;
+      };
+    };
+  };
+};
 ` as const;
 
 export const imps = {
   CreateAdmin: () => ({ user: "admin" }),
   CreateManager: () => ({ user: "manager" }),
   CreateConsumer: () => ({ user: "consumer" }),
-  GetList: () => ({ users: [{ id: 1, name: "daniil" }] }),
+  GetUserList: () => ({ users: [{ id: 1, name: "daniil" }] }),
 };
 
 const server = getServer(endpoints, imps);

@@ -1,5 +1,6 @@
 import { logger } from "../utils/logger";
-import { ImplementationMap, EndpointTree } from "./types";
+import { ImplementationMap } from "./types";
+import { EndpointTree } from "../antlr-ts-compiler/types";
 
 export const bindImplementation = (
   imps: ImplementationMap,
@@ -8,7 +9,9 @@ export const bindImplementation = (
   return {
     ...endpointTree,
     endpoints: endpointTree.endpoints.map((endpoint) => {
-      const implementationName = endpoint.implementationFuncName;
+      const implementationName = endpoint.directives?.find(
+        (directive) => directive.name === "@serve"
+      )?.dirName;
 
       if (implementationName) {
         logger.log(`Endpoint ${endpoint.pathname} is running!`, "success");

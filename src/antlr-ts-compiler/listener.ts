@@ -6,21 +6,13 @@ import {
   ObjectContext,
   ProtocolContext,
 } from "./grammar/TypoShieldParser";
-import { ParserListenerOptions } from "./types";
-
-type DirectiveObject = Record<string, string>;
-type Directive = {
-  name: string;
-  dirName: string | undefined;
-  dirType: string | undefined;
-  objects: DirectiveObject;
-};
-
-type Endpoint = {
-  pathname: string;
-  method?: string;
-  directives?: Directive[];
-};
+import {
+  Directive,
+  DirectiveObject,
+  Endpoint,
+  Method,
+  ParserListenerOptions,
+} from "./types";
 
 export class ParseTypoShieldListener implements TypoShieldListener {
   // service
@@ -110,15 +102,18 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     pathname,
     endpoints,
     directives,
+    method,
   }: {
     pathname: string;
     endpoints: EndpointsContext[];
     directives: Directive[];
+    method: Method;
   }) {
     if (endpoints.length === 0) {
       this.endpoints.push({
         pathname,
         directives,
+        method,
       });
 
       return;
@@ -138,19 +133,16 @@ export class ParseTypoShieldListener implements TypoShieldListener {
           [...directives, ...currentDirectives],
           this.options.overrideDirectives
         ),
+        method,
       });
     });
   }
 
   enterMethods(ctx: MethodsContext) {
-    const method = ctx.METHOD().text;
+    const method = ctx.METHOD().text as Method;
     const endpoints = ctx.endpoints();
 
-    this.recEndpoint({ pathname: "", endpoints, directives: [] });
-    this.endpoints = this.endpoints.map((endpoint) => ({
-      ...endpoint,
-      method,
-    }));
+    this.recEndpoint({ pathname: "", endpoints, directives: [], method });
   }
 
   public getProtocol(): string {
