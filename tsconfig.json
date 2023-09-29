@@ -9,7 +9,10 @@
     "outDir": "dist",
     "resolveJsonModule": true,
     "paths": {
-      "@core/*": ["./src/core/*"]
+      "@core/*": ["./src/core/*"],
+      "@compiler/*": ["./src/antlr-ts-compiler/*"],
+      "@server/*": ["./src/server/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "include": ["src/**/*.**"],

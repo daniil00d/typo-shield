@@ -1,6 +1,5 @@
-import { logger } from "../utils/logger";
-import { ImplementationMap } from "./types";
-import { EndpointTree } from "../antlr-ts-compiler/types";
+import { ImplementationMap, EndpointTree } from "@compiler/types";
+import { logger } from "@utils/logger";
 
 export const bindImplementation = (
   imps: ImplementationMap,

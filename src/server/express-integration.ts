@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { MethodType } from "../ts-parser/types";
+import { MethodType } from "../drafts/ts-parser/types";
 import { EndpointTree } from "../antlr-ts-compiler/types";
 
 export class ExpressServer {

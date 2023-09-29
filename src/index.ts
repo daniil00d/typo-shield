@@ -1,4 +1,4 @@
-import { getServer } from "./ts-parser/app";
+import { getServer } from "@server/app";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `

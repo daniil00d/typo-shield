@@ -1,5 +1,5 @@
-import { Compiler } from "../antlr-ts-compiler";
-import { ExpressServer } from "../server/express-intagration";
+import { Compiler } from "../../antlr-ts-compiler";
+import { ExpressServer } from "../../server/express-intagration";
 import { bindImplementation } from "./bind";
 import { DSL, ImplementationMap } from "./types";
 
