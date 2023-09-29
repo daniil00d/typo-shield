@@ -36,6 +36,7 @@ export type Directive = {
   dirName: string | undefined;
   dirType: string | undefined;
   objects: DirectiveObject;
+  utilityDirective?: { name: string; atoms: string[] };
 };
 
 /**
