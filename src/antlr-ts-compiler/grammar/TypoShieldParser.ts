@@ -43,6 +43,7 @@ export class TypoShieldParser extends Parser {
 	public static readonly DIR_NAME = 15;
 	public static readonly DIRECTIVE = 16;
 	public static readonly ENDPOINT_NAME = 17;
+	public static readonly COMMENT = 18;
 	public static readonly RULE_start = 0;
 	public static readonly RULE_object = 1;
 	public static readonly RULE_objects = 2;
@@ -62,7 +63,8 @@ export class TypoShieldParser extends Parser {
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
 		undefined, undefined, "DIR_TYPE", "START_SYM", "METHOD_START", "PROTOCOL", 
 		"PROTOCOL_VERSION", "PROTOCOL_VERSION_DEL", "METHOD", "LCURLY", "RCURLY", 
-		"SEMI", "COMA", "WS", "TYPE", "DIR_NAME", "DIRECTIVE", "ENDPOINT_NAME",
+		"SEMI", "COMA", "WS", "TYPE", "DIR_NAME", "DIRECTIVE", "ENDPOINT_NAME", 
+		"COMMENT",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(TypoShieldParser._LITERAL_NAMES, TypoShieldParser._SYMBOLIC_NAMES, []);
 
@@ -413,7 +415,7 @@ export class TypoShieldParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x13U\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x14U\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x03\x02\x03\x02\x03\x03\x03\x03\x03\x03\x03\x03\x03\x04" +
 		"\x03\x04\x03\x04\x03\x04\x07\x04\x1B\n\x04\f\x04\x0E\x04\x1E\v\x04\x03" +

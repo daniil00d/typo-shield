@@ -17,6 +17,7 @@ TYPE: 'Number' | 'String';
 DIR_NAME: [A-Z][a-zA-Z]+;
 DIRECTIVE: '@serve' | '@input';
 ENDPOINT_NAME: [a-z]+;
+COMMENT: '///'[a-zA-Z ]* -> skip;
 
 
 start: protocol;

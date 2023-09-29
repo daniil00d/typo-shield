@@ -38,7 +38,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     const protocolVersion = ctx.PROTOCOL_VERSION()?.text;
     if (protocolVersion === undefined) {
       logger.log(
-        "Protocol version is undefined. HTTP/1.1 set as default",
+        "Protocol version not found, version HTTP/1.1 was set as default",
         "warning"
       );
     } else {

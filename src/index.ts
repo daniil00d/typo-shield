@@ -2,7 +2,7 @@ import { getServer } from "@server/app";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
-HTTP/1.1: {
+HTTP: {
   $GET: {
     > user: {
     @input JSON {a: Number, b: String};
