@@ -17,9 +17,9 @@ COMA: ',';
 WS: [ \t\n\r\f]+ -> skip ;
 TYPE: 'Number' | 'String';
 DIR_NAME: [A-Z][a-zA-Z]+;
-DIRECTIVE: '@serve' | '@input';
+DIRECTIVE: '@serve' | '@input' | '@meta' | '@test' | '@headers' | '@output' | '@search';
 UTILITY_DIRECTIVE: '#include' | '#exclude';
-COMMENT: '///'[a-zA-Z ]* -> skip;
+COMMENT: '///'[a-zA-Z,. ]* -> skip;
 ID: [a-zA-Z_0-9]+;
 
 

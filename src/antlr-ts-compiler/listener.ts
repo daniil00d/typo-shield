@@ -4,280 +4,280 @@ import { DirectivesContext, EndpointsContext, MethodsContext, ObjectContext, Pro
 import { Directive, DirectiveObject, Endpoint, HTTPVersionType, Method, ParserListenerOptions, Protocol } from "./types";
 
 export class ParseTypoShieldListener implements TypoShieldListener {
-	// service
-	private protocol: Protocol;
-	private protocolVersion: HTTPVersionType;
-	private endpoints: Array<Endpoint>;
-	private options: ParserListenerOptions;
+  // service
+  private protocol: Protocol;
+  private protocolVersion: HTTPVersionType;
+  private endpoints: Array<Endpoint>;
+  private options: ParserListenerOptions;
 
-	constructor(options?: ParserListenerOptions) {
-		this.endpoints = [];
-		this.protocol = "HTTP";
-		this.protocolVersion = "1.1";
-		this.options = options || {};
-	}
+  constructor(options?: ParserListenerOptions) {
+    this.endpoints = [];
+    this.protocol = "HTTP";
+    this.protocolVersion = "1.1";
+    this.options = options || {};
+  }
 
-	// protocols
-	public enterProtocol(ctx: ProtocolContext) {
-		this.protocol = ctx.PROTOCOL().text as Protocol;
+  // protocols
+  public enterProtocol(ctx: ProtocolContext) {
+    this.protocol = ctx.PROTOCOL().text as Protocol;
 
-		const protocolVersion = ctx.PROTOCOL_VERSION()?.text;
-		if (protocolVersion === undefined) {
-			logger.log("Protocol version not found, version HTTP/1.1 was set as default", "warning");
-		} else {
-			this.protocolVersion = ctx.PROTOCOL_VERSION()?.text as HTTPVersionType;
-		}
-	}
+    const protocolVersion = ctx.PROTOCOL_VERSION()?.text;
+    if (protocolVersion === undefined) {
+      logger.log("Protocol version not found, version HTTP/1.1 was set as default", "warning");
+    } else {
+      this.protocolVersion = ctx.PROTOCOL_VERSION()?.text as HTTPVersionType;
+    }
+  }
 
-	private parseDirectiveObjects(objects: ObjectContext[] | undefined): DirectiveObject {
-		if (objects === undefined) {
-			return {} as DirectiveObject;
-		}
+  private parseDirectiveObjects(objects: ObjectContext[] | undefined): DirectiveObject {
+    if (objects === undefined) {
+      return {} as DirectiveObject;
+    }
 
-		return objects.reduce((acc, object) => {
-			const key = object.ID().text;
-			const value = object.TYPE().text;
+    return objects.reduce((acc, object) => {
+      const key = object.ID().text;
+      const value = object.TYPE().text;
 
-			return {
-				...acc,
-				[key]: value
-			};
-		}, {} as DirectiveObject);
-	}
+      return {
+        ...acc,
+        [key]: value
+      };
+    }, {} as DirectiveObject);
+  }
 
-	private parseDirective(directive: DirectivesContext) {
-		const name = directive.DIRECTIVE().text;
-		const dirName = directive.DIR_NAME()?.text;
-		const dirType = directive.DIR_TYPE()?.text;
-		const utilityDirective = directive.utilitydirective();
-		const utilityDirectiveName = utilityDirective?.UTILITY_DIRECTIVE().text;
-		const utilityDirectiveAtoms = utilityDirective
-			?.utilitydirectiveatom()
-			.ID()
-			.map((id) => id.text);
-		const objects = this.parseDirectiveObjects(directive?.objects()?.object());
+  private parseDirective(directive: DirectivesContext) {
+    const name = directive.DIRECTIVE().text;
+    const dirName = directive.DIR_NAME()?.text;
+    const dirType = directive.DIR_TYPE()?.text;
+    const utilityDirective = directive.utilitydirective();
+    const utilityDirectiveName = utilityDirective?.UTILITY_DIRECTIVE().text;
+    const utilityDirectiveAtoms = utilityDirective
+      ?.utilitydirectiveatom()
+      .ID()
+      .map((id) => id.text);
+    const objects = this.parseDirectiveObjects(directive?.objects()?.object());
 
-		return {
-			name,
-			dirName,
-			dirType,
-			objects,
-			utilityDirective: {
-				name: utilityDirectiveName,
-				atoms: utilityDirectiveAtoms
-			}
-		};
-	}
+    return {
+      name,
+      dirName,
+      dirType,
+      objects,
+      utilityDirective: {
+        name: utilityDirectiveName,
+        atoms: utilityDirectiveAtoms
+      }
+    };
+  }
 
-	private overridingDirectives(directives: Directive[], overriding: ParserListenerOptions["overrideDirectives"]): Directive[] {
-		switch (overriding) {
-			/**
-			 * None - значит, что ничего не делаем с исходным массивом
-			 */
-			case "none":
-				return directives;
+  private overridingDirectives(directives: Directive[], overriding: ParserListenerOptions["overrideDirectives"]): Directive[] {
+    switch (overriding) {
+      /**
+       * None - значит, что ничего не делаем с исходным массивом
+       */
+      case "none":
+        return directives;
 
-			/**
-			 * Merge - то самое наследование директив, которое описывалось в первой задумке
-			 *
-			 * Такой мод имеет два кейса:
-			 * 1. Имеющий утилитарные директивы
-			 *
-			 *    Примерный подход в том, что все директивы стакаются в один таким
-			 *    способом, чтобы в готовые объекты попали только те значения, которые
-			 *    удовлетворяют некоторым требованиям, а именно: если есть хотя бы одна
-			 *    утилитарная директива, то все предыдущие, имеющиеся в массиве будут
-			 *    фильтроваться установленным способом.
-			 *
-			 *    #include(a, b) from {a, b, c, d} => {a, b}
-			 *    #exclude(a, b) from {a, b, c, d} => {c, d}
-			 *
-			 * 2. Неимеющий утилитарные директивы
-			 *
-			 *    Здесь все просто, поскольку не нужно думать насчет, как именно
-			 *    мержить объекты в директиве.
-			 *
-			 * 3. Смешанный подход (то есть случай, когда у нас есть больше одной
-			 *    директивы без утилитарной директивы и как минимум одна директива
-			 *    с утилитарной).
-			 *
-			 *    Здесь суть в том, чтобы находить все элементы с утилитарными
-			 *    директивами, применять для всех предыдущих элементов данную
-			 *    директиву и таким образом рекурсивно проходится по текущему
-			 *    массиву, мержа его элементы.
-			 */
-			case "merge": {
-				const baseMergeDirectivesByObjects = (subarray: Directive[]): Directive[] => {
-					return subarray.reduce((acc, directive) => {
-						const names = acc.map((ac) => ac.name);
-						const index = names.findIndex((n) => n === directive.name);
+      /**
+       * Merge - то самое наследование директив, которое описывалось в первой задумке
+       *
+       * Такой мод имеет два кейса:
+       * 1. Имеющий утилитарные директивы
+       *
+       *    Примерный подход в том, что все директивы стакаются в один таким
+       *    способом, чтобы в готовые объекты попали только те значения, которые
+       *    удовлетворяют некоторым требованиям, а именно: если есть хотя бы одна
+       *    утилитарная директива, то все предыдущие, имеющиеся в массиве будут
+       *    фильтроваться установленным способом.
+       *
+       *    #include(a, b) from {a, b, c, d} => {a, b}
+       *    #exclude(a, b) from {a, b, c, d} => {c, d}
+       *
+       * 2. Неимеющий утилитарные директивы
+       *
+       *    Здесь все просто, поскольку не нужно думать насчет, как именно
+       *    мержить объекты в директиве.
+       *
+       * 3. Смешанный подход (то есть случай, когда у нас есть больше одной
+       *    директивы без утилитарной директивы и как минимум одна директива
+       *    с утилитарной).
+       *
+       *    Здесь суть в том, чтобы находить все элементы с утилитарными
+       *    директивами, применять для всех предыдущих элементов данную
+       *    директиву и таким образом рекурсивно проходится по текущему
+       *    массиву, мержа его элементы.
+       */
+      case "merge": {
+        const baseMergeDirectivesByObjects = (subarray: Directive[]): Directive[] => {
+          return subarray.reduce((acc, directive) => {
+            const names = acc.map((ac) => ac.name);
+            const index = names.findIndex((n) => n === directive.name);
 
-						if (~index) {
-							acc[index] = {
-								...acc[index],
-								objects: { ...acc[index].objects, ...directive.objects }
-							};
-							return acc;
-						}
+            if (~index) {
+              acc[index] = {
+                ...acc[index],
+                objects: { ...acc[index].objects, ...directive.objects }
+              };
+              return acc;
+            }
 
-						return [...acc, directive];
-					}, [] as Directive[]);
-				};
+            return [...acc, directive];
+          }, [] as Directive[]);
+        };
 
-				const recMergeDirectivesByUtilities = (dirs: Directive[]): Directive[] => {
-					const isMerged = !dirs.some((dir) => dir.utilityDirective?.name);
+        const recMergeDirectivesByUtilities = (dirs: Directive[]): Directive[] => {
+          const isMerged = !dirs.some((dir) => dir.utilityDirective?.name);
 
-					if (isMerged) {
-						return dirs;
-					}
+          if (isMerged) {
+            return dirs;
+          }
 
-					const utilityDirectiveIndex = dirs.findIndex((directive) => directive.utilityDirective?.name);
-					const utilityDirectiveName = dirs[utilityDirectiveIndex].utilityDirective?.name;
-					const utilityDirectiveAtoms = dirs[utilityDirectiveIndex].utilityDirective?.atoms || [];
-					const directiveName = dirs[utilityDirectiveIndex].name;
+          const utilityDirectiveIndex = dirs.findIndex((directive) => directive.utilityDirective?.name);
+          const utilityDirectiveName = dirs[utilityDirectiveIndex].utilityDirective?.name;
+          const utilityDirectiveAtoms = dirs[utilityDirectiveIndex].utilityDirective?.atoms || [];
+          const directiveName = dirs[utilityDirectiveIndex].name;
 
-					const previousDirectives = dirs.slice(0, utilityDirectiveIndex);
+          const previousDirectives = dirs.slice(0, utilityDirectiveIndex);
 
-					const mergedPreviousDirectives = baseMergeDirectivesByObjects(previousDirectives);
+          const mergedPreviousDirectives = baseMergeDirectivesByObjects(previousDirectives);
 
-					switch (utilityDirectiveName) {
-						case "#include": {
-							const finedElementIndex = mergedPreviousDirectives.findIndex((dir) => dir.name === directiveName);
+          switch (utilityDirectiveName) {
+            case "#include": {
+              const finedElementIndex = mergedPreviousDirectives.findIndex((dir) => dir.name === directiveName);
 
-							const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex].objects)
-								.filter((obj) => {
-									const [key, value] = obj;
-									return utilityDirectiveAtoms.includes(key);
-								})
-								.reduce((object, entry) => ({ ...object, [entry[0]]: entry[1] }), {} as DirectiveObject);
+              const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex].objects)
+                .filter((obj) => {
+                  const [key, value] = obj;
+                  return utilityDirectiveAtoms.includes(key);
+                })
+                .reduce((object, entry) => ({ ...object, [entry[0]]: entry[1] }), {} as DirectiveObject);
 
-							return recMergeDirectivesByUtilities(
-								[...mergedPreviousDirectives, ...dirs.slice(utilityDirectiveIndex)].reduce((acc, dir, index) => {
-									if (index === utilityDirectiveIndex) {
-										return acc;
-									}
+              return recMergeDirectivesByUtilities(
+                [...mergedPreviousDirectives, ...dirs.slice(utilityDirectiveIndex)].reduce((acc, dir, index) => {
+                  if (index === utilityDirectiveIndex) {
+                    return acc;
+                  }
 
-									if (index === finedElementIndex) {
-										return [...acc, { ...dir, objects: includedObjectAtoms }];
-									}
+                  if (index === finedElementIndex) {
+                    return [...acc, { ...dir, objects: includedObjectAtoms }];
+                  }
 
-									return [...acc, dir];
-								}, [] as Directive[])
-							);
-						}
-						case "#exclude": {
-							const finedElementIndex = mergedPreviousDirectives.findIndex((dir) => dir.name === directiveName);
+                  return [...acc, dir];
+                }, [] as Directive[])
+              );
+            }
+            case "#exclude": {
+              const finedElementIndex = mergedPreviousDirectives.findIndex((dir) => dir.name === directiveName);
 
-							const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex].objects)
-								.filter((obj) => {
-									const [key, value] = obj;
-									return !utilityDirectiveAtoms.includes(key);
-								})
-								.reduce((object, entry) => ({ ...object, [entry[0]]: entry[1] }), {} as DirectiveObject);
+              const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex].objects)
+                .filter((obj) => {
+                  const [key, value] = obj;
+                  return !utilityDirectiveAtoms.includes(key);
+                })
+                .reduce((object, entry) => ({ ...object, [entry[0]]: entry[1] }), {} as DirectiveObject);
 
-							return recMergeDirectivesByUtilities(
-								[...mergedPreviousDirectives, ...dirs.slice(utilityDirectiveIndex)].reduce((acc, dir, index) => {
-									if (index === utilityDirectiveIndex) {
-										return acc;
-									}
+              return recMergeDirectivesByUtilities(
+                [...mergedPreviousDirectives, ...dirs.slice(utilityDirectiveIndex)].reduce((acc, dir, index) => {
+                  if (index === utilityDirectiveIndex) {
+                    return acc;
+                  }
 
-									if (index === finedElementIndex) {
-										return [...acc, { ...dir, objects: includedObjectAtoms }];
-									}
+                  if (index === finedElementIndex) {
+                    return [...acc, { ...dir, objects: includedObjectAtoms }];
+                  }
 
-									return [...acc, dir];
-								}, [] as Directive[])
-							);
-						}
-						default:
-							return dirs;
-					}
-				};
+                  return [...acc, dir];
+                }, [] as Directive[])
+              );
+            }
+            default:
+              return dirs;
+          }
+        };
 
-				// находим хотя бы один элемент с утилитарной директивой
-				const utilityDirectiveExist = directives.some((directive) => directive.utilityDirective?.name);
+        // находим хотя бы один элемент с утилитарной директивой
+        const utilityDirectiveExist = directives.some((directive) => directive.utilityDirective?.name);
 
-				if (!utilityDirectiveExist) {
-					return baseMergeDirectivesByObjects(directives);
-				} else {
-					return recMergeDirectivesByUtilities(directives);
-				}
-			}
-			/**
-			 * Отбрасывает все предыдущие значения и оставляем только самые близкие
-			 * к конечному эндпоинту директивы.
-			 */
-			case "override": {
-				return directives.reduce((acc, directive) => {
-					const directiveIndex = acc.findIndex((dir) => dir.name === directive.name);
+        if (!utilityDirectiveExist) {
+          return baseMergeDirectivesByObjects(directives);
+        } else {
+          return recMergeDirectivesByUtilities(directives);
+        }
+      }
+      /**
+       * Отбрасывает все предыдущие значения и оставляем только самые близкие
+       * к конечному эндпоинту директивы.
+       */
+      case "override": {
+        return directives.reduce((acc, directive) => {
+          const directiveIndex = acc.findIndex((dir) => dir.name === directive.name);
 
-					if (~directiveIndex) {
-						if (!directive.utilityDirective?.name) acc[directiveIndex] = directive;
+          if (~directiveIndex) {
+            if (!directive.utilityDirective?.name) acc[directiveIndex] = directive;
 
-						return acc;
-					}
+            return acc;
+          }
 
-					return [...acc, directive];
-				}, [] as Directive[]);
-			}
-			default: {
-				return directives;
-			}
-		}
-	}
+          return [...acc, directive];
+        }, [] as Directive[]);
+      }
+      default: {
+        return directives;
+      }
+    }
+  }
 
-	// methods and endpoints
-	private recEndpoint({
-		pathname,
-		endpoints,
-		directives,
-		method
-	}: {
-		pathname: string;
-		endpoints: EndpointsContext[];
-		directives: Directive[];
-		method: Method;
-	}) {
-		if (endpoints.length === 0) {
-			this.endpoints.push({
-				pathname,
-				directives,
-				method
-			});
+  // methods and endpoints
+  private recEndpoint({
+    pathname,
+    endpoints,
+    directives,
+    method
+  }: {
+    pathname: string;
+    endpoints: EndpointsContext[];
+    directives: Directive[];
+    method: Method;
+  }) {
+    if (endpoints.length === 0) {
+      this.endpoints.push({
+        pathname,
+        directives,
+        method
+      });
 
-			return;
-		}
+      return;
+    }
 
-		endpoints.forEach((endpoint) => {
-			const name = endpoint.ID().text;
-			const currentDirectives = endpoint.directives().map((directive) => this.parseDirective(directive)) as Directive[];
+    endpoints.forEach((endpoint) => {
+      const name = endpoint.ID().text;
+      const currentDirectives = endpoint.directives().map((directive) => this.parseDirective(directive)) as Directive[];
 
-			// accumulating
-			this.recEndpoint({
-				pathname: `${pathname}/${name}`,
-				endpoints: endpoint.endpoints(),
-				directives: this.overridingDirectives([...directives, ...currentDirectives], this.options.overrideDirectives),
-				method
-			});
-		});
-	}
+      // accumulating
+      this.recEndpoint({
+        pathname: `${pathname}/${name}`,
+        endpoints: endpoint.endpoints(),
+        directives: this.overridingDirectives([...directives, ...currentDirectives], this.options.overrideDirectives),
+        method
+      });
+    });
+  }
 
-	public enterMethods(ctx: MethodsContext) {
-		const method = ctx.METHOD().text as Method;
-		const endpoints = ctx.endpoints();
+  public enterMethods(ctx: MethodsContext) {
+    const method = ctx.METHOD().text as Method;
+    const endpoints = ctx.endpoints();
 
-		this.recEndpoint({ pathname: "", endpoints, directives: [], method });
-	}
+    this.recEndpoint({ pathname: "", endpoints, directives: [], method });
+  }
 
-	public getProtocol(): string {
-		return this.protocol;
-	}
+  public getProtocol(): string {
+    return this.protocol;
+  }
 
-	public getEndpoints() {
-		return this.endpoints;
-	}
+  public getEndpoints() {
+    return this.endpoints;
+  }
 
-	public getProtocolVersion() {
-		return this.protocolVersion;
-	}
+  public getProtocolVersion() {
+    return this.protocolVersion;
+  }
 }
