@@ -41,5 +41,6 @@ HTTP: {
 const app = new App(endpoints, { overrideDirectives: "merge" });
 
 app.registerImplementation("GetUser", (_, res) => res.json({ name: "Danya" }));
+app.registerImplementation("GetUserList", (_, res) => res.json([{ name: "Danya" }]));
 
 app.server.start();
