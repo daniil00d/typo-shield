@@ -34,3 +34,12 @@ app.registerImplementations([...{name, methodCallback}[]])
 
 ### Общий пайплайн типов:
 
+```ts
+{
+  directives: [{name, cnt}],
+  subDirectives: {
+    directives: [...],
+    dubDirectives: {...}
+  }
+}
+```

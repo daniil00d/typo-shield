@@ -1,4 +1,4 @@
-import { getServer } from "@server/app";
+import { App } from "@server/app";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
@@ -36,13 +36,10 @@ HTTP: {
     };
   };
 };
-` as const;
+`;
 
-export const imps = {
-  GetUserList: () => ({ users: [{ id: 1, name: "daniil" }] }),
-  GetUser: () => ({ id: 123 })
-};
+const app = new App(endpoints, { overrideDirectives: "merge" });
 
-const server = getServer(endpoints, imps, { overrideDirectives: "merge" });
+app.registerImplementation("GetUser", (_, res) => res.json({ name: "Danya" }));
 
-server.start();
+app.server.start();

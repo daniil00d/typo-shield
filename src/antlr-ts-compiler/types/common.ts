@@ -19,7 +19,7 @@ export type DSLTree = {
 };
 
 /**
- * Implementions
+ * Implementations
  */
 
 // TODO: пока что так

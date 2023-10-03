@@ -1,16 +1,34 @@
 import { Compiler } from "@compiler/index";
-import { DSL, ImplementationMap } from "@compiler/types/common";
-import { bindImplementation } from "./bind";
+import { EndpointTree } from "@compiler/types";
 import { ExpressServer } from "./express-integration";
 import { ParserListenerOptions } from "@compiler/types";
+import { DirectiveServeName } from "../level-type-compiler";
+import { Request, Response } from "express";
+import { logger } from "@utils/logger";
 
-export const getServer = (dsl: DSL, implementations: ImplementationMap, options?: ParserListenerOptions) => {
-  const endpointTree = new Compiler(dsl, options);
-  const boundEndpoints = bindImplementation(implementations, endpointTree.getEndpointTree());
+export class App<T extends string> {
+  private DSL: T;
+  private endpointTree: EndpointTree;
+  public server: ExpressServer;
 
-  const server = new ExpressServer(3000);
+  constructor(dsl: T, options?: ParserListenerOptions) {
+    this.DSL = dsl;
 
-  server.bindEndpoint(boundEndpoints);
+    const endpointTree = new Compiler(dsl, options);
+    const server = new ExpressServer(3000);
 
-  return server;
-};
+    this.endpointTree = endpointTree.getEndpointTree();
+    this.server = server;
+  }
+
+  public registerImplementation(name: DirectiveServeName<T>, callback: (req: Request, res: Response) => void) {
+    const endpoints = this.endpointTree.endpoints.filter((endpoint) => {
+      return endpoint.directives?.some((directive) => directive.name === "@serve" && directive.dirName === name);
+    });
+
+    endpoints.forEach((endpoint) => {
+      logger.log(`Endpoint ${endpoint.pathname} is running!`, "success");
+      this.server.registerRoute(endpoint.method, endpoint.pathname, callback);
+    });
+  }
+}

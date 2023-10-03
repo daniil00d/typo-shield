@@ -1,11 +1,11 @@
 import express, { Request, Response } from "express";
 import { MethodType } from "../drafts/ts-parser/types";
-import { Endpoint, EndpointTree } from "@compiler/types";
+import { EndpointTree } from "@compiler/types";
 
 export class ExpressServer {
   private port = 3000;
   private app: express.Express;
-  private endpoints: Endpoint[];
+  private endpoints: string[];
 
   constructor(port: number) {
     this.app = express();
@@ -16,16 +16,16 @@ export class ExpressServer {
   private initRegistration() {
     this.registerRoute("GET", "/", (req, res) => {
       //  Типа SSR
-      res.send(
-        `<ul>${this.endpoints.map((endpoint) => `<li><a href=${endpoint.pathname}>${endpoint.pathname}</a></li>`).join("")}</ul>`
-      );
+      res.send(`<ul>${this.endpoints.map((pathname) => `<li><a href=${pathname}>${pathname}</a></li>`).join("")}</ul>`);
     });
   }
 
   public registerRoute(method: MethodType, pathname: string, nextFunc: (req: Request, res: Response) => void) {
+    this.endpoints.push(pathname);
+
     switch (method) {
       case "POST":
-        return this.app.post(pathname, nextFunc);
+        return this.app.get(pathname, nextFunc);
       case "GET":
         return this.app.get(pathname, nextFunc);
     }
@@ -36,7 +36,7 @@ export class ExpressServer {
       const implementation = endpoint.implementationFunc;
 
       if (endpoint.pathname && implementation !== undefined) {
-        this.endpoints.push(endpoint);
+        this.endpoints.push(endpoint.pathname);
         this.registerRoute(endpoint.method, endpoint.pathname, (req, res) => res.json(implementation()));
       }
     });
