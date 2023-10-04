@@ -5,30 +5,48 @@ import { ParserListenerOptions } from "@compiler/types";
 import { DirectiveServeName } from "../level-type-compiler";
 import { Request, Response } from "express";
 import { logger } from "@utils/logger";
+import { ExpressServerOptions } from "./types";
 
-export class App<T extends string> {
+export const PORT = 3000;
+
+type ExpressFunction = (req: Request, res: Response) => void;
+type Implementation<T extends string> = { name: T; callback: ExpressFunction };
+
+export class App<T extends string> extends ExpressServer {
   private DSL: T;
   private endpointTree: EndpointTree;
-  public server: ExpressServer;
 
-  constructor(dsl: T, options?: ParserListenerOptions) {
+  constructor(dsl: T, options?: ParserListenerOptions & ExpressServerOptions) {
+    super(options?.port || PORT);
     this.DSL = dsl;
 
     const endpointTree = new Compiler(dsl, options);
-    const server = new ExpressServer(3000);
 
     this.endpointTree = endpointTree.getEndpointTree();
-    this.server = server;
   }
 
-  public registerImplementation(name: DirectiveServeName<T>, callback: (req: Request, res: Response) => void) {
-    const endpoints = this.endpointTree.endpoints.filter((endpoint) => {
-      return endpoint.directives?.some((directive) => directive.name === "@serve" && directive.dirName === name);
-    });
+  public registerImplementation(imps: Implementation<DirectiveServeName<T>>[]): void;
+  public registerImplementation(name: DirectiveServeName<T>, callback?: ExpressFunction): void;
 
-    endpoints.forEach((endpoint) => {
-      logger.log(`Endpoint ${endpoint.pathname} is running!`, "success");
-      this.server.registerRoute(endpoint.method, endpoint.pathname, callback);
-    });
+  public registerImplementation(
+    nameOrImps: DirectiveServeName<T> | Implementation<DirectiveServeName<T>>[],
+    callback?: (req: Request, res: Response) => void
+  ) {
+    const registerOneImplementation = (name: string, cb: ExpressFunction) => {
+      const endpoints = this.endpointTree.endpoints.filter((endpoint) => {
+        return endpoint.directives?.some((directive) => directive.name === "@serve" && directive.dirName === name);
+      });
+
+      endpoints.forEach((endpoint) => {
+        logger.log(`Endpoint ${endpoint.pathname} is running!`, "success");
+        this.registerRoute(endpoint.method, endpoint.pathname, cb);
+      });
+    };
+
+    if (Array.isArray(nameOrImps)) {
+      nameOrImps.forEach((imp) => registerOneImplementation(imp.name, imp.callback));
+    } else {
+      callback && registerOneImplementation(nameOrImps, callback);
+    }
   }
 }

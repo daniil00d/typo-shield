@@ -1,4 +1,5 @@
 import { App } from "@server/app";
+import { logger } from "@utils/logger";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
@@ -31,7 +32,7 @@ HTTP: {
         };
       };
       > get: {
-        @serve GetUser;
+        @serve GetUserA;
       };
     };
   };
@@ -40,7 +41,30 @@ HTTP: {
 
 const app = new App(endpoints, { overrideDirectives: "merge" });
 
-app.registerImplementation("GetUser", (_, res) => res.json({ name: "Danya" }));
-app.registerImplementation("GetUserList", (_, res) => res.json([{ name: "Danya" }]));
+/**
+ * Пример регистрации миддлавары
+ */
+app.registerMiddleware((req, res, next) => {
+  logger.log(`Visit ${req.path}`, "info");
+  next();
+});
 
-app.server.start();
+/**
+ * Пример регистрации имплементации
+ */
+app.registerImplementation("GetUser", (_, res) => res.json({ name: "Danya" }));
+app.registerImplementation([
+  {
+    name: "GetUserA",
+    callback: (_, res) => res.json({ name: "Danya from list" })
+  },
+  // this will not work
+  {
+    name: "GetUser",
+    callback: (_, res) => res.json({ name: "Danya from list" })
+  }
+]);
+app.registerImplementation("GetUserList", (_, res) => res.json([{ name: "Danya" }]));
+// app.registerImplementation("GetUserList1", (_, res) => res.json([{ name: "Danya" }]));
+
+app.start();

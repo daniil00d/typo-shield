@@ -1,14 +1,16 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { MethodType } from "../drafts/ts-parser/types";
 import { EndpointTree } from "@compiler/types";
 
+type MiddlewareFunction = (req: Request, res: Response, next: NextFunction) => void;
+
 export class ExpressServer {
   private port = 3000;
-  private app: express.Express;
+  private server: express.Express;
   private endpoints: string[];
 
   constructor(port: number) {
-    this.app = express();
+    this.server = express();
     this.port = port;
     this.endpoints = [];
   }
@@ -21,13 +23,23 @@ export class ExpressServer {
   }
 
   public registerRoute(method: MethodType, pathname: string, nextFunc: (req: Request, res: Response) => void) {
-    this.endpoints.push(pathname);
+    if (!this.endpoints.includes(pathname)) this.endpoints.push(pathname);
 
     switch (method) {
       case "POST":
-        return this.app.get(pathname, nextFunc);
+        return this.server.get(pathname, nextFunc);
       case "GET":
-        return this.app.get(pathname, nextFunc);
+        return this.server.get(pathname, nextFunc);
+    }
+  }
+
+  public registerMiddleware(middleware: MiddlewareFunction): void;
+  public registerMiddleware(pathname: string, middleware?: MiddlewareFunction): void;
+  public registerMiddleware(pathnameOrMiddleware: string | MiddlewareFunction, middleware?: MiddlewareFunction) {
+    if (typeof pathnameOrMiddleware === "string") {
+      middleware !== undefined && this.server.use(pathnameOrMiddleware, middleware);
+    } else {
+      this.server.use(pathnameOrMiddleware);
     }
   }
 
@@ -45,7 +57,7 @@ export class ExpressServer {
   start(callback?: () => void) {
     this.initRegistration();
 
-    this.app.listen(this.port, () => {
+    this.server.listen(this.port, () => {
       console.log(`[server]: Server is running at http://localhost:${this.port}`);
       callback && callback();
     });
