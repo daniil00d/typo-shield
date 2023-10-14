@@ -8,7 +8,7 @@
     "start": "npx nodemon",
     "build": "tsc -p .",
     "start:production": "node ./dist/index.js",
-    "antlr4ts": "antlr4ts -visitor src/antlr-ts-compiler/grammar/langgrammar.g4",
+    "antlr4ts": "antlr4ts -visitor src/antlr-ts-compiler/grammar/TypoShield.g4",
     "generate-cert": "sh ./scripts/generate-cert.sh"
   },
   "keywords": [],

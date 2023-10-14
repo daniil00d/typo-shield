@@ -1,4 +1,4 @@
-// Generated from /Users/d.shenyagin/TypoShield/src/antlr-ts-compiler/grammar/TypoShield.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from src/antlr-ts-compiler/grammar/TypoShield.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ATN } from "antlr4ts/atn/ATN";
@@ -24,6 +24,8 @@ import { VocabularyImpl } from "antlr4ts/VocabularyImpl";
 import * as Utils from "antlr4ts/misc/Utils";
 
 import { TypoShieldListener } from "./TypoShieldListener";
+import { TypoShieldVisitor } from "./TypoShieldVisitor";
+
 
 export class TypoShieldParser extends Parser {
 	public static readonly T__0 = 1;
@@ -63,7 +65,7 @@ export class TypoShieldParser extends Parser {
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
-		undefined, "':'", "'JSON'", "'>'", "'$'", "'HTTP'", undefined, "'/'", 
+		undefined, "':'", "'JSON'", "'>'", "'$'", undefined, undefined, "'/'", 
 		undefined, "'{'", "'('", "')'", "'}'", "';'", "','",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
@@ -573,6 +575,14 @@ export class StartContext extends ParserRuleContext {
 			listener.exitStart(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitStart) {
+			return visitor.visitStart(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -612,6 +622,14 @@ export class UtilitydirectiveatomContext extends ParserRuleContext {
 			listener.exitUtilitydirectiveatom(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitUtilitydirectiveatom) {
+			return visitor.visitUtilitydirectiveatom(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -639,6 +657,14 @@ export class UtilitydirectiveContext extends ParserRuleContext {
 			listener.exitUtilitydirective(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitUtilitydirective) {
+			return visitor.visitUtilitydirective(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -660,6 +686,14 @@ export class ObjectContext extends ParserRuleContext {
 	public exitRule(listener: TypoShieldListener): void {
 		if (listener.exitObject) {
 			listener.exitObject(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitObject) {
+			return visitor.visitObject(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }
@@ -703,6 +737,14 @@ export class ObjectsContext extends ParserRuleContext {
 			listener.exitObjects(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitObjects) {
+			return visitor.visitObjects(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -732,6 +774,14 @@ export class DirectivesContext extends ParserRuleContext {
 	public exitRule(listener: TypoShieldListener): void {
 		if (listener.exitDirectives) {
 			listener.exitDirectives(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitDirectives) {
+			return visitor.visitDirectives(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }
@@ -770,6 +820,14 @@ export class ProtocolContext extends ParserRuleContext {
 			listener.exitProtocol(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitProtocol) {
+			return visitor.visitProtocol(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -803,6 +861,14 @@ export class MethodsContext extends ParserRuleContext {
 	public exitRule(listener: TypoShieldListener): void {
 		if (listener.exitMethods) {
 			listener.exitMethods(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitMethods) {
+			return visitor.visitMethods(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }
@@ -847,6 +913,14 @@ export class EndpointsContext extends ParserRuleContext {
 	public exitRule(listener: TypoShieldListener): void {
 		if (listener.exitEndpoints) {
 			listener.exitEndpoints(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitEndpoints) {
+			return visitor.visitEndpoints(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }

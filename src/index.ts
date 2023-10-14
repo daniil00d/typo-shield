@@ -3,7 +3,7 @@ import { logger } from "@utils/logger";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
-HTTP/2: {
+HTTPS/2: {
   $GET: {
     > user: {
     @input JSON {a: Number, b: String};

@@ -1,4 +1,4 @@
-export const Protocol = ["HTTP"] as const;
+export const Protocol = ["HTTP", "HTTPS"] as const;
 
 // По дефолту пока что всегда HTTP/1.1 (TODO)
 export const HTTPVersion = ["1", "1.1", "2", "3"] as const;
@@ -13,7 +13,7 @@ export const Directive = [
   "paramSearch", // директива для указания в строке поиска после pathname
   "body", // директива для указания http body
   "output", // директива, указывающая на то, что мы должны вернуть от ручки
-  "test", // сервит некоторые моканные данные, полученные из fake-js
+  "test" // сервит некоторые моканные данные, полученные из fake-js
 ] as const;
 
 // via #
