@@ -168,7 +168,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
             case "#exclude": {
               const finedElementIndex = mergedPreviousDirectives.findIndex((dir) => dir.name === directiveName);
 
-              const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex].objects)
+              const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex]?.objects)
                 .filter((obj) => {
                   const [key, value] = obj;
                   return !utilityDirectiveAtoms.includes(key);

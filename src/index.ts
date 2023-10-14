@@ -3,7 +3,7 @@ import { logger } from "@utils/logger";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
-HTTP: {
+HTTP/2: {
   $GET: {
     > user: {
     @input JSON {a: Number, b: String};
@@ -34,6 +34,9 @@ HTTP: {
       > get: {
         @serve GetUserA;
       };
+      > getA: {
+        @input JSON #exclude(c, p);
+      };
     };
   };
 };
@@ -52,19 +55,19 @@ app.registerMiddleware((req, res, next) => {
 /**
  * Пример регистрации имплементации
  */
-app.registerImplementation("GetUser", (_, res) => res.json({ name: "Danya" }));
+app.registerImplementation("GetUser", (req, res) => {
+  throw new Error("error!!!");
+});
+
 app.registerImplementation([
   {
     name: "GetUserA",
     callback: (_, res) => res.json({ name: "Danya from list" })
   },
-  // this will not work
   {
-    name: "GetUser",
-    callback: (_, res) => res.json({ name: "Danya from list" })
+    name: "GetUserList",
+    callback: (_, res) => res.json([{ name: "Danya" }])
   }
 ]);
-app.registerImplementation("GetUserList", (_, res) => res.json([{ name: "Danya" }]));
-// app.registerImplementation("GetUserList1", (_, res) => res.json([{ name: "Danya" }]));
 
 app.start();

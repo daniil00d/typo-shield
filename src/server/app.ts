@@ -17,10 +17,14 @@ export class App<T extends string> extends ExpressServer {
   private endpointTree: EndpointTree;
 
   constructor(dsl: T, options?: ParserListenerOptions & ExpressServerOptions) {
-    super(options?.port || PORT);
-    this.DSL = dsl;
-
     const endpointTree = new Compiler(dsl, options);
+
+    super({
+      protocolVersion: endpointTree.getProtocolVersion(),
+      port: options?.port || PORT
+    });
+
+    this.DSL = dsl;
 
     this.endpointTree = endpointTree.getEndpointTree();
   }
