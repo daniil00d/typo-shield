@@ -3,15 +3,15 @@ import { logger } from "@utils/logger";
 
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = `
-HTTPS/2: {
+HTTP: {
   $GET: {
     > user: {
     @input JSON {a: Number, b: String};
       > list: {
-        /// yes, you can write like that
+        /// yes, you can write comment like that
         @input 
           JSON {
-            g: Number, 
+            g: Number,
             x: String
           };
         @input JSON {c: Number, d: String};
@@ -62,7 +62,7 @@ app.registerImplementation("GetUser", (req, res) => {
 app.registerImplementation([
   {
     name: "GetUserA",
-    callback: (_, res) => res.json({ name: "Danya from list" })
+    callback: (_, res) => res.json({ name: "Danya from list 123" })
   },
   {
     name: "GetUserList",
