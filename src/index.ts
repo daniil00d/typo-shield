@@ -42,7 +42,7 @@ HTTP/1.1: {
 const app = new App(endpoints, { overrideDirectives: "merge" });
 
 /**
- * Пример регистрации миддлавары
+ * Пример регистрации миддлавары 123 123 
  */
 app.registerMiddleware((req, res, next) => {
   logger.log(`Visit ${req.path}`, "info");
