@@ -1,0 +1,36 @@
+{
+  "name": "eptreedsl",
+  "displayName": "eptreedsl",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "eptreedsl",
+      "aliases": ["eptreedsl", "eptreedsl"],
+      "extensions": [".eptreedsl"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "eptreedsl",
+      "scopeName": "source.eptreedsl",
+      "path": "./syntaxes/eptreedsl.tmLanguage.json"
+    },
+    {
+      "injectTo": [
+        "source.js",
+        "source.ts"
+      ],
+      "scopeName": "inline.eptreedsl",
+      "path": "./grammars/eptreedsl.json",
+      "embeddedLanguages": {
+        "meta.embedded.block.eptreedsl": "eptreedsl"
+      }
+    }]
+  }
+}
