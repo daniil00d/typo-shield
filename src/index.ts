@@ -18,7 +18,7 @@ HTTP/1.1: {
     @input JSON {a: Number, b: String};
       > get: {
         @serve GetUser;
-        @error [EntityNameConflict, EntityNotFound];
+        @error [EntityNameConflict, EntityNotFound, UndefinedError];
       };
     };
   };
@@ -28,7 +28,7 @@ HTTP/1.1: {
 const app = new App(endpoints, { overrideDirectives: "merge" });
 
 /**
- * Пример регистрации миддлавары 123 123
+ * Пример регистрации миддлавары
  */
 app.registerMiddleware((req, res, next) => {
   logger.log(`Visit ${req.path}`, "info");
@@ -39,7 +39,7 @@ app.registerMiddleware((req, res, next) => {
  * Пример регистрации имплементации
  */
 app.registerImplementation("GetUser", (req, res) => {
-  throw new Error("error!!!");
+  res.sendError("EntityNameConflict", { message: "1234" });
 });
 
 app.start();

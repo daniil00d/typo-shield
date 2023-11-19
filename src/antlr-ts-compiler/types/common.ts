@@ -54,7 +54,7 @@ export type Endpoint = {
   pathname: string;
   method: Method;
   directives?: Directive[];
-  errors: string[] | undefined;
+  errors: (CustomError | undefined)[];
   implementationFuncName?: string;
   implementationFunc?: () => void;
 };

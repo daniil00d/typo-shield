@@ -12,6 +12,7 @@
     "paths": {
       "@core/*": ["./src/core/*"],
       "@compiler/*": ["./src/antlr-ts-compiler/*"],
+      "@type-compiler/*": ["./src/level-type-compiler/*"],
       "@server/*": ["./src/server/*"],
       "@utils/*": ["./src/utils/*"]
     }

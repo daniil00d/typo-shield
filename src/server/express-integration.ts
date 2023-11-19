@@ -16,6 +16,8 @@ export interface ExpressServerOptions {
   protocolVersion: HTTPVersionType;
 }
 
+export type NextFunc = (req: Request, res: Response) => void;
+
 export class ExpressServer {
   // config
   private port = 3000;
@@ -63,7 +65,7 @@ export class ExpressServer {
     }
   }
 
-  public registerRoute(method: MethodType, pathname: string, nextFunc: (req: Request, res: Response) => void) {
+  public registerRoute(method: MethodType, pathname: string, nextFunc: NextFunc) {
     if (!this.endpoints.includes(pathname)) this.endpoints.push(pathname);
 
     switch (method) {

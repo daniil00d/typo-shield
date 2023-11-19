@@ -260,7 +260,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     endpoints: EndpointsContext[];
     directives: Directive[];
     method: Method;
-    errors: string[] | undefined;
+    errors: (CustomError | undefined)[];
   }) {
     if (endpoints.length === 0) {
       this.endpoints.push({
@@ -283,7 +283,10 @@ export class ParseTypoShieldListener implements TypoShieldListener {
         endpoints: endpoint.endpoints(),
         directives: this.overridingDirectives([...directives, ...currentDirectives], this.options.overrideDirectives),
         method,
-        errors: currentDirectives.find((directive) => directive.name === "@error")?.enums
+        errors:
+          currentDirectives
+            .find((directive) => directive.name === "@error")
+            ?.enums?.map((e) => this.errors.find((error) => error.name === e)) || []
       });
     });
   }
@@ -292,7 +295,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     const method = ctx.METHOD().text as Method;
     const endpoints = ctx.endpoints();
 
-    this.recEndpoint({ pathname: "", endpoints, directives: [], method, errors: undefined });
+    this.recEndpoint({ pathname: "", endpoints, directives: [], method, errors: [] });
   }
 
   public enterDefines(ctx: DefinesContext) {
