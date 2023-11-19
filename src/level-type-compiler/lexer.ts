@@ -10,6 +10,10 @@ type CError = {
 
 type SwitchType<Type extends string> = Type extends "String" ? string : number;
 
+type DeleteAllWhiteSpaces<ObjectPart extends string> = ObjectPart extends `${infer First} ${infer Tail extends string}`
+  ? `${First}${DeleteAllWhiteSpaces<Tail>}`
+  : ObjectPart;
+
 type GetObject<PartOfObject extends string> = PartOfObject extends `${infer Name}:${infer Type extends "String" | "Number"}`
   ? { name: Name; type: SwitchType<Type> }
   : false;
@@ -28,7 +32,7 @@ type GetObjects<Objects extends string[], Acc extends any[] = []> = Objects exte
   infer First extends string,
   ...infer Tail extends string[]
 ]
-  ? GetObjects<Tail, [...Acc, GetObject<First>]>
+  ? GetObjects<Tail, [...Acc, GetObject<DeleteAllWhiteSpaces<First>>]>
   : Acc;
 
 type ObjectToRecord<T extends any[], Acc = {}> = T extends [
