@@ -8,13 +8,42 @@ type CError = {
   code: number;
 };
 
-type GetObject<PartOfObject extends string> = PartOfObject extends `${infer Name}: ${infer Type extends "String" | "Number"}`
-  ? { name: Name; type: Type }
+type SwitchType<Type extends string> = Type extends "String" ? string : number;
+
+type GetObject<PartOfObject extends string> = PartOfObject extends `${infer Name}:${infer Type extends "String" | "Number"}`
+  ? { name: Name; type: SwitchType<Type> }
   : false;
 
-type GetObjects<PartDSL extends string> = PartDSL extends `${infer Object}${infer Tail}`
-  ? [GetObject<Object>, ...(Tail extends `, ${infer NextObject}` ? GetObject<NextObject> : [])]
-  : never;
+type Split<S extends string, D extends string> = string extends S
+  ? string[]
+  : S extends ""
+  ? []
+  : S extends `${infer T}${D}${infer U}`
+  ? [T, ...Split<U, D>]
+  : [S];
+
+type GetSplittedObjects<DSL extends string> = Split<DSL, ",">;
+
+type GetObjects<Objects extends string[], Acc extends any[] = []> = Objects extends [
+  infer First extends string,
+  ...infer Tail extends string[]
+]
+  ? GetObjects<Tail, [...Acc, GetObject<First>]>
+  : Acc;
+
+type ObjectToRecord<T extends any[], Acc = {}> = T extends [
+  infer First extends { name: string; type: string | number },
+  ...infer Tail extends { name: string; type: string | number }[]
+]
+  ? ObjectToRecord<Tail, Acc & Record<First["name"], First["type"]>>
+  : Acc;
+
+export type ObjectsToRecord<T extends any[], Acc = {}> = T extends [
+  infer First extends { name: string },
+  ...infer Tail extends any[]
+]
+  ? ObjectsToRecord<Tail, Acc & Record<First["name"], First>>
+  : Acc;
 
 export type DefineError<DSL extends string> =
   DSL extends `${string}error(${infer Code extends CError["name"]}, ${infer ErrorName extends CError["name"]}): JSON {${infer Object}}${infer Tail}`
@@ -22,35 +51,10 @@ export type DefineError<DSL extends string> =
         {
           name: ErrorName;
           code: Code;
-          // TODO: доделать
-          object: GetObjects<Object>;
+          object: ObjectToRecord<GetObjects<GetSplittedObjects<Object>>>;
         },
         ...(DefineError<Tail> extends any[] ? DefineError<Tail> : [])
       ]
-    : false;
+    : [];
 
 export type GetErrorNames<DSL extends string> = DefineError<DSL> extends any[] ? DefineError<DSL>[number]["name"] : string;
-
-type a = `
-HTTP/1.1: {
-  $define: {
-    /// здесь описываем ошибки, которые могут потенциально исполниться во время
-    /// работы эндпоинта
-    error(404, EntityNotFound): JSON {message: String, fields: Number};
-    error(409, EntityNameConflict): JSON {message: String};
-    error(501, UndefinedError): JSON {message: String};
-  };
-
-  $GET: {
-    > user: {
-    @input JSON {a: Number, b: String};
-      > get: {
-        @serve GetUser;
-        @error [EntityNameConflict, EntityNotFound, UndefinedError];
-      };
-    };
-  };
-};
-`;
-type b = DefineError<a>;
-type c = GetErrorNames<a>;

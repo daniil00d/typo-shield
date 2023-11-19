@@ -5,7 +5,7 @@ import { ParserListenerOptions } from "@compiler/types";
 import { DirectiveServeName } from "../level-type-compiler";
 import { logger } from "@utils/logger";
 import { EPRequest, EPResponse, ExpressServerOptions } from "./types";
-import { GetErrorNames } from "@type-compiler/lexer";
+import { DefineError, GetErrorNames, ObjectsToRecord } from "@type-compiler/lexer";
 import { Request, Response } from "express";
 
 export const PORT = 3000;
@@ -46,7 +46,8 @@ export class App<T extends string> extends ExpressServer {
       return (request: Request, response: Response) => {
         cb(request, {
           ...response,
-          sendError: (name: string, json: Record<string, any>) => sendError(response, { name, json })
+          sendError: <ErrorName extends string>(name: ErrorName, json: ObjectsToRecord<DefineError<T>>) =>
+            sendError(response, { name, json })
         } as Parameters<ExpressFunction<T>>[1]);
       };
     };
@@ -58,7 +59,7 @@ export class App<T extends string> extends ExpressServer {
 
       endpoints.forEach((endpoint) => {
         logger.log(`Endpoint ${endpoint.pathname} is running!`, "success");
-        // TODO: расширить дефолтный тип EPResponse до {..., sendError}
+
         this.registerRoute(endpoint.method, endpoint.pathname, cbWrapper(cb));
       });
     };

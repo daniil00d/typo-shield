@@ -1,4 +1,4 @@
-import { GetErrorNames } from "@type-compiler/lexer";
+import { DefineError, GetErrorNames, ObjectsToRecord } from "@type-compiler/lexer";
 import { Request, Response } from "express";
 
 export type ExpressServerOptions = {
@@ -8,8 +8,13 @@ export type ExpressServerOptions = {
   port?: number;
 };
 
+type SpecType<DSL extends string> = ObjectsToRecord<DefineError<DSL>>;
+type SpecEnumType<DSL extends string, P extends string> = SpecType<DSL> extends Record<string, any>
+  ? SpecType<DSL>[P]["object"]
+  : {};
+
 export interface EPResponse<DSL extends string> extends Response {
-  sendError: (name: GetErrorNames<DSL>, obj: Record<string, any>) => void;
+  sendError: <ErrorName extends GetErrorNames<DSL>>(name: ErrorName, obj: SpecEnumType<DSL, ErrorName>) => void;
 }
 
 export interface EPRequest extends Request {}

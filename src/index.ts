@@ -8,9 +8,9 @@ HTTP/1.1: {
   $define: {
     /// здесь описываем ошибки, которые могут потенциально исполниться во время
     /// работы эндпоинта
-    error(404, EntityNotFound): JSON {message: String};
-    error(409, EntityNameConflict): JSON {message: String};
-    error(501, UndefinedError): JSON {message: String};
+    error(404, EntityNotFound): JSON {message:String};
+    error(409, EntityNameConflict): JSON {message:String,fields:Number};
+    error(501, UndefinedError): JSON {message:String};
   };
 
   $GET: {
@@ -39,7 +39,7 @@ app.registerMiddleware((req, res, next) => {
  * Пример регистрации имплементации
  */
 app.registerImplementation("GetUser", (req, res) => {
-  res.sendError("EntityNameConflict", { message: "1234" });
+  res.sendError("EntityNameConflict", { message: "error", fields: 123 });
 });
 
 app.start();
