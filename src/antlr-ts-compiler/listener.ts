@@ -1,7 +1,23 @@
 import { logger } from "@utils/logger";
 import { TypoShieldListener } from "./grammar/TypoShieldListener";
-import { DirectivesContext, EndpointsContext, MethodsContext, ObjectContext, ProtocolContext } from "./grammar/TypoShieldParser";
-import { Directive, DirectiveObject, Endpoint, HTTPVersionType, Method, ParserListenerOptions, Protocol } from "./types";
+import {
+  DefinesContext,
+  DirectivesContext,
+  EndpointsContext,
+  MethodsContext,
+  ObjectContext,
+  ProtocolContext
+} from "./grammar/TypoShieldParser";
+import {
+  CustomError,
+  Directive,
+  DirectiveObject,
+  Endpoint,
+  HTTPVersionType,
+  Method,
+  ParserListenerOptions,
+  Protocol
+} from "./types";
 
 export class ParseTypoShieldListener implements TypoShieldListener {
   // service
@@ -9,12 +25,14 @@ export class ParseTypoShieldListener implements TypoShieldListener {
   private protocolVersion: HTTPVersionType;
   private endpoints: Array<Endpoint>;
   private options: ParserListenerOptions;
+  private errors: CustomError[];
 
   constructor(options?: ParserListenerOptions) {
     this.endpoints = [];
     this.protocol = "HTTP";
     this.protocolVersion = "1.1";
     this.options = options || {};
+    this.errors = [];
   }
 
   // protocols
@@ -47,8 +65,11 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
   private parseDirective(directive: DirectivesContext) {
     const name = directive.DIRECTIVE().text;
-    const dirName = directive.DIR_NAME()?.text;
+    const dirName = directive.ENTITY_NAME()?.text;
     const dirType = directive.DIR_TYPE()?.text;
+    const enumeration = directive.enumeration();
+    const enums = enumeration?.enum().map((ctx) => ctx.ENTITY_NAME()?.text);
+
     const utilityDirective = directive.utilitydirective();
     const utilityDirectiveName = utilityDirective?.UTILITY_DIRECTIVE().text;
     const utilityDirectiveAtoms = utilityDirective
@@ -65,7 +86,8 @@ export class ParseTypoShieldListener implements TypoShieldListener {
       utilityDirective: {
         name: utilityDirectiveName,
         atoms: utilityDirectiveAtoms
-      }
+      },
+      enums
     };
   }
 
@@ -231,18 +253,21 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     pathname,
     endpoints,
     directives,
-    method
+    method,
+    errors
   }: {
     pathname: string;
     endpoints: EndpointsContext[];
     directives: Directive[];
     method: Method;
+    errors: string[] | undefined;
   }) {
     if (endpoints.length === 0) {
       this.endpoints.push({
         pathname,
         directives,
-        method
+        method,
+        errors
       });
 
       return;
@@ -257,7 +282,8 @@ export class ParseTypoShieldListener implements TypoShieldListener {
         pathname: `${pathname}/${name}`,
         endpoints: endpoint.endpoints(),
         directives: this.overridingDirectives([...directives, ...currentDirectives], this.options.overrideDirectives),
-        method
+        method,
+        errors: currentDirectives.find((directive) => directive.name === "@error")?.enums
       });
     });
   }
@@ -266,8 +292,24 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     const method = ctx.METHOD().text as Method;
     const endpoints = ctx.endpoints();
 
-    this.recEndpoint({ pathname: "", endpoints, directives: [], method });
+    this.recEndpoint({ pathname: "", endpoints, directives: [], method, errors: undefined });
   }
+
+  public enterDefines(ctx: DefinesContext) {
+    const errors = ctx.errors();
+
+    errors.forEach((error) => {
+      this.errors.push({
+        name: String(error.ENTITY_NAME().text),
+        code: Number(error.NUMBER().text),
+        object: this.parseDirectiveObjects(error.objects().object())
+      });
+    });
+  }
+
+  /**
+   * Getters
+   */
 
   public getProtocol(): string {
     return this.protocol;
@@ -279,5 +321,9 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
   public getProtocolVersion() {
     return this.protocolVersion;
+  }
+
+  public getErrors() {
+    return this.errors;
   }
 }

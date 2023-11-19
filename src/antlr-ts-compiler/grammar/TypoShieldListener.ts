@@ -8,10 +8,14 @@ import { UtilitydirectiveatomContext } from "./TypoShieldParser";
 import { UtilitydirectiveContext } from "./TypoShieldParser";
 import { ObjectContext } from "./TypoShieldParser";
 import { ObjectsContext } from "./TypoShieldParser";
+import { EnumContext } from "./TypoShieldParser";
+import { EnumerationContext } from "./TypoShieldParser";
 import { DirectivesContext } from "./TypoShieldParser";
-import { ProtocolContext } from "./TypoShieldParser";
 import { MethodsContext } from "./TypoShieldParser";
 import { EndpointsContext } from "./TypoShieldParser";
+import { ErrorsContext } from "./TypoShieldParser";
+import { DefinesContext } from "./TypoShieldParser";
+import { ProtocolContext } from "./TypoShieldParser";
 
 
 /**
@@ -75,6 +79,28 @@ export interface TypoShieldListener extends ParseTreeListener {
 	exitObjects?: (ctx: ObjectsContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `TypoShieldParser.enum`.
+	 * @param ctx the parse tree
+	 */
+	enterEnum?: (ctx: EnumContext) => void;
+	/**
+	 * Exit a parse tree produced by `TypoShieldParser.enum`.
+	 * @param ctx the parse tree
+	 */
+	exitEnum?: (ctx: EnumContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `TypoShieldParser.enumeration`.
+	 * @param ctx the parse tree
+	 */
+	enterEnumeration?: (ctx: EnumerationContext) => void;
+	/**
+	 * Exit a parse tree produced by `TypoShieldParser.enumeration`.
+	 * @param ctx the parse tree
+	 */
+	exitEnumeration?: (ctx: EnumerationContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `TypoShieldParser.directives`.
 	 * @param ctx the parse tree
 	 */
@@ -84,17 +110,6 @@ export interface TypoShieldListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitDirectives?: (ctx: DirectivesContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `TypoShieldParser.protocol`.
-	 * @param ctx the parse tree
-	 */
-	enterProtocol?: (ctx: ProtocolContext) => void;
-	/**
-	 * Exit a parse tree produced by `TypoShieldParser.protocol`.
-	 * @param ctx the parse tree
-	 */
-	exitProtocol?: (ctx: ProtocolContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `TypoShieldParser.methods`.
@@ -117,5 +132,38 @@ export interface TypoShieldListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitEndpoints?: (ctx: EndpointsContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `TypoShieldParser.errors`.
+	 * @param ctx the parse tree
+	 */
+	enterErrors?: (ctx: ErrorsContext) => void;
+	/**
+	 * Exit a parse tree produced by `TypoShieldParser.errors`.
+	 * @param ctx the parse tree
+	 */
+	exitErrors?: (ctx: ErrorsContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `TypoShieldParser.defines`.
+	 * @param ctx the parse tree
+	 */
+	enterDefines?: (ctx: DefinesContext) => void;
+	/**
+	 * Exit a parse tree produced by `TypoShieldParser.defines`.
+	 * @param ctx the parse tree
+	 */
+	exitDefines?: (ctx: DefinesContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `TypoShieldParser.protocol`.
+	 * @param ctx the parse tree
+	 */
+	enterProtocol?: (ctx: ProtocolContext) => void;
+	/**
+	 * Exit a parse tree produced by `TypoShieldParser.protocol`.
+	 * @param ctx the parse tree
+	 */
+	exitProtocol?: (ctx: ProtocolContext) => void;
 }
 

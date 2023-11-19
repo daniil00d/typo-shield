@@ -29,50 +29,62 @@ import { TypoShieldVisitor } from "./TypoShieldVisitor";
 
 export class TypoShieldParser extends Parser {
 	public static readonly T__0 = 1;
-	public static readonly DIR_TYPE = 2;
-	public static readonly START_SYM = 3;
-	public static readonly METHOD_START = 4;
-	public static readonly PROTOCOL = 5;
-	public static readonly PROTOCOL_VERSION = 6;
-	public static readonly PROTOCOL_VERSION_DEL = 7;
-	public static readonly METHOD = 8;
-	public static readonly LCURLY = 9;
-	public static readonly LBRACKET = 10;
-	public static readonly RBRACKET = 11;
-	public static readonly RCURLY = 12;
-	public static readonly SEMI = 13;
-	public static readonly COMA = 14;
-	public static readonly WS = 15;
-	public static readonly TYPE = 16;
-	public static readonly DIR_NAME = 17;
-	public static readonly DIRECTIVE = 18;
-	public static readonly UTILITY_DIRECTIVE = 19;
-	public static readonly COMMENT = 20;
-	public static readonly ID = 21;
+	public static readonly T__1 = 2;
+	public static readonly T__2 = 3;
+	public static readonly DIR_TYPE = 4;
+	public static readonly START_SYM = 5;
+	public static readonly METHOD_START = 6;
+	public static readonly PROTOCOL = 7;
+	public static readonly NUMBER = 8;
+	public static readonly PROTOCOL_VERSION = 9;
+	public static readonly PROTOCOL_VERSION_DEL = 10;
+	public static readonly METHOD = 11;
+	public static readonly DEFINE = 12;
+	public static readonly DEFINE_ERROR = 13;
+	public static readonly LCURLY = 14;
+	public static readonly LBRACKET = 15;
+	public static readonly RBRACKET = 16;
+	public static readonly RCURLY = 17;
+	public static readonly SEMI = 18;
+	public static readonly COMA = 19;
+	public static readonly WS = 20;
+	public static readonly TYPE = 21;
+	public static readonly ENTITY_NAME = 22;
+	public static readonly DIRECTIVE = 23;
+	public static readonly UTILITY_DIRECTIVE = 24;
+	public static readonly COMMENT = 25;
+	public static readonly ID = 26;
 	public static readonly RULE_start = 0;
 	public static readonly RULE_utilitydirectiveatom = 1;
 	public static readonly RULE_utilitydirective = 2;
 	public static readonly RULE_object = 3;
 	public static readonly RULE_objects = 4;
-	public static readonly RULE_directives = 5;
-	public static readonly RULE_protocol = 6;
-	public static readonly RULE_methods = 7;
-	public static readonly RULE_endpoints = 8;
+	public static readonly RULE_enum = 5;
+	public static readonly RULE_enumeration = 6;
+	public static readonly RULE_directives = 7;
+	public static readonly RULE_methods = 8;
+	public static readonly RULE_endpoints = 9;
+	public static readonly RULE_errors = 10;
+	public static readonly RULE_defines = 11;
+	public static readonly RULE_protocol = 12;
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
 		"start", "utilitydirectiveatom", "utilitydirective", "object", "objects", 
-		"directives", "protocol", "methods", "endpoints",
+		"enum", "enumeration", "directives", "methods", "endpoints", "errors", 
+		"defines", "protocol",
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
-		undefined, "':'", "'JSON'", "'>'", "'$'", undefined, undefined, "'/'", 
-		undefined, "'{'", "'('", "')'", "'}'", "';'", "','",
+		undefined, "':'", "'['", "']'", "'JSON'", "'>'", "'$'", undefined, undefined, 
+		undefined, "'/'", undefined, "'define'", "'error'", "'{'", "'('", "')'", 
+		"'}'", "';'", "','",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
-		undefined, undefined, "DIR_TYPE", "START_SYM", "METHOD_START", "PROTOCOL", 
-		"PROTOCOL_VERSION", "PROTOCOL_VERSION_DEL", "METHOD", "LCURLY", "LBRACKET", 
-		"RBRACKET", "RCURLY", "SEMI", "COMA", "WS", "TYPE", "DIR_NAME", "DIRECTIVE", 
-		"UTILITY_DIRECTIVE", "COMMENT", "ID",
+		undefined, undefined, undefined, undefined, "DIR_TYPE", "START_SYM", "METHOD_START", 
+		"PROTOCOL", "NUMBER", "PROTOCOL_VERSION", "PROTOCOL_VERSION_DEL", "METHOD", 
+		"DEFINE", "DEFINE_ERROR", "LCURLY", "LBRACKET", "RBRACKET", "RCURLY", 
+		"SEMI", "COMA", "WS", "TYPE", "ENTITY_NAME", "DIRECTIVE", "UTILITY_DIRECTIVE", 
+		"COMMENT", "ID",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(TypoShieldParser._LITERAL_NAMES, TypoShieldParser._SYMBOLIC_NAMES, []);
 
@@ -107,7 +119,7 @@ export class TypoShieldParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 18;
+			this.state = 26;
 			this.protocol();
 			}
 		}
@@ -133,21 +145,21 @@ export class TypoShieldParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 20;
+			this.state = 28;
 			this.match(TypoShieldParser.ID);
-			this.state = 25;
+			this.state = 33;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === TypoShieldParser.COMA) {
 				{
 				{
-				this.state = 21;
+				this.state = 29;
 				this.match(TypoShieldParser.COMA);
-				this.state = 22;
+				this.state = 30;
 				this.match(TypoShieldParser.ID);
 				}
 				}
-				this.state = 27;
+				this.state = 35;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -174,13 +186,13 @@ export class TypoShieldParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 28;
+			this.state = 36;
 			this.match(TypoShieldParser.UTILITY_DIRECTIVE);
-			this.state = 29;
+			this.state = 37;
 			this.match(TypoShieldParser.LBRACKET);
-			this.state = 30;
+			this.state = 38;
 			this.utilitydirectiveatom();
-			this.state = 31;
+			this.state = 39;
 			this.match(TypoShieldParser.RBRACKET);
 			}
 		}
@@ -205,11 +217,11 @@ export class TypoShieldParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 33;
+			this.state = 41;
 			this.match(TypoShieldParser.ID);
-			this.state = 34;
+			this.state = 42;
 			this.match(TypoShieldParser.T__0);
-			this.state = 35;
+			this.state = 43;
 			this.match(TypoShieldParser.TYPE);
 			}
 		}
@@ -235,28 +247,99 @@ export class TypoShieldParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 37;
+			this.state = 45;
 			this.match(TypoShieldParser.LCURLY);
-			this.state = 38;
+			this.state = 46;
 			this.object();
-			this.state = 43;
+			this.state = 51;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === TypoShieldParser.COMA) {
 				{
 				{
-				this.state = 39;
+				this.state = 47;
 				this.match(TypoShieldParser.COMA);
-				this.state = 40;
+				this.state = 48;
 				this.object();
 				}
 				}
-				this.state = 45;
+				this.state = 53;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 46;
+			this.state = 54;
 			this.match(TypoShieldParser.RCURLY);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public enum(): EnumContext {
+		let _localctx: EnumContext = new EnumContext(this._ctx, this.state);
+		this.enterRule(_localctx, 10, TypoShieldParser.RULE_enum);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 56;
+			this.match(TypoShieldParser.ENTITY_NAME);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public enumeration(): EnumerationContext {
+		let _localctx: EnumerationContext = new EnumerationContext(this._ctx, this.state);
+		this.enterRule(_localctx, 12, TypoShieldParser.RULE_enumeration);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 58;
+			this.match(TypoShieldParser.T__1);
+			this.state = 59;
+			this.enum();
+			this.state = 64;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === TypoShieldParser.COMA) {
+				{
+				{
+				this.state = 60;
+				this.match(TypoShieldParser.COMA);
+				this.state = 61;
+				this.enum();
+				}
+				}
+				this.state = 66;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			this.state = 67;
+			this.match(TypoShieldParser.T__2);
 			}
 		}
 		catch (re) {
@@ -276,101 +359,48 @@ export class TypoShieldParser extends Parser {
 	// @RuleVersion(0)
 	public directives(): DirectivesContext {
 		let _localctx: DirectivesContext = new DirectivesContext(this._ctx, this.state);
-		this.enterRule(_localctx, 10, TypoShieldParser.RULE_directives);
+		this.enterRule(_localctx, 14, TypoShieldParser.RULE_directives);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 48;
+			this.state = 69;
 			this.match(TypoShieldParser.DIRECTIVE);
-			this.state = 54;
+			this.state = 76;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 2, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 3, this._ctx) ) {
 			case 1:
 				{
-				this.state = 49;
-				this.match(TypoShieldParser.DIR_NAME);
+				this.state = 70;
+				this.match(TypoShieldParser.ENTITY_NAME);
 				}
 				break;
 
 			case 2:
 				{
-				this.state = 50;
+				this.state = 71;
 				this.match(TypoShieldParser.DIR_TYPE);
-				this.state = 51;
+				this.state = 72;
 				this.objects();
 				}
 				break;
 
 			case 3:
 				{
-				this.state = 52;
+				this.state = 73;
 				this.match(TypoShieldParser.DIR_TYPE);
-				this.state = 53;
+				this.state = 74;
 				this.utilitydirective();
 				}
 				break;
-			}
-			this.state = 56;
-			this.match(TypoShieldParser.SEMI);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public protocol(): ProtocolContext {
-		let _localctx: ProtocolContext = new ProtocolContext(this._ctx, this.state);
-		this.enterRule(_localctx, 12, TypoShieldParser.RULE_protocol);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 58;
-			this.match(TypoShieldParser.PROTOCOL);
-			this.state = 61;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === TypoShieldParser.PROTOCOL_VERSION_DEL) {
-				{
-				this.state = 59;
-				this.match(TypoShieldParser.PROTOCOL_VERSION_DEL);
-				this.state = 60;
-				this.match(TypoShieldParser.PROTOCOL_VERSION);
-				}
-			}
 
-			this.state = 63;
-			this.match(TypoShieldParser.T__0);
-			this.state = 64;
-			this.match(TypoShieldParser.LCURLY);
-			this.state = 68;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === TypoShieldParser.METHOD_START) {
+			case 4:
 				{
-				{
-				this.state = 65;
-				this.methods();
+				this.state = 75;
+				this.enumeration();
 				}
-				}
-				this.state = 70;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
+				break;
 			}
-			this.state = 71;
-			this.match(TypoShieldParser.RCURLY);
-			this.state = 72;
+			this.state = 78;
 			this.match(TypoShieldParser.SEMI);
 			}
 		}
@@ -391,36 +421,36 @@ export class TypoShieldParser extends Parser {
 	// @RuleVersion(0)
 	public methods(): MethodsContext {
 		let _localctx: MethodsContext = new MethodsContext(this._ctx, this.state);
-		this.enterRule(_localctx, 14, TypoShieldParser.RULE_methods);
+		this.enterRule(_localctx, 16, TypoShieldParser.RULE_methods);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 74;
+			this.state = 80;
 			this.match(TypoShieldParser.METHOD_START);
-			this.state = 75;
-			this.match(TypoShieldParser.METHOD);
-			this.state = 76;
-			this.match(TypoShieldParser.T__0);
-			this.state = 77;
-			this.match(TypoShieldParser.LCURLY);
 			this.state = 81;
+			this.match(TypoShieldParser.METHOD);
+			this.state = 82;
+			this.match(TypoShieldParser.T__0);
+			this.state = 83;
+			this.match(TypoShieldParser.LCURLY);
+			this.state = 87;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === TypoShieldParser.START_SYM) {
 				{
 				{
-				this.state = 78;
+				this.state = 84;
 				this.endpoints();
 				}
 				}
-				this.state = 83;
+				this.state = 89;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 84;
+			this.state = 90;
 			this.match(TypoShieldParser.RCURLY);
-			this.state = 85;
+			this.state = 91;
 			this.match(TypoShieldParser.SEMI);
 			}
 		}
@@ -441,36 +471,36 @@ export class TypoShieldParser extends Parser {
 	// @RuleVersion(0)
 	public endpoints(): EndpointsContext {
 		let _localctx: EndpointsContext = new EndpointsContext(this._ctx, this.state);
-		this.enterRule(_localctx, 16, TypoShieldParser.RULE_endpoints);
+		this.enterRule(_localctx, 18, TypoShieldParser.RULE_endpoints);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 87;
+			this.state = 93;
 			this.match(TypoShieldParser.START_SYM);
-			this.state = 88;
+			this.state = 94;
 			this.match(TypoShieldParser.ID);
-			this.state = 89;
-			this.match(TypoShieldParser.T__0);
-			this.state = 90;
-			this.match(TypoShieldParser.LCURLY);
 			this.state = 95;
+			this.match(TypoShieldParser.T__0);
+			this.state = 96;
+			this.match(TypoShieldParser.LCURLY);
+			this.state = 101;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === TypoShieldParser.START_SYM || _la === TypoShieldParser.DIRECTIVE) {
 				{
-				this.state = 93;
+				this.state = 99;
 				this._errHandler.sync(this);
 				switch (this._input.LA(1)) {
 				case TypoShieldParser.START_SYM:
 					{
-					this.state = 91;
+					this.state = 97;
 					this.endpoints();
 					}
 					break;
 				case TypoShieldParser.DIRECTIVE:
 					{
-					this.state = 92;
+					this.state = 98;
 					this.directives();
 					}
 					break;
@@ -478,13 +508,183 @@ export class TypoShieldParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				this.state = 97;
+				this.state = 103;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 98;
+			this.state = 104;
 			this.match(TypoShieldParser.RCURLY);
-			this.state = 99;
+			this.state = 105;
+			this.match(TypoShieldParser.SEMI);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public errors(): ErrorsContext {
+		let _localctx: ErrorsContext = new ErrorsContext(this._ctx, this.state);
+		this.enterRule(_localctx, 20, TypoShieldParser.RULE_errors);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 107;
+			this.match(TypoShieldParser.DEFINE_ERROR);
+			this.state = 108;
+			this.match(TypoShieldParser.LBRACKET);
+			this.state = 109;
+			this.match(TypoShieldParser.NUMBER);
+			this.state = 110;
+			this.match(TypoShieldParser.COMA);
+			this.state = 111;
+			this.match(TypoShieldParser.ENTITY_NAME);
+			this.state = 112;
+			this.match(TypoShieldParser.RBRACKET);
+			this.state = 113;
+			this.match(TypoShieldParser.T__0);
+			this.state = 114;
+			this.match(TypoShieldParser.DIR_TYPE);
+			this.state = 115;
+			this.objects();
+			this.state = 116;
+			this.match(TypoShieldParser.SEMI);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public defines(): DefinesContext {
+		let _localctx: DefinesContext = new DefinesContext(this._ctx, this.state);
+		this.enterRule(_localctx, 22, TypoShieldParser.RULE_defines);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 118;
+			this.match(TypoShieldParser.METHOD_START);
+			this.state = 119;
+			this.match(TypoShieldParser.DEFINE);
+			this.state = 120;
+			this.match(TypoShieldParser.T__0);
+			this.state = 121;
+			this.match(TypoShieldParser.LCURLY);
+			this.state = 125;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === TypoShieldParser.DEFINE_ERROR) {
+				{
+				{
+				this.state = 122;
+				this.errors();
+				}
+				}
+				this.state = 127;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			this.state = 128;
+			this.match(TypoShieldParser.RCURLY);
+			this.state = 129;
+			this.match(TypoShieldParser.SEMI);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public protocol(): ProtocolContext {
+		let _localctx: ProtocolContext = new ProtocolContext(this._ctx, this.state);
+		this.enterRule(_localctx, 24, TypoShieldParser.RULE_protocol);
+		let _la: number;
+		try {
+			let _alt: number;
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 131;
+			this.match(TypoShieldParser.PROTOCOL);
+			this.state = 134;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (_la === TypoShieldParser.PROTOCOL_VERSION_DEL) {
+				{
+				this.state = 132;
+				this.match(TypoShieldParser.PROTOCOL_VERSION_DEL);
+				this.state = 133;
+				this.match(TypoShieldParser.PROTOCOL_VERSION);
+				}
+			}
+
+			this.state = 136;
+			this.match(TypoShieldParser.T__0);
+			this.state = 137;
+			this.match(TypoShieldParser.LCURLY);
+			this.state = 141;
+			this._errHandler.sync(this);
+			_alt = this.interpreter.adaptivePredict(this._input, 9, this._ctx);
+			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
+				if (_alt === 1) {
+					{
+					{
+					this.state = 138;
+					this.defines();
+					}
+					}
+				}
+				this.state = 143;
+				this._errHandler.sync(this);
+				_alt = this.interpreter.adaptivePredict(this._input, 9, this._ctx);
+			}
+			this.state = 147;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === TypoShieldParser.METHOD_START) {
+				{
+				{
+				this.state = 144;
+				this.methods();
+				}
+				}
+				this.state = 149;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			this.state = 150;
+			this.match(TypoShieldParser.RCURLY);
+			this.state = 151;
 			this.match(TypoShieldParser.SEMI);
 			}
 		}
@@ -504,45 +704,67 @@ export class TypoShieldParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x17h\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x1C\x9C\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
-		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x03\x02\x03\x02\x03\x03\x03\x03\x03" +
-		"\x03\x07\x03\x1A\n\x03\f\x03\x0E\x03\x1D\v\x03\x03\x04\x03\x04\x03\x04" +
-		"\x03\x04\x03\x04\x03\x05\x03\x05\x03\x05\x03\x05\x03\x06\x03\x06\x03\x06" +
-		"\x03\x06\x07\x06,\n\x06\f\x06\x0E\x06/\v\x06\x03\x06\x03\x06\x03\x07\x03" +
-		"\x07\x03\x07\x03\x07\x03\x07\x03\x07\x05\x079\n\x07\x03\x07\x03\x07\x03" +
-		"\b\x03\b\x03\b\x05\b@\n\b\x03\b\x03\b\x03\b\x07\bE\n\b\f\b\x0E\bH\v\b" +
-		"\x03\b\x03\b\x03\b\x03\t\x03\t\x03\t\x03\t\x03\t\x07\tR\n\t\f\t\x0E\t" +
-		"U\v\t\x03\t\x03\t\x03\t\x03\n\x03\n\x03\n\x03\n\x03\n\x03\n\x07\n`\n\n" +
-		"\f\n\x0E\nc\v\n\x03\n\x03\n\x03\n\x03\n\x02\x02\x02\v\x02\x02\x04\x02" +
-		"\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x02\x02\x02g\x02\x14" +
-		"\x03\x02\x02\x02\x04\x16\x03\x02\x02\x02\x06\x1E\x03\x02\x02\x02\b#\x03" +
-		"\x02\x02\x02\n\'\x03\x02\x02\x02\f2\x03\x02\x02\x02\x0E<\x03\x02\x02\x02" +
-		"\x10L\x03\x02\x02\x02\x12Y\x03\x02\x02\x02\x14\x15\x05\x0E\b\x02\x15\x03" +
-		"\x03\x02\x02\x02\x16\x1B\x07\x17\x02\x02\x17\x18\x07\x10\x02\x02\x18\x1A" +
-		"\x07\x17\x02\x02\x19\x17\x03\x02\x02\x02\x1A\x1D\x03\x02\x02\x02\x1B\x19" +
-		"\x03\x02\x02\x02\x1B\x1C\x03\x02\x02\x02\x1C\x05\x03\x02\x02\x02\x1D\x1B" +
-		"\x03\x02\x02\x02\x1E\x1F\x07\x15\x02\x02\x1F \x07\f\x02\x02 !\x05\x04" +
-		"\x03\x02!\"\x07\r\x02\x02\"\x07\x03\x02\x02\x02#$\x07\x17\x02\x02$%\x07" +
-		"\x03\x02\x02%&\x07\x12\x02\x02&\t\x03\x02\x02\x02\'(\x07\v\x02\x02(-\x05" +
-		"\b\x05\x02)*\x07\x10\x02\x02*,\x05\b\x05\x02+)\x03\x02\x02\x02,/\x03\x02" +
-		"\x02\x02-+\x03\x02\x02\x02-.\x03\x02\x02\x02.0\x03\x02\x02\x02/-\x03\x02" +
-		"\x02\x0201\x07\x0E\x02\x021\v\x03\x02\x02\x0228\x07\x14\x02\x0239\x07" +
-		"\x13\x02\x0245\x07\x04\x02\x0259\x05\n\x06\x0267\x07\x04\x02\x0279\x05" +
-		"\x06\x04\x0283\x03\x02\x02\x0284\x03\x02\x02\x0286\x03\x02\x02\x029:\x03" +
-		"\x02\x02\x02:;\x07\x0F\x02\x02;\r\x03\x02\x02\x02<?\x07\x07\x02\x02=>" +
-		"\x07\t\x02\x02>@\x07\b\x02\x02?=\x03\x02\x02\x02?@\x03\x02\x02\x02@A\x03" +
-		"\x02\x02\x02AB\x07\x03\x02\x02BF\x07\v\x02\x02CE\x05\x10\t\x02DC\x03\x02" +
-		"\x02\x02EH\x03\x02\x02\x02FD\x03\x02\x02\x02FG\x03\x02\x02\x02GI\x03\x02" +
-		"\x02\x02HF\x03\x02\x02\x02IJ\x07\x0E\x02\x02JK\x07\x0F\x02\x02K\x0F\x03" +
-		"\x02\x02\x02LM\x07\x06\x02\x02MN\x07\n\x02\x02NO\x07\x03\x02\x02OS\x07" +
-		"\v\x02\x02PR\x05\x12\n\x02QP\x03\x02\x02\x02RU\x03\x02\x02\x02SQ\x03\x02" +
-		"\x02\x02ST\x03\x02\x02\x02TV\x03\x02\x02\x02US\x03\x02\x02\x02VW\x07\x0E" +
-		"\x02\x02WX\x07\x0F\x02\x02X\x11\x03\x02\x02\x02YZ\x07\x05\x02\x02Z[\x07" +
-		"\x17\x02\x02[\\\x07\x03\x02\x02\\a\x07\v\x02\x02]`\x05\x12\n\x02^`\x05" +
-		"\f\x07\x02_]\x03\x02\x02\x02_^\x03\x02\x02\x02`c\x03\x02\x02\x02a_\x03" +
-		"\x02\x02\x02ab\x03\x02\x02\x02bd\x03\x02\x02\x02ca\x03\x02\x02\x02de\x07" +
-		"\x0E\x02\x02ef\x07\x0F\x02\x02f\x13\x03\x02\x02\x02\n\x1B-8?FS_a";
+		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
+		"\x0E\t\x0E\x03\x02\x03\x02\x03\x03\x03\x03\x03\x03\x07\x03\"\n\x03\f\x03" +
+		"\x0E\x03%\v\x03\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x05\x03\x05" +
+		"\x03\x05\x03\x05\x03\x06\x03\x06\x03\x06\x03\x06\x07\x064\n\x06\f\x06" +
+		"\x0E\x067\v\x06\x03\x06\x03\x06\x03\x07\x03\x07\x03\b\x03\b\x03\b\x03" +
+		"\b\x07\bA\n\b\f\b\x0E\bD\v\b\x03\b\x03\b\x03\t\x03\t\x03\t\x03\t\x03\t" +
+		"\x03\t\x03\t\x05\tO\n\t\x03\t\x03\t\x03\n\x03\n\x03\n\x03\n\x03\n\x07" +
+		"\nX\n\n\f\n\x0E\n[\v\n\x03\n\x03\n\x03\n\x03\v\x03\v\x03\v\x03\v\x03\v" +
+		"\x03\v\x07\vf\n\v\f\v\x0E\vi\v\v\x03\v\x03\v\x03\v\x03\f\x03\f\x03\f\x03" +
+		"\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\r\x03\r\x03\r\x03\r\x03" +
+		"\r\x07\r~\n\r\f\r\x0E\r\x81\v\r\x03\r\x03\r\x03\r\x03\x0E\x03\x0E\x03" +
+		"\x0E\x05\x0E\x89\n\x0E\x03\x0E\x03\x0E\x03\x0E\x07\x0E\x8E\n\x0E\f\x0E" +
+		"\x0E\x0E\x91\v\x0E\x03\x0E\x07\x0E\x94\n\x0E\f\x0E\x0E\x0E\x97\v\x0E\x03" +
+		"\x0E\x03\x0E\x03\x0E\x03\x0E\x02\x02\x02\x0F\x02\x02\x04\x02\x06\x02\b" +
+		"\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02" +
+		"\x02\x02\x02\x9B\x02\x1C\x03\x02\x02\x02\x04\x1E\x03\x02\x02\x02\x06&" +
+		"\x03\x02\x02\x02\b+\x03\x02\x02\x02\n/\x03\x02\x02\x02\f:\x03\x02\x02" +
+		"\x02\x0E<\x03\x02\x02\x02\x10G\x03\x02\x02\x02\x12R\x03\x02\x02\x02\x14" +
+		"_\x03\x02\x02\x02\x16m\x03\x02\x02\x02\x18x\x03\x02\x02\x02\x1A\x85\x03" +
+		"\x02\x02\x02\x1C\x1D\x05\x1A\x0E\x02\x1D\x03\x03\x02\x02\x02\x1E#\x07" +
+		"\x1C\x02\x02\x1F \x07\x15\x02\x02 \"\x07\x1C\x02\x02!\x1F\x03\x02\x02" +
+		"\x02\"%\x03\x02\x02\x02#!\x03\x02\x02\x02#$\x03\x02\x02\x02$\x05\x03\x02" +
+		"\x02\x02%#\x03\x02\x02\x02&\'\x07\x1A\x02\x02\'(\x07\x11\x02\x02()\x05" +
+		"\x04\x03\x02)*\x07\x12\x02\x02*\x07\x03\x02\x02\x02+,\x07\x1C\x02\x02" +
+		",-\x07\x03\x02\x02-.\x07\x17\x02\x02.\t\x03\x02\x02\x02/0\x07\x10\x02" +
+		"\x0205\x05\b\x05\x0212\x07\x15\x02\x0224\x05\b\x05\x0231\x03\x02\x02\x02" +
+		"47\x03\x02\x02\x0253\x03\x02\x02\x0256\x03\x02\x02\x0268\x03\x02\x02\x02" +
+		"75\x03\x02\x02\x0289\x07\x13\x02\x029\v\x03\x02\x02\x02:;\x07\x18\x02" +
+		"\x02;\r\x03\x02\x02\x02<=\x07\x04\x02\x02=B\x05\f\x07\x02>?\x07\x15\x02" +
+		"\x02?A\x05\f\x07\x02@>\x03\x02\x02\x02AD\x03\x02\x02\x02B@\x03\x02\x02" +
+		"\x02BC\x03\x02\x02\x02CE\x03\x02\x02\x02DB\x03\x02\x02\x02EF\x07\x05\x02" +
+		"\x02F\x0F\x03\x02\x02\x02GN\x07\x19\x02\x02HO\x07\x18\x02\x02IJ\x07\x06" +
+		"\x02\x02JO\x05\n\x06\x02KL\x07\x06\x02\x02LO\x05\x06\x04\x02MO\x05\x0E" +
+		"\b\x02NH\x03\x02\x02\x02NI\x03\x02\x02\x02NK\x03\x02\x02\x02NM\x03\x02" +
+		"\x02\x02OP\x03\x02\x02\x02PQ\x07\x14\x02\x02Q\x11\x03\x02\x02\x02RS\x07" +
+		"\b\x02\x02ST\x07\r\x02\x02TU\x07\x03\x02\x02UY\x07\x10\x02\x02VX\x05\x14" +
+		"\v\x02WV\x03\x02\x02\x02X[\x03\x02\x02\x02YW\x03\x02\x02\x02YZ\x03\x02" +
+		"\x02\x02Z\\\x03\x02\x02\x02[Y\x03\x02\x02\x02\\]\x07\x13\x02\x02]^\x07" +
+		"\x14\x02\x02^\x13\x03\x02\x02\x02_`\x07\x07\x02\x02`a\x07\x1C\x02\x02" +
+		"ab\x07\x03\x02\x02bg\x07\x10\x02\x02cf\x05\x14\v\x02df\x05\x10\t\x02e" +
+		"c\x03\x02\x02\x02ed\x03\x02\x02\x02fi\x03\x02\x02\x02ge\x03\x02\x02\x02" +
+		"gh\x03\x02\x02\x02hj\x03\x02\x02\x02ig\x03\x02\x02\x02jk\x07\x13\x02\x02" +
+		"kl\x07\x14\x02\x02l\x15\x03\x02\x02\x02mn\x07\x0F\x02\x02no\x07\x11\x02" +
+		"\x02op\x07\n\x02\x02pq\x07\x15\x02\x02qr\x07\x18\x02\x02rs\x07\x12\x02" +
+		"\x02st\x07\x03\x02\x02tu\x07\x06\x02\x02uv\x05\n\x06\x02vw\x07\x14\x02" +
+		"\x02w\x17\x03\x02\x02\x02xy\x07\b\x02\x02yz\x07\x0E\x02\x02z{\x07\x03" +
+		"\x02\x02{\x7F\x07\x10\x02\x02|~\x05\x16\f\x02}|\x03\x02\x02\x02~\x81\x03" +
+		"\x02\x02\x02\x7F}\x03\x02\x02\x02\x7F\x80\x03\x02\x02\x02\x80\x82\x03" +
+		"\x02\x02\x02\x81\x7F\x03\x02\x02\x02\x82\x83\x07\x13\x02\x02\x83\x84\x07" +
+		"\x14\x02\x02\x84\x19\x03\x02\x02\x02\x85\x88\x07\t\x02\x02\x86\x87\x07" +
+		"\f\x02\x02\x87\x89\x07\v\x02\x02\x88\x86\x03\x02\x02\x02\x88\x89\x03\x02" +
+		"\x02\x02\x89\x8A\x03\x02\x02\x02\x8A\x8B\x07\x03\x02\x02\x8B\x8F\x07\x10" +
+		"\x02\x02\x8C\x8E\x05\x18\r\x02\x8D\x8C\x03\x02\x02\x02\x8E\x91\x03\x02" +
+		"\x02\x02\x8F\x8D\x03\x02\x02\x02\x8F\x90\x03\x02\x02\x02\x90\x95\x03\x02" +
+		"\x02\x02\x91\x8F\x03\x02\x02\x02\x92\x94\x05\x12\n\x02\x93\x92\x03\x02" +
+		"\x02\x02\x94\x97\x03\x02\x02\x02\x95\x93\x03\x02\x02\x02\x95\x96\x03\x02" +
+		"\x02\x02\x96\x98\x03\x02\x02\x02\x97\x95\x03\x02\x02\x02\x98\x99\x07\x13" +
+		"\x02\x02\x99\x9A\x07\x14\x02\x02\x9A\x1B\x03\x02\x02\x02\r#5BNYeg\x7F" +
+		"\x88\x8F\x95";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!TypoShieldParser.__ATN) {
@@ -748,16 +970,96 @@ export class ObjectsContext extends ParserRuleContext {
 }
 
 
+export class EnumContext extends ParserRuleContext {
+	public ENTITY_NAME(): TerminalNode { return this.getToken(TypoShieldParser.ENTITY_NAME, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return TypoShieldParser.RULE_enum; }
+	// @Override
+	public enterRule(listener: TypoShieldListener): void {
+		if (listener.enterEnum) {
+			listener.enterEnum(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: TypoShieldListener): void {
+		if (listener.exitEnum) {
+			listener.exitEnum(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitEnum) {
+			return visitor.visitEnum(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class EnumerationContext extends ParserRuleContext {
+	public enum(): EnumContext[];
+	public enum(i: number): EnumContext;
+	public enum(i?: number): EnumContext | EnumContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(EnumContext);
+		} else {
+			return this.getRuleContext(i, EnumContext);
+		}
+	}
+	public COMA(): TerminalNode[];
+	public COMA(i: number): TerminalNode;
+	public COMA(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(TypoShieldParser.COMA);
+		} else {
+			return this.getToken(TypoShieldParser.COMA, i);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return TypoShieldParser.RULE_enumeration; }
+	// @Override
+	public enterRule(listener: TypoShieldListener): void {
+		if (listener.enterEnumeration) {
+			listener.enterEnumeration(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: TypoShieldListener): void {
+		if (listener.exitEnumeration) {
+			listener.exitEnumeration(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitEnumeration) {
+			return visitor.visitEnumeration(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
 export class DirectivesContext extends ParserRuleContext {
 	public DIRECTIVE(): TerminalNode { return this.getToken(TypoShieldParser.DIRECTIVE, 0); }
 	public SEMI(): TerminalNode { return this.getToken(TypoShieldParser.SEMI, 0); }
-	public DIR_NAME(): TerminalNode | undefined { return this.tryGetToken(TypoShieldParser.DIR_NAME, 0); }
+	public ENTITY_NAME(): TerminalNode | undefined { return this.tryGetToken(TypoShieldParser.ENTITY_NAME, 0); }
 	public DIR_TYPE(): TerminalNode | undefined { return this.tryGetToken(TypoShieldParser.DIR_TYPE, 0); }
 	public objects(): ObjectsContext | undefined {
 		return this.tryGetRuleContext(0, ObjectsContext);
 	}
 	public utilitydirective(): UtilitydirectiveContext | undefined {
 		return this.tryGetRuleContext(0, UtilitydirectiveContext);
+	}
+	public enumeration(): EnumerationContext | undefined {
+		return this.tryGetRuleContext(0, EnumerationContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -780,50 +1082,6 @@ export class DirectivesContext extends ParserRuleContext {
 	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
 		if (visitor.visitDirectives) {
 			return visitor.visitDirectives(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class ProtocolContext extends ParserRuleContext {
-	public PROTOCOL(): TerminalNode { return this.getToken(TypoShieldParser.PROTOCOL, 0); }
-	public LCURLY(): TerminalNode { return this.getToken(TypoShieldParser.LCURLY, 0); }
-	public RCURLY(): TerminalNode { return this.getToken(TypoShieldParser.RCURLY, 0); }
-	public SEMI(): TerminalNode { return this.getToken(TypoShieldParser.SEMI, 0); }
-	public PROTOCOL_VERSION_DEL(): TerminalNode | undefined { return this.tryGetToken(TypoShieldParser.PROTOCOL_VERSION_DEL, 0); }
-	public PROTOCOL_VERSION(): TerminalNode | undefined { return this.tryGetToken(TypoShieldParser.PROTOCOL_VERSION, 0); }
-	public methods(): MethodsContext[];
-	public methods(i: number): MethodsContext;
-	public methods(i?: number): MethodsContext | MethodsContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(MethodsContext);
-		} else {
-			return this.getRuleContext(i, MethodsContext);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return TypoShieldParser.RULE_protocol; }
-	// @Override
-	public enterRule(listener: TypoShieldListener): void {
-		if (listener.enterProtocol) {
-			listener.enterProtocol(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: TypoShieldListener): void {
-		if (listener.exitProtocol) {
-			listener.exitProtocol(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
-		if (visitor.visitProtocol) {
-			return visitor.visitProtocol(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -919,6 +1177,142 @@ export class EndpointsContext extends ParserRuleContext {
 	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
 		if (visitor.visitEndpoints) {
 			return visitor.visitEndpoints(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class ErrorsContext extends ParserRuleContext {
+	public DEFINE_ERROR(): TerminalNode { return this.getToken(TypoShieldParser.DEFINE_ERROR, 0); }
+	public LBRACKET(): TerminalNode { return this.getToken(TypoShieldParser.LBRACKET, 0); }
+	public NUMBER(): TerminalNode { return this.getToken(TypoShieldParser.NUMBER, 0); }
+	public COMA(): TerminalNode { return this.getToken(TypoShieldParser.COMA, 0); }
+	public ENTITY_NAME(): TerminalNode { return this.getToken(TypoShieldParser.ENTITY_NAME, 0); }
+	public RBRACKET(): TerminalNode { return this.getToken(TypoShieldParser.RBRACKET, 0); }
+	public DIR_TYPE(): TerminalNode { return this.getToken(TypoShieldParser.DIR_TYPE, 0); }
+	public objects(): ObjectsContext {
+		return this.getRuleContext(0, ObjectsContext);
+	}
+	public SEMI(): TerminalNode { return this.getToken(TypoShieldParser.SEMI, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return TypoShieldParser.RULE_errors; }
+	// @Override
+	public enterRule(listener: TypoShieldListener): void {
+		if (listener.enterErrors) {
+			listener.enterErrors(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: TypoShieldListener): void {
+		if (listener.exitErrors) {
+			listener.exitErrors(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitErrors) {
+			return visitor.visitErrors(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class DefinesContext extends ParserRuleContext {
+	public METHOD_START(): TerminalNode { return this.getToken(TypoShieldParser.METHOD_START, 0); }
+	public DEFINE(): TerminalNode { return this.getToken(TypoShieldParser.DEFINE, 0); }
+	public LCURLY(): TerminalNode { return this.getToken(TypoShieldParser.LCURLY, 0); }
+	public RCURLY(): TerminalNode { return this.getToken(TypoShieldParser.RCURLY, 0); }
+	public SEMI(): TerminalNode { return this.getToken(TypoShieldParser.SEMI, 0); }
+	public errors(): ErrorsContext[];
+	public errors(i: number): ErrorsContext;
+	public errors(i?: number): ErrorsContext | ErrorsContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(ErrorsContext);
+		} else {
+			return this.getRuleContext(i, ErrorsContext);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return TypoShieldParser.RULE_defines; }
+	// @Override
+	public enterRule(listener: TypoShieldListener): void {
+		if (listener.enterDefines) {
+			listener.enterDefines(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: TypoShieldListener): void {
+		if (listener.exitDefines) {
+			listener.exitDefines(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitDefines) {
+			return visitor.visitDefines(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class ProtocolContext extends ParserRuleContext {
+	public PROTOCOL(): TerminalNode { return this.getToken(TypoShieldParser.PROTOCOL, 0); }
+	public LCURLY(): TerminalNode { return this.getToken(TypoShieldParser.LCURLY, 0); }
+	public RCURLY(): TerminalNode { return this.getToken(TypoShieldParser.RCURLY, 0); }
+	public SEMI(): TerminalNode { return this.getToken(TypoShieldParser.SEMI, 0); }
+	public PROTOCOL_VERSION_DEL(): TerminalNode | undefined { return this.tryGetToken(TypoShieldParser.PROTOCOL_VERSION_DEL, 0); }
+	public PROTOCOL_VERSION(): TerminalNode | undefined { return this.tryGetToken(TypoShieldParser.PROTOCOL_VERSION, 0); }
+	public defines(): DefinesContext[];
+	public defines(i: number): DefinesContext;
+	public defines(i?: number): DefinesContext | DefinesContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(DefinesContext);
+		} else {
+			return this.getRuleContext(i, DefinesContext);
+		}
+	}
+	public methods(): MethodsContext[];
+	public methods(i: number): MethodsContext;
+	public methods(i?: number): MethodsContext | MethodsContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(MethodsContext);
+		} else {
+			return this.getRuleContext(i, MethodsContext);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return TypoShieldParser.RULE_protocol; }
+	// @Override
+	public enterRule(listener: TypoShieldListener): void {
+		if (listener.enterProtocol) {
+			listener.enterProtocol(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: TypoShieldListener): void {
+		if (listener.exitProtocol) {
+			listener.exitProtocol(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: TypoShieldVisitor<Result>): Result {
+		if (visitor.visitProtocol) {
+			return visitor.visitProtocol(this);
 		} else {
 			return visitor.visitChildren(this);
 		}

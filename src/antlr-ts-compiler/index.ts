@@ -4,7 +4,7 @@ import { TypoShieldParser } from "./grammar/TypoShieldParser";
 import { ParseTypoShieldListener } from "./listener";
 import { ParseTreeWalker } from "antlr4ts/tree/ParseTreeWalker";
 import { TypoShieldListener } from "./grammar/TypoShieldListener";
-import { Endpoint, EndpointTree, HTTPVersionType, ParserListenerOptions, Protocol } from "./types";
+import { EndpointTree, HTTPVersionType, ParserListenerOptions, Protocol } from "./types";
 
 export class Compiler {
   private tree: ParseTypoShieldListener;
@@ -28,7 +28,8 @@ export class Compiler {
     return {
       protocol: this.tree.getProtocol() as Protocol,
       protocolVersion: this.tree.getProtocolVersion(),
-      endpoints: this.tree.getEndpoints()
+      endpoints: this.tree.getEndpoints(),
+      errors: this.tree.getErrors()
     };
   }
 

@@ -8,10 +8,14 @@ import { UtilitydirectiveatomContext } from "./TypoShieldParser";
 import { UtilitydirectiveContext } from "./TypoShieldParser";
 import { ObjectContext } from "./TypoShieldParser";
 import { ObjectsContext } from "./TypoShieldParser";
+import { EnumContext } from "./TypoShieldParser";
+import { EnumerationContext } from "./TypoShieldParser";
 import { DirectivesContext } from "./TypoShieldParser";
-import { ProtocolContext } from "./TypoShieldParser";
 import { MethodsContext } from "./TypoShieldParser";
 import { EndpointsContext } from "./TypoShieldParser";
+import { ErrorsContext } from "./TypoShieldParser";
+import { DefinesContext } from "./TypoShieldParser";
+import { ProtocolContext } from "./TypoShieldParser";
 
 
 /**
@@ -58,18 +62,25 @@ export interface TypoShieldVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitObjects?: (ctx: ObjectsContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `TypoShieldParser.enum`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitEnum?: (ctx: EnumContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `TypoShieldParser.enumeration`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitEnumeration?: (ctx: EnumerationContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `TypoShieldParser.directives`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitDirectives?: (ctx: DirectivesContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `TypoShieldParser.protocol`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitProtocol?: (ctx: ProtocolContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `TypoShieldParser.methods`.
@@ -84,5 +95,26 @@ export interface TypoShieldVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitEndpoints?: (ctx: EndpointsContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `TypoShieldParser.errors`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitErrors?: (ctx: ErrorsContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `TypoShieldParser.defines`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitDefines?: (ctx: DefinesContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `TypoShieldParser.protocol`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitProtocol?: (ctx: ProtocolContext) => Result;
 }
 

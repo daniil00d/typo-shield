@@ -37,16 +37,24 @@ export type Directive = {
   dirType: string | undefined;
   objects: DirectiveObject;
   utilityDirective?: { name: string; atoms: string[] };
+  enums: string[] | undefined;
 };
 
 /**
  * Endpoints
  */
 
+export type CustomError = {
+  name: string;
+  code: number;
+  object: DirectiveObject;
+};
+
 export type Endpoint = {
   pathname: string;
   method: Method;
   directives?: Directive[];
+  errors: string[] | undefined;
   implementationFuncName?: string;
   implementationFunc?: () => void;
 };
@@ -55,4 +63,5 @@ export type EndpointTree = {
   protocol: Protocol;
   protocolVersion: HTTPVersionType;
   endpoints: Endpoint[];
+  errors: CustomError[];
 };
