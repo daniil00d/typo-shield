@@ -31,26 +31,26 @@ type DSL = `
 HTTP: {
   $GET: {
     > user: {
-    @input JSON {a: Number, b: String};
+    @body JSON {a: Number, b: String};
       > list: {
         /// yes, you can write like that
-        @input 
+        @body 
           JSON {
             g: Number, 
             x: String
           };
-        @input JSON {c: Number, d: String};
+        @body JSON {c: Number, d: String};
         > get_1: {
-          @input JSON {s: Number, p: String};
-          @input JSON #exclude(c, p);
+          @body JSON {s: Number, p: String};
+          @body JSON #exclude(c, p);
           > smt: {
-            @input JSON {e: Number, f: String};
+            @body JSON {e: Number, f: String};
             > last_1: {
-              @input JSON #include(s, a);
+              @body JSON #include(s, a);
               @serve GetUser;
             };
             > last_2: {
-              @input JSON #include(s, a);
+              @body JSON #include(s, a);
               @serve GetUserList;
             };
           };

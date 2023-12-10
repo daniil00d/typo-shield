@@ -2,15 +2,15 @@ import { Compiler } from "@compiler/index";
 import { EndpointTree } from "@compiler/types";
 import { ExpressServer, NextFunc } from "./express-integration";
 import { ParserListenerOptions } from "@compiler/types";
-import { DirectiveServeName } from "../level-type-compiler";
 import { logger } from "@utils/logger";
 import { EPRequest, EPResponse, ExpressServerOptions } from "./types";
-import { DefineError, GetErrorNames, ObjectsToRecord } from "@type-compiler/lexer";
+import { DefineError, ObjectsToRecord, DirectiveServeName } from "@type-compiler/index";
 import { Request, Response } from "express";
+import { GetAllQueries } from "@type-compiler/query";
 
 export const PORT = 3000;
 
-type ExpressFunction<T extends string> = (req: EPRequest, res: EPResponse<T>) => void;
+type ExpressFunction<T extends string> = (req: EPRequest<T>, res: EPResponse<T>) => void;
 type Implementation<T extends string> = { name: T; callback: ExpressFunction<T> };
 
 export class App<T extends string> extends ExpressServer {
@@ -44,11 +44,14 @@ export class App<T extends string> extends ExpressServer {
       };
 
       return (request: Request, response: Response) => {
-        cb(request, {
-          ...response,
-          sendError: <ErrorName extends string>(name: ErrorName, json: ObjectsToRecord<DefineError<T>>) =>
-            sendError(response, { name, json })
-        } as Parameters<ExpressFunction<T>>[1]);
+        cb(
+          { ...request, query: request.query } as Parameters<ExpressFunction<T>>[0],
+          {
+            ...response,
+            sendError: <ErrorName extends string>(name: ErrorName, json: ObjectsToRecord<DefineError<T>>) =>
+              sendError(response, { name, json })
+          } as Parameters<ExpressFunction<T>>[1]
+        );
       };
     };
 

@@ -20,7 +20,7 @@ COMA: ',';
 WS: [ \t\n\r\f]+ -> skip ;
 TYPE: 'Number' | 'String';
 ENTITY_NAME: [A-Z][a-zA-Z]+;
-DIRECTIVE: '@serve' | '@input' | '@meta' | '@test' | '@headers' | '@output' | '@search' | '@error';
+DIRECTIVE: '@serve' | '@body' | '@params' | '@query'| '@meta' | '@test' | '@headers' | '@output' | '@search' | '@error';
 UTILITY_DIRECTIVE: '#include' | '#exclude';
 COMMENT: '///'[a-zA-Z,. а-яА-Я]* -> skip;
 ID: [a-zA-Z_0-9]+;

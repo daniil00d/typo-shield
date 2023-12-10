@@ -1,1 +1,3 @@
-export * from "./lexer";
+export * from "./errors";
+export * from "./objects";
+export * from "./directives";

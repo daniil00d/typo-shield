@@ -1,4 +1,5 @@
-import { DefineError, GetErrorNames, ObjectsToRecord } from "@type-compiler/lexer";
+import { DefineError, GetErrorNames, ObjectsToRecord } from "@type-compiler/index";
+import { GetAllQueries } from "@type-compiler/query";
 import { Request, Response } from "express";
 
 export type ExpressServerOptions = {
@@ -17,4 +18,6 @@ export interface EPResponse<DSL extends string> extends Response {
   sendError: <ErrorName extends GetErrorNames<DSL>>(name: ErrorName, obj: SpecEnumType<DSL, ErrorName>) => void;
 }
 
-export interface EPRequest extends Request {}
+export interface EPRequest<DSL extends string> extends Request {
+  query: GetAllQueries<DSL>;
+}

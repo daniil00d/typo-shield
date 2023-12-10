@@ -9,16 +9,17 @@ HTTP/1.1: {
     /// здесь описываем ошибки, которые могут потенциально исполниться во время
     /// работы эндпоинта
     error(404, EntityNotFound): JSON { message: String };
-    error(409, EntityNameConflict): JSON { message:String, fields: Number };
+    error(409, EntityNameConflict): JSON { message: String, fields: Number };
     error(501, UndefinedError): JSON { message: String };
   };
 
   $GET: {
     > user: {
-    @input JSON {a: Number, b: String};
+    @body JSON {a: Number, b: String};
       > get: {
         @serve GetUser;
         @error [EntityNameConflict, EntityNotFound, UndefinedError];
+        @query JSON { id: String, std: Number };
       };
       > get1: {
         @serve GetUser;
@@ -43,7 +44,9 @@ app.registerMiddleware((req, res, next) => {
  * Пример регистрации имплементации
  */
 app.registerImplementation("GetUser", (req, res) => {
-  res.sendError("EntityNotFound", { message: "User not found" });
+  const { id, std } = req.query;
+  console.log({ id, std });
+  res.sendError("EntityNameConflict", { message: "User not found", fields: 1 });
 });
 
 app.start();
