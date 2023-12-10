@@ -62,3 +62,11 @@ export type DefineError<DSL extends string> =
     : [];
 
 export type GetErrorNames<DSL extends string> = DefineError<DSL> extends any[] ? DefineError<DSL>[number]["name"] : string;
+
+// ``
+
+type hello = "hello, Vlad!";
+
+type hello1<T extends string> = T extends `hello, ${infer Name}!` ? Name : never;
+
+type name = hello1<hello>;

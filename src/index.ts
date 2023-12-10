@@ -43,7 +43,7 @@ app.registerMiddleware((req, res, next) => {
  * Пример регистрации имплементации
  */
 app.registerImplementation("GetUser", (req, res) => {
-  res.sendError("EntityNotFound", { message: "error" });
+  res.sendError("EntityNotFound", { message: "User not found" });
 });
 
 app.start();
