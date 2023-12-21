@@ -2,6 +2,11 @@ import { App } from "@server/app";
 import { logger } from "@utils/logger";
 import { eptreedsl } from "@core/parser";
 
+// const a = '123123' as const
+// const b = '456sdf' as const
+// type ct = `${typeof a}${typeof b}`
+// const cc = (a + b) as ct
+
 // Определяем некоторое дерево эндпоинтов на дсл-языке
 const endpoints = eptreedsl(`
 HTTP/1.1: {
@@ -45,6 +50,14 @@ app.registerMiddleware((req, res, next) => {
  */
 app.registerImplementation("GetUser", (req, res) => {
   const { id, std } = req.query;
+  /**
+   * TODO:
+   * 1. Выводить ошибку, если ожидалось, что query будет передано, но его нет
+   * 2. Доделать обработку объектов
+   *  - опциональные поля
+   *  - дополнить типы хотя бы до множества примитивов
+   *  - вложенные объекты
+   */
   console.log({ id, std });
   res.sendError("EntityNameConflict", { message: "User not found", fields: 1 });
 });
