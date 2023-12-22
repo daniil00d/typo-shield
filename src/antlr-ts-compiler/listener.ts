@@ -53,8 +53,8 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     }
 
     return objects.reduce((acc, object) => {
-      const key = object.ID().text;
-      const value = object.TYPE().text;
+      const key = object.ID(0).text;
+      const value = object.TYPE()?.text || object.ID(1)?.text || "";
 
       return {
         ...acc,

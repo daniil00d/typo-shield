@@ -16,7 +16,7 @@ HTTP/1.1: {
     error(404, EntityNotFound): JSON { message: String };
     error(409, EntityNameConflict): JSON { message: String, fields: Number };
     error(501, UndefinedError): JSON { message: String };
-  };
+  }
 
   $GET: {
     > user: {
@@ -25,14 +25,16 @@ HTTP/1.1: {
         @serve GetUser;
         @error [EntityNameConflict, EntityNotFound, UndefinedError];
         @query JSON { id: String, std: Number };
-      };
-      > get1: {
-        @serve GetUser;
+      }
+      > list: {
+        @serve UserList;
+        @body JSON #include(a);
         @error [EntityNameConflict, UndefinedError];
-      };
-    };
-  };
-};
+        @meta JSON {swaggerTag: "__UserTag__"};
+      }
+    }
+  }
+}
 `);
 
 const app = new App(endpoints, { overrideDirectives: "merge" });
@@ -60,6 +62,20 @@ app.registerImplementation("GetUser", (req, res) => {
    */
   console.log({ id, std });
   res.sendError("EntityNameConflict", { message: "User not found", fields: 1 });
+});
+
+app.registerImplementation("UserList", (req, res) => {
+  const { id, std } = req.query;
+  /**
+   * TODO:
+   * 1. Выводить ошибку, если ожидалось, что query будет передано, но его нет
+   * 2. Доделать обработку объектов
+   *  - опциональные поля
+   *  - дополнить типы хотя бы до множества примитивов
+   *  - вложенные объекты
+   */
+  console.log({ id, std });
+  res.sendError("UndefinedError", { message: "User not found" });
 });
 
 app.start();
