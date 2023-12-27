@@ -47,35 +47,34 @@ app.registerMiddleware((req, res, next) => {
   next();
 });
 
+const doSomething = () => {
+  if (Math.random() > 0.5) {
+    throw Error("Something");
+  } else {
+    return { message: "hello" };
+  }
+};
+
 /**
  * Пример регистрации имплементации
  */
 app.registerImplementation("GetUser", (req, res) => {
   const { id, std } = req.query;
-  /**
-   * TODO:
-   * 1. Выводить ошибку, если ожидалось, что query будет передано, но его нет
-   * 2. Доделать обработку объектов
-   *  - опциональные поля
-   *  - дополнить типы хотя бы до множества примитивов
-   *  - вложенные объекты
-   */
   console.log({ id, std });
-  res.sendError("EntityNameConflict", { message: "User not found", fields: 1 });
+  try {
+    const data = doSomething();
+    res.send(data);
+  } catch (error) {
+    res.sendError("EntityNotFound", { message: (error as { message: string }).message });
+  }
 });
 
 app.registerImplementation("UserList", (req, res) => {
   const { id, std } = req.query;
-  /**
-   * TODO:
-   * 1. Выводить ошибку, если ожидалось, что query будет передано, но его нет
-   * 2. Доделать обработку объектов
-   *  - опциональные поля
-   *  - дополнить типы хотя бы до множества примитивов
-   *  - вложенные объекты
-   */
   console.log({ id, std });
-  res.sendError("UndefinedError", { message: "User not found" });
+  res.sendError("EntityNameConflict", { message: "User not found", fields: 2 });
 });
+
+app.registerImplementation([{ name: "GetUser", callback: (req, res) => {} }]);
 
 app.start();

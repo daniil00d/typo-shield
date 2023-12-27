@@ -11,7 +11,7 @@ import { GetAllQueries } from "@type-compiler/query";
 export const PORT = 3000;
 
 type ExpressFunction<T extends string> = (req: EPRequest<T>, res: EPResponse<T>) => void;
-type Implementation<T extends string> = { name: T; callback: ExpressFunction<T> };
+type Implementation<T extends string> = { name: DirectiveServeName<T>; callback: ExpressFunction<T> };
 
 export class App<T extends string> extends ExpressServer {
   private DSL: T;
@@ -30,7 +30,7 @@ export class App<T extends string> extends ExpressServer {
     this.endpointTree = endpointTree.getEndpointTree();
   }
 
-  public registerImplementation(imps: Implementation<T>[]): void;
+  public registerImplementation(imps: { name: DirectiveServeName<T>; callback: ExpressFunction<T> }[]): void;
   public registerImplementation(name: DirectiveServeName<T>, callback?: ExpressFunction<T>): void;
 
   public registerImplementation(nameOrImps: DirectiveServeName<T> | Implementation<T>[], callback?: ExpressFunction<T>) {
@@ -46,11 +46,10 @@ export class App<T extends string> extends ExpressServer {
       return (request: Request, response: Response) => {
         cb(
           { ...request, query: request.query } as Parameters<ExpressFunction<T>>[0],
-          {
-            ...response,
+          Object.assign(response, {
             sendError: <ErrorName extends string>(name: ErrorName, json: ObjectsToRecord<DefineError<T>>) =>
               sendError(response, { name, json })
-          } as Parameters<ExpressFunction<T>>[1]
+          }) as Parameters<ExpressFunction<T>>[1]
         );
       };
     };

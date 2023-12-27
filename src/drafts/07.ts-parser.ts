@@ -70,7 +70,7 @@ const parser = (dsl: string): EndpointTree => {
     if (otherLexemes.length === 0) {
       return { root };
     }
-
+    // ...
     // извлекаем индексы всех ближайших корней поддерева
     const indexes = otherLexemes.reduce((ind, lex, index) => {
       if (lex.match(/^\s\s[|:><@A-Za-z]/)?.length) {
@@ -83,7 +83,7 @@ const parser = (dsl: string): EndpointTree => {
     // объявляем главное дерева как ветвь дерева на предыдущем этапе рекурсии
     const mainTree = {
       root,
-      subtree: [] as string[][],
+      subtree: [] as string[][]
     };
 
     // заполняем ветви в виде поддеревьев
@@ -91,10 +91,11 @@ const parser = (dsl: string): EndpointTree => {
       const subArrayOfSubTrees = otherLexemes.slice(ind, indexes[index + 1]);
       mainTree.subtree.push(normalizeDSL(subArrayOfSubTrees));
     });
+    // ...
 
     return {
       ...mainTree,
-      subtree: mainTree.subtree.map((sub: any) => recParser(sub)),
+      subtree: mainTree.subtree.map((sub: any) => recParser(sub))
     };
   };
 
@@ -135,15 +136,10 @@ const parser = (dsl: string): EndpointTree => {
         return;
       }
 
-      if (
-        _tree.subtree === undefined ||
-        _tree.subtree.every(
-          (__tree) => getDirective(__tree.root).type !== undefined
-        )
-      ) {
+      if (_tree.subtree === undefined || _tree.subtree.every((__tree) => getDirective(__tree.root).type !== undefined)) {
         mainArray.push({
           pathname: `${parentPrefix}/${getEndpointName(_tree.root)}`,
-          serveImp: getDirectiveByName(_tree.subtree?.[0].root, "serve"),
+          serveImp: getDirectiveByName(_tree.subtree?.[0].root, "serve")
         });
 
         return;
@@ -163,7 +159,7 @@ const parser = (dsl: string): EndpointTree => {
         endpoints.push({
           pathname: endpoint.pathname,
           method: getEndpointName(method) as MethodType,
-          imp: endpoint.serveImp,
+          imp: endpoint.serveImp
         });
       });
     });
@@ -171,7 +167,7 @@ const parser = (dsl: string): EndpointTree => {
     return {
       protocol,
       protocolVersion: version || "1.1",
-      endpoints: endpoints,
+      endpoints: endpoints
     };
   };
 
