@@ -4,6 +4,7 @@ import { program } from 'commander'
 import fs from 'node:fs';
 import path from 'node:path';
 import { ParseResults } from './types';
+import { Compiler } from './compiler';
 
 program
   .option('-f, --folder <type>', 'Folder for finding filed with typo-shield code', 'src')
@@ -13,7 +14,6 @@ program.parse();
 const options = program.opts();
 
 const folderPath = options.folder; // замените на путь к вашей папке
-console.log(folderPath);
 
 // Объект для хранения обработанных файлов
 const result: ParseResults = {};
@@ -38,4 +38,6 @@ for (const fileName of files) {
   }
 }
 
-console.log(result);
+const endpointTree = new Compiler(result['index.ts'])
+
+console.log(endpointTree.getEndpointTree().endpoints);

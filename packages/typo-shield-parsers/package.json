@@ -1,6 +1,6 @@
 {
   "name": "typo-shield-parsers",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/typo-shield-parsers.umd.js",
   "files": [
@@ -9,9 +9,8 @@
   "types": "dist/index.d.ts",
   "type": "commonjs",
   "scripts": {
-    "build": "vite build && copyfiles --flat src/grammar/* dist/",
-    "generate-parser": "antlr4ts -visitor src/grammar/TypoShield.g4",
-    "generate-parsers": "antlr4-tool src/grammar/TypoShield.g4"
+    "build": "vite build",
+    "generate-parser": "antlr4ts -visitor src/grammar/TypoShield.g4"
   },
   "keywords": [],
   "author": "",

@@ -10,10 +10,10 @@ export default defineConfig({
       name: 'typo-shield-parsers' 
     } 
   },
-  resolve: {
-    alias: {
-      assert: require.resolve("assert"),
-      url: require.resolve("url"),
-    },
-  }
+  // resolve: {
+  //   alias: {
+  //     assert: require.resolve("assert"),
+  //     url: require.resolve("url"),
+  //   },
+  // }
 })

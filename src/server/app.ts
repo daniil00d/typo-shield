@@ -1,4 +1,4 @@
-import { Compiler } from "typo-shield-parsers";
+import { Compiler } from "@compiler/index";
 import { EndpointTree } from "@compiler/types";
 import { ExpressServer } from "./express-integration";
 import { ParserListenerOptions } from "@compiler/types";
