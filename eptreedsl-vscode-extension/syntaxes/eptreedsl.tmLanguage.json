@@ -1,0 +1,100 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "eptreedsl",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#annotations"
+		},
+		{
+			"include": "#utilityAnnotations"
+		},
+		{
+			"include": "#number"
+		},
+		{
+			"include": "#epName"
+		},
+		{
+			"include": "#name"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.eptreedsl",
+				"match": "\\b(define|GET|POST|HTTPS?|String|Number|JSON|error)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.eptreedsl",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.eptreedsl",
+					"match": "\\\\."
+				}
+			]
+		},
+		"comments": {
+			"name": "comment.line",
+			"patterns": [
+				{
+					"name": "comment.line",
+					"match": "(\\s*)(\\/\\/\\/).*"
+				}
+			]
+		},
+		"annotations": {
+			"patterns": [
+				{
+					"name": "support.function",
+					"match": "@[a-zA-Z]+"
+				}
+			]
+		},
+		"utilityAnnotations": {
+			"patterns": [
+				{
+					"name": "support.function",
+					"match": "#[a-zA-Z]+"
+				}
+			]
+		},
+		"name": {
+			"patterns": [
+				{
+					"name": "storage.modifier",
+					"match": "[a-zA-Z]+"
+				}
+			]
+		},
+		"number": {
+			"name": "constant.numeric",
+			"patterns": [
+				{
+					"name": "constant.numeric",
+					"match": "[0-9]+"
+				}
+			]
+		},
+		"epName": {
+			"patterns": [
+				{
+					"name": "string",
+					"match": ">\\s*[a-z]+"
+				}
+			]
+		}
+	},
+	"scopeName": "source.eptreedsl"
+}
