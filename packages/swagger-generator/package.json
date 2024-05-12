@@ -1,13 +1,13 @@
 {
   "name": "typo-shield-swagger-generator",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
-  "main": "dist/typo-shield-swagger-generator.mjs",
+  "main": "dist/typo-shield-swagger-generator.umd.js",
   "files": [
     "dist"
   ],
   "types": "dist/index.d.ts",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build"

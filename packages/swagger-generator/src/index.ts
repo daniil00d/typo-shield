@@ -1,6 +1,4 @@
-type Index = {
-    hello: string
-}
+import { Index } from "./types";
 
 const a: Index = {
     hello: '132123'
