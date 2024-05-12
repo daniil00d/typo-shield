@@ -1,0 +1,28 @@
+{
+  "name": "typo-shield-swagger-generator",
+  "version": "1.0.4",
+  "description": "",
+  "main": "dist/typo-shield-swagger-generator.mjs",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vite-plugin-dts": "^3.9.1",
+    "vite-tsconfig-paths": "^4.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daniil00d/typo-shield.git"
+  }
+}

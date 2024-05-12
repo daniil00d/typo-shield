@@ -1,5 +1,7 @@
-/node_modules
+/**/node_modules
 /ext/typoshield/node_modules
 /dist
 *.key
 *.cert
+.history/
+.DS_Store
