@@ -1,6 +1,7 @@
 import { App } from "@server/app";
 import { logger } from "@utils/logger";
 import { eptreedsl } from "@core/parser";
+import SwaggerGeneratorMiddleware from 'typo-shield-swagger-generator'
 
 // const a = '123123' as const
 // const b = '456sdf' as const
@@ -46,6 +47,8 @@ app.registerMiddleware((req, res, next) => {
   logger.log(`Visit ${req.path}`, "info");
   next();
 });
+
+console.log(SwaggerGeneratorMiddleware.hello);
 
 const doSomething = () => {
   if (Math.random() > 0.5) {
