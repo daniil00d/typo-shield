@@ -1,16 +1,16 @@
 {
-  "name": "typo-shield-swagger-generator",
-  "version": "1.0.6",
+  "name": "typo-shield-logger",
+  "version": "1.0.1",
   "description": "",
-  "main": "dist/typo-shield-swagger-generator.umd.js",
+  "main": "dist/typo-shield-logger.umd.js",
   "files": [
     "dist"
   ],
   "types": "dist/index.d.ts",
   "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build"
+    "build": "vite build",
+    "antlr4ts": "antlr4ts -visitor src/grammar/TypoShield.g4"
   },
   "keywords": [],
   "author": "",

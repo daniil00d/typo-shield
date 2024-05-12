@@ -7,7 +7,13 @@ export default defineConfig({
   build: { 
     lib: { 
       entry: resolve(__dirname, 'src/index.ts'), 
-      name: 'typo-shield-swagger-generator' 
+      name: 'typo-shield-parsers' 
     } 
+  },
+  resolve: {
+    alias: {
+      assert: require.resolve("assert"),
+      url: require.resolve("url"),
+    },
   }
 })

@@ -1,4 +1,4 @@
-import { logger } from "../../utils/logger";
+import logger from "typo-shield-logger";
 import { ImplementationMap } from "./types";
 import { EndpointTree } from "../../antlr-ts-compiler/types";
 

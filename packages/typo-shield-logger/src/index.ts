@@ -1,6 +1,6 @@
 type LogType = "error" | "warning" | "success" | "info";
 
-class Logger {
+export class Logger {
   log(message: string, type: LogType = "info") {
     const colors = {
       error: "\x1b[41m%s\x1b[0m",
@@ -20,4 +20,4 @@ class Logger {
   }
 }
 
-export const logger = new Logger();
+export default new Logger();

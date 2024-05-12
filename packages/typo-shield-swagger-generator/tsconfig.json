@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "target": "ES5",
+      "useDefineForClassFields": true,
+      "module": "CommonJS",
+      "lib": ["ES2020"],
+      "skipLibCheck": true,
+      "esModuleInterop": true
+    },
+    "include": [
+      "src"
+    ]
+  }
+  

@@ -1,12 +1,11 @@
-import { Compiler } from "@compiler/index";
+import { Compiler } from "typo-shield-parsers";
 import { EndpointTree } from "@compiler/types";
-import { ExpressServer, NextFunc } from "./express-integration";
+import { ExpressServer } from "./express-integration";
 import { ParserListenerOptions } from "@compiler/types";
-import { logger } from "@utils/logger";
+import logger from "typo-shield-logger";
 import { EPRequest, EPResponse, ExpressServerOptions } from "./types";
 import { DefineError, ObjectsToRecord, DirectiveServeName } from "@type-compiler/index";
 import { Request, Response } from "express";
-import { GetAllQueries } from "@type-compiler/query";
 
 export const PORT = 3000;
 

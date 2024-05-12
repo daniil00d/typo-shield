@@ -1,4 +1,4 @@
-import { logger } from "../../utils/logger";
+import logger from "typo-shield-logger";
 
 export class ParseWarning {
   constructor(message: string) {
