@@ -1,6 +1,6 @@
 import { ServersTemplateOptions } from "../types/servers.template";
 
-export const getServersYAMLTemplate = (servers: ServersTemplateOptions) => {
+export const getServersYAMLTemplate = (servers: ServersTemplateOptions | undefined) => {
     if(servers === undefined) return ''
 
     const getServer = (server: ServersTemplateOptions[number]) => {

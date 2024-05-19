@@ -1,14 +1,14 @@
 import * as fs from 'node:fs'
 
-export type SpecFile = {
+export type SpecFileOptions = {
     name: string
     content: string
-    path: string
+    folder?: string
     type: 'json' | 'yaml'
 }
 
-export const createSpecFile = (options: SpecFile) => {
-    const fullPath = `${options.path}/${options.name}.${options.type}`;
+export const createSpecFile = (options: SpecFileOptions) => {
+    const fullPath = `${options.folder || '.'}/${options.name}.${options.type}`;
 
     // fs.writeFile(fullPath, options.content, (err) => {
     //     if (err) {
@@ -19,7 +19,7 @@ export const createSpecFile = (options: SpecFile) => {
     //     console.log(`Файл ${fullPath} успешно создан`);
     // });
 
-    console.log(`Creating file with name '${fullPath}'...`);
+    console.log(`Creating file with name '${fullPath}'...\n\n`);
 
     console.log(options.content);
 }
