@@ -1,0 +1,41 @@
+{
+  "name": "typo-shield-swagger-generator",
+  "version": "2.0.4",
+  "description": "",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "bin": {
+    "typo-shield-swagger-generator": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "vite:build:server": "LIB_NAME=server vite build",
+    "vite:build:main": "vite build",
+    "vite:build": "npm run vite:build:server && npm run vite:build:main",
+    "start:test": "nodemon src/index.ts --folder examples",
+    "start:prod": "node dist/index.js --folder examples",
+    "swagger:serve": "nodemon src/server/index.ts",
+    "build:serve": "node ./dist/server/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "express": "^4.19.2",
+    "swagger-ui-express": "^5.0.0",
+    "typo-shield-parsers": "^1.0.5",
+    "typo-shield-server": "^1.0.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/swagger-ui-express": "^4.1.6",
+    "@types/yamljs": "^0.2.34",
+    "antlr4ts": "^0.5.0-alpha.4",
+    "vite": "^5.2.11",
+    "vite-plugin-dts": "^3.9.1"
+  }
+}

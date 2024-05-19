@@ -1,5 +1,5 @@
 import { ImplementationMap, EndpointTree } from "@compiler/types";
-import { logger } from "@utils/logger";
+import logger from "typo-shield-logger";
 
 export const bindImplementation = (
   imps: ImplementationMap,
