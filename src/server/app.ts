@@ -1,7 +1,6 @@
-import { Compiler } from "@compiler/index";
-import { EndpointTree } from "@compiler/types";
+import { Compiler } from "typo-shield-parsers";
+import { EndpointTree, ParserListenerOptions } from "typo-shield-parsers";
 import { ExpressServer } from "./express-integration";
-import { ParserListenerOptions } from "@compiler/types";
 import logger from "typo-shield-logger";
 import { EPRequest, EPResponse, ExpressServerOptions } from "./types";
 import { DefineError, ObjectsToRecord, DirectiveServeName } from "@type-compiler/index";

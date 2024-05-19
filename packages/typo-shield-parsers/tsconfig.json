@@ -1,25 +1,25 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "strict": true,
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "lib": ["es2015"],
-
-    /* Bundler mode */
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "declaration": true,
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*.**"
+  ],
+  "exclude": [
+    "dist",
+    "./src/core",
+    "./src/drafts"
+  ],
+  "lib": [
+    "es2015"
+  ],
 }

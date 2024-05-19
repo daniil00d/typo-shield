@@ -4,7 +4,7 @@ import { program } from 'commander'
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { ParseResults } from './types';
-import { Compiler } from './compiler';
+import { Compiler } from 'typo-shield-parsers';
 import { createSpecFile } from './generator/helpers/fs';
 import {getMainYAMLTemplate} from './generator/templates/yaml/main.template'
 import { getMainJSONTemplate } from './generator/templates/json/main.template';
@@ -45,9 +45,9 @@ const endpointTree = new Compiler(result['index.ts'])
 
 console.log(endpointTree.getEndpointTree().endpoints[0]);
 
-createSpecFile({
-  name: 'swagger',
-  content: getMainJSONTemplate({paths: ''}),
-  path: './',
-  type: 'json'
-})
+// createSpecFile({
+//   name: 'swagger',
+//   content: getMainJSONTemplate({paths: ''}),
+//   path: './',
+//   type: 'json'
+// })

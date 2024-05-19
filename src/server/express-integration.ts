@@ -4,7 +4,7 @@ import express, { NextFunction, Request, Response } from "express";
 import spdy from "spdy";
 
 import { MethodType } from "../drafts/ts-parser/types";
-import { EndpointTree, HTTPVersionType } from "@compiler/types";
+import { EndpointTree, HTTPVersionType } from "typo-shield-parsers";
 
 const CERT_DIR = path.resolve(__dirname, "../../cert");
 

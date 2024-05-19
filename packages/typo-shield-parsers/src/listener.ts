@@ -17,7 +17,7 @@ import {
   Method,
   ParserListenerOptions,
   Protocol
-} from "./types";
+} from "./types/index";
 
 export class ParseTypoShieldListener implements TypoShieldListener {
   // service
@@ -168,7 +168,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
               const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex].objects)
                 .filter((obj) => {
-                  const [key, value] = obj;
+                  const [key] = obj;
                   return utilityDirectiveAtoms.includes(key);
                 })
                 .reduce((object, entry) => ({ ...object, [entry[0]]: entry[1] }), {} as DirectiveObject);
@@ -192,7 +192,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
               const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex]?.objects)
                 .filter((obj) => {
-                  const [key, value] = obj;
+                  const [key] = obj;
                   return !utilityDirectiveAtoms.includes(key);
                 })
                 .reduce((object, entry) => ({ ...object, [entry[0]]: entry[1] }), {} as DirectiveObject);
