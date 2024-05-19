@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES5",
+    "useDefineForClassFields": true,
     "module": "CommonJS",
-    // "lib": ["ES2020"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist",
-    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
   "include": [
     "src"
   ]
 }
-  

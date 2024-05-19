@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 import { program } from 'commander'
-import fs from 'node:fs';
-import path from 'node:path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { ParseResults } from './types';
 import { Compiler } from './compiler';
+import { createSpecFile } from './generator/helpers/fs';
+import {getMainYAMLTemplate} from './generator/templates/yaml/main.template'
+import { getMainJSONTemplate } from './generator/templates/json/main.template';
 
 program
   .option('-f, --folder <type>', 'Folder for finding filed with typo-shield code', 'src')
@@ -40,4 +43,11 @@ for (const fileName of files) {
 
 const endpointTree = new Compiler(result['index.ts'])
 
-console.log(endpointTree.getEndpointTree().endpoints);
+console.log(endpointTree.getEndpointTree().endpoints[0]);
+
+createSpecFile({
+  name: 'swagger',
+  content: getMainJSONTemplate({paths: ''}),
+  path: './',
+  type: 'json'
+})
