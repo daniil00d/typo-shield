@@ -1,6 +1,6 @@
-import { DefineError, GetErrorNames, ObjectsToRecord } from "@type-compiler/index";
-import { GetAllQueries } from "@type-compiler/query";
-import { Request, Response } from "express";
+import { DefineError, GetErrorNames, ObjectsToRecord } from '@type-compiler/index';
+import { GetAllQueries } from '@type-compiler/query';
+import { Request, Response } from 'express';
 
 export type ExpressServerOptions = {
   /**
@@ -10,8 +10,7 @@ export type ExpressServerOptions = {
 };
 
 type SpecType<DSL extends string> = ObjectsToRecord<DefineError<DSL>>;
-type SpecEnumType<DSL extends string, P extends string> = SpecType<DSL> extends Record<string, any>
-  ? SpecType<DSL>[P]["object"]
+type SpecEnumType<DSL extends string, P extends string> = SpecType<DSL> extends Record<string, any> ? SpecType<DSL>[P]['object']
   : {};
 
 export interface EPResponse<DSL extends string> extends Response {

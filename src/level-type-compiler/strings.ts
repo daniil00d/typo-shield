@@ -4,7 +4,7 @@
  *
  * @returns string | number
  */
-export type SwitchType<Type extends string> = Type extends "String" ? string : number;
+export type SwitchType<Type extends string> = Type extends 'String' ? string : number;
 
 /**
  * Удаляет все пробельные символы в строке
@@ -23,10 +23,7 @@ export type DeleteAllWhiteSpaces<ObjectPart extends string> = ObjectPart extends
  *
  * @returns string[]
  */
-export type Split<S extends string, D extends string> = string extends S
-  ? string[]
-  : S extends ""
-  ? []
-  : S extends `${infer T}${D}${infer U}`
-  ? [T, ...Split<U, D>]
+export type Split<S extends string, D extends string> = string extends S ? string[]
+  : S extends '' ? []
+  : S extends `${infer T}${D}${infer U}` ? [T, ...Split<U, D>]
   : [S];

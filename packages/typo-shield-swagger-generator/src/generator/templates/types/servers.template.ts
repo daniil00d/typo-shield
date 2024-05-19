@@ -1,4 +1,4 @@
 export type ServersTemplateOptions = {
-    url: string
-    description?: string
-}[]
+  url: string;
+  description?: string;
+}[];

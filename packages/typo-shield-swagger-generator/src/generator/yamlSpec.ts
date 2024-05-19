@@ -1,3 +1,3 @@
 export const generateYAMLSwagger = () => {
-    console.log('generateYAMLSwagger');
-}
+  console.log('generateYAMLSwagger');
+};

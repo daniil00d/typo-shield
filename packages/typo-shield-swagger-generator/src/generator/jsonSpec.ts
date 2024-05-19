@@ -1,3 +1,3 @@
 export const generateJSONSwagger = () => {
-    console.log('generateJSONSwagger');
-}
+  console.log('generateJSONSwagger');
+};

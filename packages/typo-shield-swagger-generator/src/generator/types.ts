@@ -1,1 +1,1 @@
-export type SwaggerFileType = 'json' | 'yaml'
+export type SwaggerFileType = 'json' | 'yaml';

@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "build": "tsc --project tsconfig.json --outDir dist",
     "vite:build:server": "LIB_NAME=server vite build",
     "vite:build:main": "vite build",
     "vite:build": "npm run vite:build:server && npm run vite:build:main",
@@ -37,5 +37,9 @@
     "antlr4ts": "^0.5.0-alpha.4",
     "vite": "^5.2.11",
     "vite-plugin-dts": "^3.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daniil00d/typo-shield.git"
   }
 }

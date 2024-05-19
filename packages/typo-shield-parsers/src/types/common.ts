@@ -1,4 +1,4 @@
-import { Directive, HTTPVersion, Method, Protocol } from "../constants";
+import { Directive, HTTPVersion, Method, Protocol } from '../constants';
 
 /**
  * Common

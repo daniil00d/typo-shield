@@ -1,23 +1,14 @@
-import logger from "typo-shield-logger";
-import { TypoShieldListener } from "./grammar/TypoShieldListener";
+import logger from 'typo-shield-logger';
+import { TypoShieldListener } from './grammar/TypoShieldListener';
 import {
   DefinesContext,
   DirectivesContext,
   EndpointsContext,
   MethodsContext,
   ObjectContext,
-  ProtocolContext
-} from "./grammar/TypoShieldParser";
-import {
-  CustomError,
-  Directive,
-  DirectiveObject,
-  Endpoint,
-  HTTPVersionType,
-  Method,
-  ParserListenerOptions,
-  Protocol
-} from "./types/index";
+  ProtocolContext,
+} from './grammar/TypoShieldParser';
+import { CustomError, Directive, DirectiveObject, Endpoint, HTTPVersionType, Method, ParserListenerOptions, Protocol } from './types/index';
 
 export class ParseTypoShieldListener implements TypoShieldListener {
   // service
@@ -29,8 +20,8 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
   constructor(options?: ParserListenerOptions) {
     this.endpoints = [];
-    this.protocol = "HTTP";
-    this.protocolVersion = "1.1";
+    this.protocol = 'HTTP';
+    this.protocolVersion = '1.1';
     this.options = options || {};
     this.errors = [];
   }
@@ -41,7 +32,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
     const protocolVersion = ctx.PROTOCOL_VERSION()?.text;
     if (protocolVersion === undefined) {
-      logger.log("Protocol version not found, version HTTP/1.1 was set as default", "warning");
+      logger.log('Protocol version not found, version HTTP/1.1 was set as default', 'warning');
     } else {
       this.protocolVersion = ctx.PROTOCOL_VERSION()?.text as HTTPVersionType;
     }
@@ -54,11 +45,11 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
     return objects.reduce((acc, object) => {
       const key = object.ID(0).text;
-      const value = object.TYPE()?.text || object.ID(1)?.text || "";
+      const value = object.TYPE()?.text || object.ID(1)?.text || '';
 
       return {
         ...acc,
-        [key]: value
+        [key]: value,
       };
     }, {} as DirectiveObject);
   }
@@ -85,18 +76,18 @@ export class ParseTypoShieldListener implements TypoShieldListener {
       objects,
       utilityDirective: {
         name: utilityDirectiveName,
-        atoms: utilityDirectiveAtoms
+        atoms: utilityDirectiveAtoms,
       },
-      enums
+      enums,
     };
   }
 
-  private overridingDirectives(directives: Directive[], overriding: ParserListenerOptions["overrideDirectives"]): Directive[] {
+  private overridingDirectives(directives: Directive[], overriding: ParserListenerOptions['overrideDirectives']): Directive[] {
     switch (overriding) {
       /**
        * None - значит, что ничего не делаем с исходным массивом
        */
-      case "none":
+      case 'none':
         return directives;
 
       /**
@@ -128,7 +119,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
        *    директиву и таким образом рекурсивно проходится по текущему
        *    массиву, мержа его элементы.
        */
-      case "merge": {
+      case 'merge': {
         const baseMergeDirectivesByObjects = (subarray: Directive[]): Directive[] => {
           return subarray.reduce((acc, directive) => {
             const names = acc.map((ac) => ac.name);
@@ -137,7 +128,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
             if (~index) {
               acc[index] = {
                 ...acc[index],
-                objects: { ...acc[index].objects, ...directive.objects }
+                objects: { ...acc[index].objects, ...directive.objects },
               };
               return acc;
             }
@@ -163,7 +154,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
           const mergedPreviousDirectives = baseMergeDirectivesByObjects(previousDirectives);
 
           switch (utilityDirectiveName) {
-            case "#include": {
+            case '#include': {
               const finedElementIndex = mergedPreviousDirectives.findIndex((dir) => dir.name === directiveName);
 
               const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex].objects)
@@ -184,10 +175,10 @@ export class ParseTypoShieldListener implements TypoShieldListener {
                   }
 
                   return [...acc, dir];
-                }, [] as Directive[])
+                }, [] as Directive[]),
               );
             }
-            case "#exclude": {
+            case '#exclude': {
               const finedElementIndex = mergedPreviousDirectives.findIndex((dir) => dir.name === directiveName);
 
               const includedObjectAtoms = Object.entries(mergedPreviousDirectives[finedElementIndex]?.objects)
@@ -208,7 +199,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
                   }
 
                   return [...acc, dir];
-                }, [] as Directive[])
+                }, [] as Directive[]),
               );
             }
             default:
@@ -229,7 +220,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
        * Отбрасывает все предыдущие значения и оставляем только самые близкие
        * к конечному эндпоинту директивы.
        */
-      case "override": {
+      case 'override': {
         return directives.reduce((acc, directive) => {
           const directiveIndex = acc.findIndex((dir) => dir.name === directive.name);
 
@@ -254,7 +245,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     endpoints,
     directives,
     method,
-    errors
+    errors,
   }: {
     pathname: string;
     endpoints: EndpointsContext[];
@@ -267,7 +258,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
         pathname,
         directives,
         method,
-        errors
+        errors,
       });
 
       return;
@@ -283,10 +274,9 @@ export class ParseTypoShieldListener implements TypoShieldListener {
         endpoints: endpoint.endpoints(),
         directives: this.overridingDirectives([...directives, ...currentDirectives], this.options.overrideDirectives),
         method,
-        errors:
-          currentDirectives
-            .find((directive) => directive.name === "@error")
-            ?.enums?.map((e) => this.errors.find((error) => error.name === e)) || []
+        errors: currentDirectives
+          .find((directive) => directive.name === '@error')
+          ?.enums?.map((e) => this.errors.find((error) => error.name === e)) || [],
       });
     });
   }
@@ -295,7 +285,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     const method = ctx.METHOD().text as Method;
     const endpoints = ctx.endpoints();
 
-    this.recEndpoint({ pathname: "", endpoints, directives: [], method, errors: [] });
+    this.recEndpoint({ pathname: '', endpoints, directives: [], method, errors: [] });
   }
 
   public enterDefines(ctx: DefinesContext) {
@@ -305,7 +295,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
       this.errors.push({
         name: String(error.ENTITY_NAME().text),
         code: Number(error.NUMBER().text),
-        object: this.parseDirectiveObjects(error.objects().object())
+        object: this.parseDirectiveObjects(error.objects().object()),
       });
     });
   }

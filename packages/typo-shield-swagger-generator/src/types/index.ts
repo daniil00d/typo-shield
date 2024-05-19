@@ -1,1 +1,1 @@
-export type ParseResults = { [key: string]: string }
+export type ParseResults = { [key: string]: string };

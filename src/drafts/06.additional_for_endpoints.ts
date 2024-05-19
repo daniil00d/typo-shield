@@ -81,17 +81,17 @@ type GetUserEndpointType = {
   output: { email: string };
 };
 type GetUserEndpointFunctionType = (
-  input: GetUserEndpointType["input"]
-) => GetUserEndpointType["output"];
+  input: GetUserEndpointType['input'],
+) => GetUserEndpointType['output'];
 
 function getUser_functionDeclaration(
-  input: GetUserEndpointType["input"]
-): GetUserEndpointType["output"] {
-  return { email: "" };
+  input: GetUserEndpointType['input'],
+): GetUserEndpointType['output'] {
+  return { email: '' };
 }
 // or
 const getUser_functionExpression: GetUserEndpointFunctionType = () => ({
-  email: "",
+  email: '',
 });
 
 function getUser() {}

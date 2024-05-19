@@ -1,7 +1,7 @@
-import { Tab } from "./constants";
-import { parseDirective, parseDirectiveByName } from "./directives";
-import { parseProtocol } from "./protocol";
-import { DSL, DSLTree, MethodType, EndpointTree } from "./types";
+import { Tab } from './constants';
+import { parseDirective, parseDirectiveByName } from './directives';
+import { parseProtocol } from './protocol';
+import { DSL, DSLTree, EndpointTree, MethodType } from './types';
 
 abstract class AParser {
   /** парсинг дсл */
@@ -13,11 +13,11 @@ export class Parser extends AParser {
     const { protocol, version } = parseProtocol(tree.root);
 
     let mainArray = [] as { pathname: string; serveImp: string | undefined }[];
-    let parentPrefix = "";
-    const endpoints = [] as EndpointTree["endpoints"];
+    let parentPrefix = '';
+    const endpoints = [] as EndpointTree['endpoints'];
 
     const getEndpointName = (name: string): string => {
-      return name.match(/\w+/)?.[0] || "unknown";
+      return name.match(/\w+/)?.[0] || 'unknown';
     };
 
     const parseEndpoints = (_tree: DSLTree) => {
@@ -26,14 +26,14 @@ export class Parser extends AParser {
       }
 
       if (
-        _tree.subtree === undefined ||
-        _tree.subtree.every(
-          (__tree) => parseDirective(__tree.root).type !== undefined
+        _tree.subtree === undefined
+        || _tree.subtree.every(
+          (__tree) => parseDirective(__tree.root).type !== undefined,
         )
       ) {
         mainArray.push({
           pathname: `${parentPrefix}/${getEndpointName(_tree.root)}`,
-          serveImp: parseDirectiveByName(_tree.subtree?.[0].root, "serve")?.[0],
+          serveImp: parseDirectiveByName(_tree.subtree?.[0].root, 'serve')?.[0],
         });
 
         return;
@@ -46,7 +46,7 @@ export class Parser extends AParser {
     tree.subtree?.forEach((_tree) => {
       const method = _tree.root;
       mainArray = [];
-      parentPrefix = "";
+      parentPrefix = '';
       _tree.subtree?.forEach(parseEndpoints);
 
       mainArray.forEach((endpoint) => {
@@ -60,7 +60,7 @@ export class Parser extends AParser {
 
     return {
       protocol,
-      protocolVersion: version || "1.1",
+      protocolVersion: version || '1.1',
       endpoints: endpoints,
     };
   }

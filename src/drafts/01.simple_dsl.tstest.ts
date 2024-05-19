@@ -1,9 +1,5 @@
-import { Equal, Expect } from "@core/utils/test";
-import {
-  EndpointConstraintDefault,
-  EndpointSchema,
-  ParseEndpoint,
-} from "./01.simple_dsl";
+import { Equal, Expect } from '@core/utils/test';
+import { EndpointConstraintDefault, EndpointSchema, ParseEndpoint } from './01.simple_dsl';
 
 type UserInput = { id: number };
 type UserOutput = { username: string; email: string };

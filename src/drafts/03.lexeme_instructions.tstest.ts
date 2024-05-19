@@ -17,11 +17,11 @@ type Schema = any;
 type AuthorizationHeader = string;
 
 type Syntax = {
-  protocol: "HTTP";
-  method: "POST";
-  URL: "/user/get/{id: Number}";
+  protocol: 'HTTP';
+  method: 'POST';
+  URL: '/user/get/{id: Number}';
   parameters: {
-    name: "id";
+    name: 'id';
     type: number;
   };
   input: { id: number };
@@ -32,10 +32,10 @@ type Syntax = {
   headers: {
     Authorization: AuthorizationHeader;
     token: string;
-    "user-agent": string;
+    'user-agent': string;
   };
-  comments: "Данная ручка предназначена для получения информации о \
-    пользователе \n ## Так же здесь можно будет использовать MD";
+  comments: 'Данная ручка предназначена для получения информации о \
+    пользователе \n ## Так же здесь можно будет использовать MD';
   meta: [];
   schema: Schema;
 };

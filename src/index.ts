@@ -1,6 +1,6 @@
-import { App } from "@server/app";
-import logger from "typo-shield-logger";
-import { eptreedsl } from "@core/parser";
+import { eptreedsl } from '@core/parser';
+import { App } from '@server/app';
+import logger from 'typo-shield-logger';
 
 // const a = '123123' as const
 // const b = '456sdf' as const
@@ -37,44 +37,44 @@ HTTP/1.1: {
 }
 `);
 
-const app = new App(endpoints, { overrideDirectives: "merge" });
+const app = new App(endpoints, { overrideDirectives: 'merge' });
 
 /**
  * Пример регистрации миддлавары
  */
 app.registerMiddleware((req, res, next) => {
-  logger.log(`Visit ${req.path}`, "info");
+  logger.log(`Visit ${req.path}`, 'info');
   next();
 });
 
 const doSomething = () => {
   if (Math.random() > 0.5) {
-    throw Error("Something");
+    throw Error('Something');
   } else {
-    return { message: "hello" };
+    return { message: 'hello' };
   }
 };
 
 /**
  * Пример регистрации имплементации
  */
-app.registerImplementation("GetUser", (req, res) => {
+app.registerImplementation('GetUser', (req, res) => {
   const { id, std } = req.query;
   console.log({ id, std });
   try {
     const data = doSomething();
     res.send(data);
   } catch (error) {
-    res.sendError("EntityNotFound", { message: (error as { message: string }).message });
+    res.sendError('EntityNotFound', { message: (error as { message: string }).message });
   }
 });
 
-app.registerImplementation("UserList", (req, res) => {
+app.registerImplementation('UserList', (req, res) => {
   const { id, std } = req.query;
   console.log({ id, std });
-  res.sendError("EntityNameConflict", { message: "User not found", fields: 2 });
+  res.sendError('EntityNameConflict', { message: 'User not found', fields: 2 });
 });
 
-app.registerImplementation([{ name: "GetUser", callback: (req, res) => {} }]);
+app.registerImplementation([{ name: 'GetUser', callback: (req, res) => {} }]);
 
 app.start();

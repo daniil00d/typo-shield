@@ -1,5 +1,5 @@
-import { RowSeparator, Tab } from "./constants";
-import { DSL, DSLTree } from "./types";
+import { RowSeparator, Tab } from './constants';
+import { DSL, DSLTree } from './types';
 
 abstract class ALexer {
   abstract getLexemes(dsl: DSL): DSL[];
@@ -9,13 +9,13 @@ abstract class ALexer {
 
 export class Lexer extends ALexer {
   public normalizeDSL(subTreeDSL: DSL[]): DSL[] {
-    return subTreeDSL.map((tree) => tree.replace(Tab, ""));
+    return subTreeDSL.map((tree) => tree.replace(Tab, ''));
   }
 
   public getLexemes(dsl: DSL): DSL[] {
     return dsl
       .split(RowSeparator)
-      .map((row) => row.replace(Tab, ""))
+      .map((row) => row.replace(Tab, ''))
       .filter((row) => row);
   }
 

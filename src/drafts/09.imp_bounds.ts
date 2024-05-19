@@ -1,10 +1,4 @@
-import {
-  EndpointTree,
-  HTTPVersionType,
-  MethodType,
-  ProtocolType,
-  ex_endpoint_tree,
-} from "./07.ts-parser";
+import { EndpointTree, ex_endpoint_tree, HTTPVersionType, MethodType, ProtocolType } from './07.ts-parser';
 
 type ImpFunc = () => Record<string, any>;
 type Imp = Record<string, ImpFunc>;
@@ -21,7 +15,7 @@ export type EndpointTreeWithImp = {
 
 export const bindImp = (
   imps: Imp,
-  endpointTree: EndpointTree
+  endpointTree: EndpointTree,
 ): EndpointTreeWithImp => {
   return {
     ...endpointTree,
@@ -36,10 +30,10 @@ export const bindImp = (
 };
 
 export const imps = {
-  CreateAdmin: () => ({ user: "admin" }),
-  CreateManager: () => ({ user: "manager" }),
-  CreateConsumer: () => ({ user: "consumer" }),
-  GetList: () => ({ users: [{ id: 1, name: "daniil" }] }),
+  CreateAdmin: () => ({ user: 'admin' }),
+  CreateManager: () => ({ user: 'manager' }),
+  CreateConsumer: () => ({ user: 'consumer' }),
+  GetList: () => ({ users: [{ id: 1, name: 'daniil' }] }),
 };
 
 export const bindEndpoints = bindImp(imps, ex_endpoint_tree);

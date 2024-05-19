@@ -4,5 +4,5 @@ export type ParserListenerOptions = {
    *
    * @default 'none'
    */
-  overrideDirectives?: "override" | "merge" | "none";
+  overrideDirectives?: 'override' | 'merge' | 'none';
 };

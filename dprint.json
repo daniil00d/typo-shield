@@ -1,0 +1,26 @@
+{
+  "lineWidth": 140,
+  "typescript": {
+    "quoteStyle": "preferSingle"
+  },
+  "json": {
+  },
+  "markdown": {
+  },
+  "excludes": [
+    "**/node_modules",
+    "**/*-lock.json",
+    "**/dist",
+    "**/config",
+    "**/coverage",
+    "**/public",
+    "**/build",
+    "**/scripts",
+    ".history"
+  ],
+  "plugins": [
+    "config/dprint/typescript-0.89.0.wasm",
+    "config/dprint/json-0.19.1.wasm",
+    "config/dprint/markdown-0.16.3.wasm"
+  ]
+}

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander'
-import { generateSwagger } from './generator';
-import {version} from '../package.json'
+import { Command } from 'commander';
+import { version } from '../package.json';
 import { getEndpointTreeFromCode } from './fileParser';
+import { generateSwagger } from './generator';
 
 const program = new Command();
 
@@ -24,8 +24,8 @@ program.command('generate')
     const type = options.type;
     const filename = options.name;
     const pathToFolder = options.path;
-    
-    const endpointTree = getEndpointTreeFromCode({folder: folderPath, entrypoint})
+
+    const endpointTree = getEndpointTreeFromCode({ folder: folderPath, entrypoint });
 
     generateSwagger({
       type,
@@ -33,8 +33,8 @@ program.command('generate')
       fileOptions: {
         name: filename,
         folder: pathToFolder,
-      }
-    })
-  })
+      },
+    });
+  });
 
 program.parse();

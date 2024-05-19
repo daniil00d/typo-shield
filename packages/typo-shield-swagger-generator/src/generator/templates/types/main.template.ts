@@ -1,15 +1,15 @@
-import { ServersTemplateOptions } from "./servers.template"
+import { ServersTemplateOptions } from './servers.template';
 
 export type MainTemplateOptions = {
-    version?: '3.0.0'
-    info?: {
-        title: string
-        description?: string
-        version?: string
-    }
+  version?: '3.0.0';
+  info?: {
+    title: string;
+    description?: string;
+    version?: string;
+  };
 
-    servers?: ServersTemplateOptions
+  servers?: ServersTemplateOptions;
 
-    // from other template
-    paths: string
-}
+  // from other template
+  paths: string;
+};

@@ -1,10 +1,10 @@
-import { CharStreams, CommonTokenStream } from "antlr4ts";
-import { TypoShieldLexer } from "./grammar/TypoShieldLexer";
-import { TypoShieldParser } from "./grammar/TypoShieldParser";
-import { ParseTypoShieldListener } from "./listener";
-import { ParseTreeWalker } from "antlr4ts/tree/ParseTreeWalker";
-import { TypoShieldListener } from "./grammar/TypoShieldListener";
-import { EndpointTree, HTTPVersionType, ParserListenerOptions, Protocol } from "./types/index";
+import { CharStreams, CommonTokenStream } from 'antlr4ts';
+import { ParseTreeWalker } from 'antlr4ts/tree/ParseTreeWalker';
+import { TypoShieldLexer } from './grammar/TypoShieldLexer';
+import { TypoShieldListener } from './grammar/TypoShieldListener';
+import { TypoShieldParser } from './grammar/TypoShieldParser';
+import { ParseTypoShieldListener } from './listener';
+import { EndpointTree, HTTPVersionType, ParserListenerOptions, Protocol } from './types/index';
 
 export class Compiler {
   private tree: ParseTypoShieldListener;
@@ -29,7 +29,7 @@ export class Compiler {
       protocol: this.tree.getProtocol() as Protocol,
       protocolVersion: this.tree.getProtocolVersion(),
       endpoints: this.tree.getEndpoints(),
-      errors: this.tree.getErrors()
+      errors: this.tree.getErrors(),
     };
   }
 
@@ -38,4 +38,4 @@ export class Compiler {
   }
 }
 
-export * from './types/index'
+export * from './types/index';

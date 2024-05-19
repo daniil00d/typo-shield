@@ -20,8 +20,7 @@
       "language": "eptreedsl",
       "scopeName": "source.eptreedsl",
       "path": "./syntaxes/eptreedsl.tmLanguage.json"
-    },
-    {
+    }, {
       "injectTo": [
         "source.js",
         "source.ts"

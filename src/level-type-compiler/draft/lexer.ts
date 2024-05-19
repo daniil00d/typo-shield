@@ -1,17 +1,16 @@
-import { Trim } from "@core/utils/string";
+import { Trim } from '@core/utils/string';
 
-type DetectiveDirective<DSL extends string> =
-  DSL extends `${string}@${infer DirectiveName extends string} ${infer Cnt extends string};${infer Tail extends string}`
-    ? {
-        name: DirectiveName;
-        cnt: Cnt;
-        tail: Tail;
-      }
-    : {
-        name: "";
-        cnt: "";
-        tail: "";
-      };
+type DetectiveDirective<DSL extends string> = DSL extends
+  `${string}@${infer DirectiveName extends string} ${infer Cnt extends string};${infer Tail extends string}` ? {
+    name: DirectiveName;
+    cnt: Cnt;
+    tail: Tail;
+  }
+  : {
+    name: '';
+    cnt: '';
+    tail: '';
+  };
 
 type DirectiveTreeType = {
   name: string;
@@ -19,13 +18,12 @@ type DirectiveTreeType = {
   subtree?: DirectiveTreeType;
 };
 
-type DirectiveTree<DSL extends string, Acc extends DirectiveTreeType> = DetectiveDirective<DSL>["name"] extends ""
-  ? undefined
+type DirectiveTree<DSL extends string, Acc extends DirectiveTreeType> = DetectiveDirective<DSL>['name'] extends '' ? undefined
   : {
-      name: DetectiveDirective<DSL>["name"];
-      cnt: DetectiveDirective<DSL>["cnt"];
-      subtree: DirectiveTree<DetectiveDirective<DSL>["tail"], Acc>;
-    };
+    name: DetectiveDirective<DSL>['name'];
+    cnt: DetectiveDirective<DSL>['cnt'];
+    subtree: DirectiveTree<DetectiveDirective<DSL>['tail'], Acc>;
+  };
 
 type DSL = `
 HTTP: {
@@ -68,8 +66,8 @@ type directive = DetectiveDirective<DSL>;
 
 type tree = DirectiveTree<
   DSL,
-  { name: ""; cnt: "" }
->["subtree"]["subtree"]["subtree"]["subtree"]["subtree"]["subtree"]["subtree"];
+  { name: ''; cnt: '' }
+>['subtree']['subtree']['subtree']['subtree']['subtree']['subtree']['subtree'];
 
 type DirTreeType = {
   directives: {

@@ -1,10 +1,10 @@
-import { Compiler } from "typo-shield-parsers";
-import { EndpointTree, ParserListenerOptions } from "typo-shield-parsers";
-import { ExpressServer } from "./express-integration";
-import logger from "typo-shield-logger";
-import { EPRequest, EPResponse, ExpressServerOptions } from "./types";
-import { DefineError, ObjectsToRecord, DirectiveServeName } from "@type-compiler/index";
-import { Request, Response } from "express";
+import { DefineError, DirectiveServeName, ObjectsToRecord } from '@type-compiler/index';
+import { Request, Response } from 'express';
+import logger from 'typo-shield-logger';
+import { Compiler } from 'typo-shield-parsers';
+import { EndpointTree, ParserListenerOptions } from 'typo-shield-parsers';
+import { ExpressServer } from './express-integration';
+import { EPRequest, EPResponse, ExpressServerOptions } from './types';
 
 export const PORT = 3000;
 
@@ -20,7 +20,7 @@ export class App<T extends string> extends ExpressServer {
 
     super({
       protocolVersion: endpointTree.getProtocolVersion(),
-      port: options?.port || PORT
+      port: options?.port || PORT,
     });
 
     this.DSL = dsl;
@@ -46,19 +46,19 @@ export class App<T extends string> extends ExpressServer {
           { ...request, query: request.query } as Parameters<ExpressFunction<T>>[0],
           Object.assign(response, {
             sendError: <ErrorName extends string>(name: ErrorName, json: ObjectsToRecord<DefineError<T>>) =>
-              sendError(response, { name, json })
-          }) as Parameters<ExpressFunction<T>>[1]
+              sendError(response, { name, json }),
+          }) as Parameters<ExpressFunction<T>>[1],
         );
       };
     };
 
     const registerOneImplementation = (name: string, cb: ExpressFunction<T>) => {
       const endpoints = this.endpointTree.endpoints.filter((endpoint) => {
-        return endpoint.directives?.some((directive) => directive.name === "@serve" && directive.dirName === name);
+        return endpoint.directives?.some((directive) => directive.name === '@serve' && directive.dirName === name);
       });
 
       endpoints.forEach((endpoint) => {
-        logger.log(`Endpoint ${endpoint.pathname} is running!`, "success");
+        logger.log(`Endpoint ${endpoint.pathname} is running!`, 'success');
 
         this.registerRoute(endpoint.method, endpoint.pathname, cbWrapper(cb));
       });

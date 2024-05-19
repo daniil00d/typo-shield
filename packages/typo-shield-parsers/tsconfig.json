@@ -9,7 +9,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "resolveJsonModule": true,
-    "declaration": true,
+    "declaration": true
   },
   "include": [
     "src/**/*.**"
@@ -21,5 +21,5 @@
   ],
   "lib": [
     "es2015"
-  ],
+  ]
 }

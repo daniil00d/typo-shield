@@ -1,4 +1,4 @@
-import { DeleteAllWhiteSpaces, Split, SwitchType } from "./strings";
+import { DeleteAllWhiteSpaces, Split, SwitchType } from './strings';
 
 /**
  * Возвращает массив параметров объекта из строки
@@ -6,7 +6,7 @@ import { DeleteAllWhiteSpaces, Split, SwitchType } from "./strings";
  * @param {string} objectString - строка с параметрами объекта
  * @returns {string[]} - массив параметров объекта
  */
-export type GetSplittedObjects<DSL extends string> = Split<DSL, ",">;
+export type GetSplittedObjects<DSL extends string> = Split<DSL, ','>;
 
 /**
  * Возвращает {name, type} параметра объекта
@@ -15,9 +15,8 @@ export type GetSplittedObjects<DSL extends string> = Split<DSL, ",">;
  * @returns {{name: string, type: string}} - объект с именем и типом параметра
  */
 export type GetObject<PartOfObject extends string> = PartOfObject extends `${infer Name}:${infer Type extends
-  | "String"
-  | "Number"}`
-  ? { name: Name; type: SwitchType<Type> }
+  | 'String'
+  | 'Number'}` ? { name: Name; type: SwitchType<Type> }
   : false;
 
 /**
@@ -28,9 +27,8 @@ export type GetObject<PartOfObject extends string> = PartOfObject extends `${inf
  */
 export type GetObjects<Objects extends string[], Acc extends any[] = []> = Objects extends [
   infer First extends string,
-  ...infer Tail extends string[]
-]
-  ? GetObjects<Tail, [...Acc, GetObject<DeleteAllWhiteSpaces<First>>]>
+  ...infer Tail extends string[],
+] ? GetObjects<Tail, [...Acc, GetObject<DeleteAllWhiteSpaces<First>>]>
   : Acc;
 
 /**
@@ -41,9 +39,8 @@ export type GetObjects<Objects extends string[], Acc extends any[] = []> = Objec
  */
 export type ObjectToRecord<T extends any[], Acc = {}> = T extends [
   infer First extends { name: string; type: string | number },
-  ...infer Tail extends { name: string; type: string | number }[]
-]
-  ? ObjectToRecord<Tail, Acc & Record<First["name"], First["type"]>>
+  ...infer Tail extends { name: string; type: string | number }[],
+] ? ObjectToRecord<Tail, Acc & Record<First['name'], First['type']>>
   : Acc;
 
 /**
@@ -54,7 +51,6 @@ export type ObjectToRecord<T extends any[], Acc = {}> = T extends [
  */
 export type ObjectsToRecord<T extends any[], Acc = {}> = T extends [
   infer First extends { name: string },
-  ...infer Tail extends any[]
-]
-  ? ObjectsToRecord<Tail, Acc & Record<First["name"], First>>
+  ...infer Tail extends any[],
+] ? ObjectsToRecord<Tail, Acc & Record<First['name'], First>>
   : Acc;

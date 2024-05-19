@@ -1,7 +1,7 @@
-import { ParseWarning } from "../core/errors/parseWarning";
-import { ParserError } from "../core/errors/parserError";
-import { parseProtocol } from "./08.protocol_parser";
-import { getDirective, getDirectiveByName } from "./10.getDirective";
+import { ParserError } from '../core/errors/parserError';
+import { ParseWarning } from '../core/errors/parseWarning';
+import { parseProtocol } from './08.protocol_parser';
+import { getDirective, getDirectiveByName } from './10.getDirective';
 
 const et_ParamsUserTree1 = `
   |> HTTP/1.1
@@ -23,15 +23,15 @@ const et_ParamsUserTree1 = `
           :> get
 ` as const;
 
-export const StartSeparator = "|>" as const;
+export const StartSeparator = '|>' as const;
 export const StartSeparatorRegExp = String.raw`\|>`;
-export const OrSeparator = "<|>" as const;
-export const ForwardSeparator = ":>" as const;
-export const RowSeparator = "\n" as const;
-export const Tab = "  " as const;
-export const Protocol = ["HTTP"] as const;
-export const HTTPVersion = ["1", "1.1", "2", "3"] as const;
-export const Method = ["GET", "POST"] as const;
+export const OrSeparator = '<|>' as const;
+export const ForwardSeparator = ':>' as const;
+export const RowSeparator = '\n' as const;
+export const Tab = '  ' as const;
+export const Protocol = ['HTTP'] as const;
+export const HTTPVersion = ['1', '1.1', '2', '3'] as const;
+export const Method = ['GET', 'POST'] as const;
 
 export type ProtocolType = (typeof Protocol)[number];
 export type MethodType = (typeof Method)[number];
@@ -56,7 +56,7 @@ export type EndpointTree = {
 
 const parser = (dsl: string): EndpointTree => {
   const normalizeDSL = (subTreeDSL: DSL[]): DSL[] => {
-    return subTreeDSL.map((tree) => tree.replace(Tab, ""));
+    return subTreeDSL.map((tree) => tree.replace(Tab, ''));
   };
 
   const recParser = (subTreeDSL: DSL[]): DSLTree => {
@@ -83,7 +83,7 @@ const parser = (dsl: string): EndpointTree => {
     // объявляем главное дерева как ветвь дерева на предыдущем этапе рекурсии
     const mainTree = {
       root,
-      subtree: [] as string[][]
+      subtree: [] as string[][],
     };
 
     // заполняем ветви в виде поддеревьев
@@ -95,14 +95,14 @@ const parser = (dsl: string): EndpointTree => {
 
     return {
       ...mainTree,
-      subtree: mainTree.subtree.map((sub: any) => recParser(sub))
+      subtree: mainTree.subtree.map((sub: any) => recParser(sub)),
     };
   };
 
   // нормализуем дерево
   const lexemes = dsl
     .split(RowSeparator)
-    .map((row) => row.replace(Tab, ""))
+    .map((row) => row.replace(Tab, ''))
     .filter((row) => row);
 
   /**
@@ -120,7 +120,7 @@ const parser = (dsl: string): EndpointTree => {
     const { protocol, version } = parseProtocol(tree.root);
 
     let mainArray = [] as { pathname: string; serveImp: string | undefined }[];
-    let parentPrefix = "";
+    let parentPrefix = '';
     const endpoints = [] as {
       pathname: string;
       method: MethodType;
@@ -128,7 +128,7 @@ const parser = (dsl: string): EndpointTree => {
     }[];
 
     const getEndpointName = (name: string): string => {
-      return name.match(/\w+/)?.[0] || "unknown";
+      return name.match(/\w+/)?.[0] || 'unknown';
     };
 
     const parseEndpoints = (_tree: DSLTree) => {
@@ -139,7 +139,7 @@ const parser = (dsl: string): EndpointTree => {
       if (_tree.subtree === undefined || _tree.subtree.every((__tree) => getDirective(__tree.root).type !== undefined)) {
         mainArray.push({
           pathname: `${parentPrefix}/${getEndpointName(_tree.root)}`,
-          serveImp: getDirectiveByName(_tree.subtree?.[0].root, "serve")
+          serveImp: getDirectiveByName(_tree.subtree?.[0].root, 'serve'),
         });
 
         return;
@@ -152,22 +152,22 @@ const parser = (dsl: string): EndpointTree => {
     tree.subtree?.forEach((_tree) => {
       const method = _tree.root;
       mainArray = [];
-      parentPrefix = "";
+      parentPrefix = '';
       _tree.subtree?.forEach(parseEndpoints);
 
       mainArray.forEach((endpoint) => {
         endpoints.push({
           pathname: endpoint.pathname,
           method: getEndpointName(method) as MethodType,
-          imp: endpoint.serveImp
+          imp: endpoint.serveImp,
         });
       });
     });
 
     return {
       protocol,
-      protocolVersion: version || "1.1",
-      endpoints: endpoints
+      protocolVersion: version || '1.1',
+      endpoints: endpoints,
     };
   };
 

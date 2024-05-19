@@ -8,7 +8,7 @@ type ETreeSchema = string;
 // for def
 function mergeEndpointTreeSchema(
   root: ETreeSchema,
-  childTrees?: Record<string, ETreeSchema>
+  childTrees?: Record<string, ETreeSchema>,
 ) {}
 
 // для будущего парсинга нужно обозначить с помощью префикса для названия описания эндпоинта -> et_{smt}

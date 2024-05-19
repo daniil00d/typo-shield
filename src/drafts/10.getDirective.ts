@@ -1,12 +1,12 @@
-export const Directive = ["serve", "param", "body", "output"] as const;
+export const Directive = ['serve', 'param', 'body', 'output'] as const;
 
 export type DirectiveType = (typeof Directive)[number];
 
 export const getDirective = (
-  lexeme: string
+  lexeme: string,
 ): { type: DirectiveType | undefined; payload: string | undefined } => {
   const lexemeMatch = lexeme.match(
-    String.raw`^@(?<type>${Directive.join("|")}) (?<payload>\w+)`
+    String.raw`^@(?<type>${Directive.join('|')}) (?<payload>\w+)`,
   );
   const lexemeGroups = lexemeMatch?.groups as {
     type: DirectiveType;
@@ -21,7 +21,7 @@ export const getDirective = (
 
 export const getDirectiveByName = (
   lexeme: string | undefined,
-  dirName: string
+  dirName: string,
 ): string | undefined => {
   if (lexeme === undefined) {
     return undefined;

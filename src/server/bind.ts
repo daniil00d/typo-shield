@@ -1,19 +1,19 @@
-import { ImplementationMap, EndpointTree } from "@compiler/types";
-import logger from "typo-shield-logger";
+import { EndpointTree, ImplementationMap } from '@compiler/types';
+import logger from 'typo-shield-logger';
 
 export const bindImplementation = (
   imps: ImplementationMap,
-  endpointTree: EndpointTree
+  endpointTree: EndpointTree,
 ): EndpointTree => {
   return {
     ...endpointTree,
     endpoints: endpointTree.endpoints.map((endpoint) => {
       const implementationName = endpoint.directives?.find(
-        (directive) => directive.name === "@serve"
+        (directive) => directive.name === '@serve',
       )?.dirName;
 
       if (implementationName && imps[implementationName]) {
-        logger.log(`Endpoint ${endpoint.pathname} is running!`, "success");
+        logger.log(`Endpoint ${endpoint.pathname} is running!`, 'success');
       }
 
       return {

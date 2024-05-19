@@ -2,11 +2,11 @@
 //   ? U
 //   : string;
 
-import { GetObjects, GetSplittedObjects, ObjectToRecord } from "./objects";
+import { GetObjects, GetSplittedObjects, ObjectToRecord } from './objects';
 
 type GetAllObjectQueries<
   DSL extends string,
-  Acc extends string[] = []
+  Acc extends string[] = [],
 > = DSL extends `${string}@query JSON {${infer Object extends string}};${infer Tail extends string}`
   ? [...Acc, ...GetSplittedObjects<Object>, ...GetAllObjectQueries<Tail, Acc>]
   : Acc;

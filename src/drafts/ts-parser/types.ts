@@ -1,4 +1,4 @@
-import { Directive, HTTPVersion, Method, Protocol } from "./constants";
+import { Directive, HTTPVersion, Method, Protocol } from './constants';
 
 export type ProtocolType = (typeof Protocol)[number];
 export type MethodType = (typeof Method)[number];

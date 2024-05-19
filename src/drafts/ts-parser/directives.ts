@@ -1,5 +1,5 @@
-import { Directive } from "./constants";
-import { DSLLexeme, DirectiveType } from "./types";
+import { Directive } from './constants';
+import { DirectiveType, DSLLexeme } from './types';
 
 type DirectiveContent = {
   type: DirectiveType | undefined;
@@ -13,7 +13,7 @@ type DirectiveContent = {
  */
 export const parseDirective = (lexeme: string): DirectiveContent => {
   const lexemeMatch = lexeme.match(
-    String.raw`^@(?<type>${Directive.join("|")}) (?<payload>(\w+\s?)+)`
+    String.raw`^@(?<type>${Directive.join('|')}) (?<payload>(\w+\s?)+)`,
   );
 
   const lexemeGroups = lexemeMatch?.groups as {
@@ -23,13 +23,13 @@ export const parseDirective = (lexeme: string): DirectiveContent => {
 
   return {
     type: lexemeGroups?.type,
-    payload: lexemeGroups?.payload.split(" "),
+    payload: lexemeGroups?.payload.split(' '),
   };
 };
 
 export const parseDirectiveByName = (
   lexeme: DSLLexeme | undefined,
-  name: string
+  name: string,
 ): string[] | undefined => {
   if (lexeme === undefined) {
     return undefined;

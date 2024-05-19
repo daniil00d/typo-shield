@@ -1,12 +1,12 @@
-import fs from "fs";
-import path from "path";
-import express, { NextFunction, Request, Response } from "express";
-import spdy from "spdy";
+import express, { NextFunction, Request, Response } from 'express';
+import fs from 'fs';
+import path from 'path';
+import spdy from 'spdy';
 
-import { MethodType } from "../drafts/ts-parser/types";
-import { EndpointTree, HTTPVersionType } from "typo-shield-parsers";
+import { EndpointTree, HTTPVersionType } from 'typo-shield-parsers';
+import { MethodType } from '../drafts/ts-parser/types';
 
-const CERT_DIR = path.resolve(__dirname, "../../cert");
+const CERT_DIR = path.resolve(__dirname, '../../cert');
 
 type MiddlewareFunction = (req: Request, res: Response, next: NextFunction) => void;
 
@@ -21,8 +21,8 @@ export type NextFunc = (req: Request, res: Response) => void;
 export class ExpressServer {
   // config
   private port = 3000;
-  private httpVersion: HTTPVersionType = "1.1";
-  private host = "localhost"; // unused
+  private httpVersion: HTTPVersionType = '1.1';
+  private host = 'localhost'; // unused
   // server
   private app: express.Express;
   private endpoints: string[];
@@ -35,9 +35,9 @@ export class ExpressServer {
   }
 
   private initRegistration() {
-    this.registerRoute("GET", "/", (req, res) => {
+    this.registerRoute('GET', '/', (req, res) => {
       //  Типа SSR
-      res.send(`<ul>${this.endpoints.map((pathname) => `<li><a href=${pathname}>${pathname}</a></li>`).join("")}</ul>`);
+      res.send(`<ul>${this.endpoints.map((pathname) => `<li><a href=${pathname}>${pathname}</a></li>`).join('')}</ul>`);
     });
   }
   /**
@@ -48,16 +48,16 @@ export class ExpressServer {
    */
   private getServerByHTTPVersion(httpVersion: HTTPVersionType) {
     switch (httpVersion) {
-      case "1.1":
+      case '1.1':
         return this.app;
-      case "2": {
+      case '2': {
         // TODO: вынести в папку ./http2
         return spdy.createServer(
           {
             key: fs.readFileSync(`${CERT_DIR}/server.key`),
-            cert: fs.readFileSync(`${CERT_DIR}/server.cert`)
+            cert: fs.readFileSync(`${CERT_DIR}/server.cert`),
           },
-          this.app
+          this.app,
         );
       }
       default:
@@ -69,9 +69,9 @@ export class ExpressServer {
     if (!this.endpoints.includes(pathname)) this.endpoints.push(pathname);
 
     switch (method) {
-      case "POST":
+      case 'POST':
         return this.app.get(pathname, nextFunc);
-      case "GET":
+      case 'GET':
         return this.app.get(pathname, nextFunc);
     }
   }
@@ -79,7 +79,7 @@ export class ExpressServer {
   public registerMiddleware(middleware: MiddlewareFunction): void;
   public registerMiddleware(pathname: string, middleware?: MiddlewareFunction): void;
   public registerMiddleware(pathnameOrMiddleware: string | MiddlewareFunction, middleware?: MiddlewareFunction) {
-    if (typeof pathnameOrMiddleware === "string") {
+    if (typeof pathnameOrMiddleware === 'string') {
       middleware !== undefined && this.app.use(pathnameOrMiddleware, middleware);
     } else {
       this.app.use(pathnameOrMiddleware);
