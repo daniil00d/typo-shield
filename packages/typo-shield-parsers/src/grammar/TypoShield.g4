@@ -36,7 +36,7 @@ utilitydirective
     : UTILITY_DIRECTIVE LBRACKET utilitydirectiveatom RBRACKET;
 
 object
-    : ID ':' (TYPE | ('"' ID '"')) ;
+    : ID ':' (TYPE | ('"' ID '"'));
 
 objects
     : LCURLY object (COMA object )* RCURLY;

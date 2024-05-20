@@ -8,11 +8,30 @@ export const getPathsFields = (endpointTree: EndpointTree) => {
   const pathMap = (endpoint: Endpoint) => {
     const body = endpoint.directives?.find((directive) => directive.name === '@body');
     const query = endpoint.directives?.find((directive) => directive.name === '@query');
+    const tag = endpoint.directives?.find((directive) => directive.name === '@meta')?.objects['swaggerTagName'];
 
-    return {
-      [endpoint.method.toLowerCase()]: {
-        summary: 'hello sum',
-        description: 'hello desc',
+    const getInput = () => {
+      const queryMap = (object: Record<string, string>) => {
+        return Object.entries(object).map(([key, value]) => {
+          return {
+            name: key,
+            in: 'query',
+            schema: {
+              type: value.toLowerCase(),
+            },
+          };
+        });
+      };
+
+      if (endpoint.method === 'GET') {
+        return {
+          parameters: (query?.enums || [])?.length > 0
+            ? queryMap(endpointTree.dtos?.[query?.enums?.[0] || ''] || {})
+            : queryMap(query?.objects || {}),
+        };
+      }
+
+      return {
         requestBody: {
           description: 'hello desc',
           content: {
@@ -28,6 +47,15 @@ export const getPathsFields = (endpointTree: EndpointTree) => {
             },
           },
         },
+      };
+    };
+
+    return {
+      [endpoint.method.toLowerCase()]: {
+        ...(tag ? { tags: [tag] } : {}),
+        summary: 'hello sum',
+        description: 'hello desc',
+        ...getInput(),
         responses: {
           '200': {
             description: 'hello desc',

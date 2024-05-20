@@ -16,9 +16,9 @@ HTTP/1.1: {
 
   $GET: {
     > user: {
-    @body JSON {a: Number, b: String};
     @query [UserDto];
-    @meta JSON {swaggerTagName: "User", swaggerTagDescription: "desc"};
+    @body JSON {a: Number, b: String};
+    @meta JSON {swaggerTagName: "user", swaggerTagDescription: "user_desc"};
       > get: {
         @serve GetUser;
         @error [EntityNameConflict, EntityNotFound, UndefinedError];
@@ -31,10 +31,11 @@ HTTP/1.1: {
       }
     }
     > orders: {
+      @query [UserDto];
       > list: {
         @serve OrderList;
         @body JSON {a: Number, b: String};
-        @meta JSON {swaggerTagName: "Orders", swaggerTagDescription: "Orders tag desc"};
+        @meta JSON {swaggerTagName: "orders", swaggerTagDescription: "orders_desc"};
       }
     }
   }
@@ -42,7 +43,7 @@ HTTP/1.1: {
   $POST: {
     > user: {
     @body JSON {a: Number, b: String};
-    @meta JSON {swaggerTagName: "User", swaggerTagDescription: "User tag desc"};
+    @meta JSON {swaggerTagName: "user", swaggerTagDescription: "user_desc"};
       > get: {
         @serve GetUser;
         @error [EntityNameConflict, EntityNotFound, UndefinedError];

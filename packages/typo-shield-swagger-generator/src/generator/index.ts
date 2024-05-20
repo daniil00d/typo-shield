@@ -3,6 +3,7 @@ import { createSpecFile, SpecFileOptions } from '../helpers/fs';
 import { getCommonFields } from './commonFields';
 import { getComponentsFields } from './components';
 import { getPathsFields } from './paths';
+import { getTagsFields } from './tags';
 import { SwaggerFileType } from './types';
 
 export type GenerateSwagger = {
@@ -18,11 +19,13 @@ export const generateSwagger = ({ type, endpointTree, fileOptions }: GenerateSwa
    * 3. [x] save to file (add common params)
    */
   const commonFields = getCommonFields();
+  const tags = getTagsFields(endpointTree);
   const paths = getPathsFields(endpointTree);
   const components = getComponentsFields(endpointTree);
 
   const doc = {
     ...commonFields,
+    ...tags,
     ...paths,
     ...components,
   };

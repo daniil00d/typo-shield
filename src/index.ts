@@ -15,25 +15,34 @@ HTTP/1.1: {
     /// здесь описываем ошибки, которые могут потенциально исполниться во время
     /// работы эндпоинта
     error(404, EntityNotFound): JSON { message: String };
-    error(409, EntityNameConflict): JSON { message: String, fields: Number };
+    error(409, EntityNameConflict): JSON { message: String, fields: Number};
     error(501, UndefinedError): JSON { message: String };
 
-    dto(UserDto): JSON { message: String }
+    dto(UserDto): JSON { message: String, lolkek: Number };
   }
 
   $GET: {
     > user: {
+    @query [UserDto];
     @body JSON {a: Number, b: String};
+    @meta JSON {swaggerTagName: "user", swaggerTagDescription: "user_desc"};
       > get: {
         @serve GetUser;
         @error [EntityNameConflict, EntityNotFound, UndefinedError];
-        @query JSON { id: String, std: Number };
+        @body JSON #include(b);
       }
       > list: {
         @serve UserList;
         @body JSON #include(a);
         @error [EntityNameConflict, UndefinedError];
-        @meta JSON {swaggerTag: "__UserTag__"};
+      }
+    }
+    > orders: {
+      @query [UserDto];
+      > list: {
+        @serve OrderList;
+        @body JSON {a: Number, b: String};
+        @meta JSON {swaggerTagName: "orders", swaggerTagDescription: "orders_desc"};
       }
     }
   }
@@ -41,6 +50,7 @@ HTTP/1.1: {
   $POST: {
     > user: {
     @body JSON {a: Number, b: String};
+    @meta JSON {swaggerTagName: "user", swaggerTagDescription: "user_desc"};
       > get: {
         @serve GetUser;
         @error [EntityNameConflict, EntityNotFound, UndefinedError];
@@ -50,7 +60,6 @@ HTTP/1.1: {
         @serve UserList;
         @body JSON #include(a);
         @error [EntityNameConflict, UndefinedError];
-        @meta JSON {swaggerTag: "__UserTag__"};
       }
     }
   }
@@ -90,6 +99,10 @@ app.registerImplementation('GetUser', (req, res) => {
   } catch (error) {
     res.sendError('EntityNotFound', { message: (error as { message: string }).message });
   }
+});
+
+app.registerImplementation('OrderList', (req, res) => {
+  res.send({ message: 'lolkek' });
 });
 
 app.registerImplementation('UserList', (req, res) => {

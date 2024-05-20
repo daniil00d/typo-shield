@@ -29,7 +29,7 @@
     "tsconfig-paths": "^4.2.0",
     "tscpaths": "^0.0.9",
     "typescript": "^5.2.2",
-    "typo-shield-swagger-generator": "^2.0.1"
+    "typo-shield-swagger-generator": "^2.0.8"
   },
   "nodemonConfig": {
     "ignore": [
@@ -48,7 +48,7 @@
     "cors": "^2.8.5",
     "spdy": "^4.0.2",
     "ts-node": "^10.9.1",
-    "typo-shield-parsers": "^1.0.5"
+    "typo-shield-parsers": "^1.0.6"
   },
   "directories": {
     "doc": "docs"
