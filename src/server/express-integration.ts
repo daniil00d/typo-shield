@@ -70,7 +70,7 @@ export class ExpressServer {
 
     switch (method) {
       case 'POST':
-        return this.app.get(pathname, nextFunc);
+        return this.app.post(pathname, nextFunc);
       case 'GET':
         return this.app.get(pathname, nextFunc);
     }

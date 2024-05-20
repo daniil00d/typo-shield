@@ -1,5 +1,6 @@
 import { eptreedsl } from '@core/parser';
 import { App } from '@server/app';
+import cors from 'cors';
 import logger from 'typo-shield-logger';
 
 // const a = '123123' as const
@@ -34,6 +35,23 @@ HTTP/1.1: {
       }
     }
   }
+
+  $POST: {
+    > user: {
+    @body JSON {a: Number, b: String};
+      > get: {
+        @serve GetUser;
+        @error [EntityNameConflict, EntityNotFound, UndefinedError];
+        @query JSON { id: String, std: Number };
+      }
+      > list: {
+        @serve UserList;
+        @body JSON #include(a);
+        @error [EntityNameConflict, UndefinedError];
+        @meta JSON {swaggerTag: "__UserTag__"};
+      }
+    }
+  }
 }
 `);
 
@@ -43,16 +61,19 @@ const app = new App(endpoints, { overrideDirectives: 'merge' });
  * Пример регистрации миддлавары
  */
 app.registerMiddleware((req, res, next) => {
-  logger.log(`Visit ${req.path}`, 'info');
+  logger.log(`Visit [${req.method}] ${req.path}`, 'info');
   next();
 });
 
+app.registerMiddleware(cors());
+
 const doSomething = () => {
-  if (Math.random() > 0.5) {
-    throw Error('Something');
-  } else {
-    return { message: 'hello' };
-  }
+  // if (Math.random() > 0.5) {
+  //   throw Error('Something');
+  // } else {
+  //   return { message: 'hello' };
+  // }
+  return { message: 'hello' };
 };
 
 /**
