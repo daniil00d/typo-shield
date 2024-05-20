@@ -102,7 +102,7 @@ app.registerImplementation('GetUser', (req, res) => {
 });
 
 app.registerImplementation('OrderList', (req, res) => {
-  res.send({ message: 'lolkek' });
+  res.sendError('EntityNameConflict', { message: 'hello', fields: 123 });
 });
 
 app.registerImplementation('UserList', (req, res) => {

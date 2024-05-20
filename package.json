@@ -11,7 +11,9 @@
     "start:production": "node ./dist/index.js",
     "generate:ts": "antlr4ts -visitor src/antlr-ts-compiler/grammar/TypoShield.g4",
     "generate-cert": "sh ./scripts/generate-cert.sh",
-    "fmt": "dprint fmt"
+    "fmt": "dprint fmt",
+    "swagger:generate": "npx typo-shield-swagger-generator generate --folder src --path swagger",
+    "swagger:serve": "npx typo-shield-server serve --file swagger/swagger.yaml"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +31,7 @@
     "tsconfig-paths": "^4.2.0",
     "tscpaths": "^0.0.9",
     "typescript": "^5.2.2",
+    "typo-shield-server": "^1.0.4",
     "typo-shield-swagger-generator": "^2.0.8"
   },
   "nodemonConfig": {
