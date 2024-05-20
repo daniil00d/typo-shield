@@ -34,6 +34,23 @@ HTTP/1.1: {
       }
     }
   }
+
+  $POST: {
+    > user: {
+    @body JSON {a: Number, b: String};
+      > get: {
+        @serve GetUser;
+        @error [EntityNameConflict, EntityNotFound, UndefinedError];
+        @query JSON { id: String, std: Number };
+      }
+      > list: {
+        @serve UserList;
+        @body JSON #include(a);
+        @error [EntityNameConflict, UndefinedError];
+        @meta JSON {swaggerTag: "__UserTag__"};
+      }
+    }
+  }
 }
 `);
 
