@@ -30,6 +30,7 @@ export class Compiler {
       protocolVersion: this.tree.getProtocolVersion(),
       endpoints: this.tree.getEndpoints(),
       errors: this.tree.getErrors(),
+      dtos: this.tree.getDtos(),
     };
   }
 

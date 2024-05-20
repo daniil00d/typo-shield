@@ -64,4 +64,5 @@ export type EndpointTree = {
   protocolVersion: HTTPVersionType;
   endpoints: Endpoint[];
   errors: CustomError[];
+  dtos?: Record<string, any>;
 };

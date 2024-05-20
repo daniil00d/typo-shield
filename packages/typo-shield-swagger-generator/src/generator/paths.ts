@@ -1,22 +1,46 @@
 import { Endpoint, EndpointTree } from 'typo-shield-parsers';
+import { getProp, getProps } from './components';
 import { Method } from './types';
 
 export type PathField = Record<string, Method[]>;
 
 export const getPathsFields = (endpointTree: EndpointTree) => {
   const pathMap = (endpoint: Endpoint) => {
+    const body = endpoint.directives?.find((directive) => directive.name === '@body');
+    const query = endpoint.directives?.find((directive) => directive.name === '@query');
+
     return {
       [endpoint.method.toLowerCase()]: {
         summary: 'hello sum',
         description: 'hello desc',
+        requestBody: {
+          description: 'hello desc',
+          content: {
+            'application/json': {
+              schema: (query?.enums || []).length > 0
+                ? {
+                  '$ref': `#/components/schemas/${query?.enums?.[0]}`,
+                }
+                : {
+                  type: 'object',
+                  properties: getProp(query?.objects || {}),
+                },
+            },
+          },
+        },
         responses: {
           '200': {
             description: 'hello desc',
             content: {
               'application/json': {
-                schema: {
-                  '$ref': '#/components/schemas/Hello',
-                },
+                schema: (body?.enums || []).length > 0
+                  ? {
+                    '$ref': `#/components/schemas/${body?.enums?.[0]}`,
+                  }
+                  : {
+                    type: 'object',
+                    properties: getProp(body?.objects || {}),
+                  },
               },
             },
           },

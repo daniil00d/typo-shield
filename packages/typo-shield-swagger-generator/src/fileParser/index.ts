@@ -32,5 +32,5 @@ export const getEndpointTreeFromCode = ({ folder, entrypoint }: EndpointTreeFrom
     }
   }
 
-  return new Compiler(result[entrypoint]).getEndpointTree();
+  return new Compiler(result[entrypoint], { overrideDirectives: 'merge' }).getEndpointTree();
 };

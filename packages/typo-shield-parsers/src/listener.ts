@@ -3,6 +3,7 @@ import { TypoShieldListener } from './grammar/TypoShieldListener';
 import {
   DefinesContext,
   DirectivesContext,
+  DtosContext,
   EndpointsContext,
   MethodsContext,
   ObjectContext,
@@ -17,6 +18,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
   private endpoints: Array<Endpoint>;
   private options: ParserListenerOptions;
   private errors: CustomError[];
+  private dtos: Record<string, DirectiveObject>;
 
   constructor(options?: ParserListenerOptions) {
     this.endpoints = [];
@@ -24,6 +26,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
     this.protocolVersion = '1.1';
     this.options = options || {};
     this.errors = [];
+    this.dtos = {};
   }
 
   // protocols
@@ -290,6 +293,7 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
   public enterDefines(ctx: DefinesContext) {
     const errors = ctx.errors();
+    const dtos = ctx.dtos();
 
     errors.forEach((error) => {
       this.errors.push({
@@ -297,6 +301,10 @@ export class ParseTypoShieldListener implements TypoShieldListener {
         code: Number(error.NUMBER().text),
         object: this.parseDirectiveObjects(error.objects().object()),
       });
+    });
+
+    dtos.forEach((dto) => {
+      this.dtos[dto.ENTITY_NAME().text] = this.parseDirectiveObjects(dto.objects().object());
     });
   }
 
@@ -318,5 +326,9 @@ export class ParseTypoShieldListener implements TypoShieldListener {
 
   public getErrors() {
     return this.errors;
+  }
+
+  public getDtos() {
+    return this.dtos;
   }
 }

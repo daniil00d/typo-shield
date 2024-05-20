@@ -17,6 +17,8 @@ HTTP/1.1: {
     error(404, EntityNotFound): JSON { message: String };
     error(409, EntityNameConflict): JSON { message: String, fields: Number };
     error(501, UndefinedError): JSON { message: String };
+
+    dto(UserDto): JSON { message: String }
   }
 
   $GET: {

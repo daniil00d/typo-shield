@@ -31,7 +31,7 @@
     "keywords": {
       "patterns": [{
         "name": "keyword.control.eptreedsl",
-        "match": "\\b(define|GET|POST|HTTPS?|String|Number|JSON|error)\\b"
+        "match": "\\b(define|GET|POST|HTTPS?|String|Number|JSON|error|dto)\\b"
       }]
     },
     "strings": {

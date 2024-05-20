@@ -11,6 +11,7 @@ PROTOCOL_VERSION_DEL: '/';
 METHOD: 'GET' | 'POST' | 'DELETE';
 DEFINE: 'define';
 DEFINE_ERROR: 'error';
+DEFINE_DTO: 'dto';
 LCURLY : '{' ;
 LBRACKET: '(';
 RBRACKET: ')';
@@ -22,7 +23,7 @@ TYPE: 'Number' | 'String';
 UTILITY_DIRECTIVE: '#include' | '#exclude';
 ENTITY_NAME: [A-Z][a-zA-Z]+;
 DIRECTIVE: '@serve' | '@body' | '@params' | '@query'| '@meta' | '@test' | '@headers' | '@output' | '@search' | '@error';
-COMMENT: '///'[a-zA-Z,. а-яА-Я]* -> skip;
+COMMENT: '///'~('\n' | '\r')* -> skip;
 ID: [a-zA-Z_0-9]+;
 
 
@@ -58,8 +59,11 @@ endpoints
 errors
     : DEFINE_ERROR LBRACKET NUMBER COMA ENTITY_NAME RBRACKET ':' DIR_TYPE objects SEMI;
 
+dtos
+    : DEFINE_DTO LBRACKET ENTITY_NAME RBRACKET ':' DIR_TYPE objects SEMI;
+
 defines
-    : METHOD_START DEFINE ':' LCURLY errors* RCURLY;
+    : METHOD_START DEFINE ':' LCURLY (errors | dtos)* RCURLY;
 
 protocol
     : PROTOCOL (PROTOCOL_VERSION_DEL PROTOCOL_VERSION)? ':' LCURLY defines* methods* RCURLY;
